@@ -1,0 +1,9 @@
+Name,UserID,Nickname,Level,bIsConnected,LastSeen,StatusMessage
+Row1,USR_001,CoolGamer42,23,true,"2025-01-10 12:30","In Game: Survival Mode"
+Row2,USR_002,EpicWarrior,45,false,"2025-01-09 18:45","Offline"
+Row3,USR_003,PixelPioneer,12,true,"2025-01-10 12:35","In Main Menu"
+Row4,USR_004,QuestMaster,67,false,"2025-01-08 22:15","Away"
+Row5,USR_005,SpeedRunner,34,true,"2025-01-10 12:25","In Game: Campaign"
+Row6,USR_006,LootHunter,89,true,"2025-01-10 12:15","Looking for Group"
+Row7,USR_007,StrategyPro,56,false,"2025-01-09 15:20","Offline"
+Row8,USR_008,CasualGamer,15,true,"2025-01-10 12:40","In Game: Tutorial"
