@@ -183,6 +183,33 @@ bool FFriendManagerNonexistentTest::RunTest(const FString& Parameters)
 	return true;
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FFriendManagerGetFriendTest,
+	"UserProject.Editor.FriendManager.GetFriendByValue",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
+
+bool FFriendManagerGetFriendTest::RunTest(const FString& Parameters)
+{
+	const FFriendManagerTestHelper Helper;
+	FFriendData                    Friend1, Friend2;
+
+	Helper.FriendManager->AddFriend(Helper.CreateTestFriend("TestUser1"));
+
+	TestEqual("Friend was added successfully", Helper.FriendManager->GetFriends().Num(), 1);
+	TestTrue("Found Friend", Helper.FriendManager->GetFriend("TestUser1", Friend1));
+
+	Friend1.Nickname = "New nickname";
+
+	TestTrue("Found Friend", Helper.FriendManager->GetFriend("TestUser1", Friend2));
+	TestNotEqual("Friend was not updated", Friend1.Nickname, Friend2.Nickname);
+
+	Helper.FriendManager->UpdateFriend(Friend1);
+
+	TestTrue("Found Friend", Helper.FriendManager->GetFriend("TestUser1", Friend2));
+	TestEqual("Friend was updated", Friend1.Nickname, Friend2.Nickname);
+
+	return true;
+}
+
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FFriendManagerLoadTest,
 	"UserProject.Editor.FriendManager.LoadFriends",
 	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
