@@ -4,6 +4,10 @@
 	"enabledTests": [
 		"UserProject.Editor.FriendManager.AddFriend",
 		"UserProject.Editor.FriendManager.ConnectionStatus",
+		"UserProject.Editor.FriendManager.DuplicateFriend",
+		"UserProject.Editor.FriendManager.GetFriendByValue",
+		"UserProject.Editor.FriendManager.LoadFriends",
+		"UserProject.Editor.FriendManager.NonexistentFriend",
 		"UserProject.Editor.FriendManager.RemoveFriend",
 		"UserProject.Editor.FriendManager.UpdateNotification"
 	]

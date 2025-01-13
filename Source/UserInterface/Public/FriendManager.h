@@ -58,6 +58,7 @@ public:
 	virtual void RemoveFriend(const FString& UserID) override;
 
 	// Public API
+	UFUNCTION(BlueprintCallable, Category = "Friends")
 	void LoadFriends(const UDataTable* FriendsDataTable);
 
 private:
