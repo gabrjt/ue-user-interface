@@ -37,4 +37,8 @@ struct USERINTERFACE_API FFriendData : public FTableRowBase
 	FFriendData();
 
 	FFriendData(const FString& UserID, const FString& Nickname, const bool bIsConnected);
+
+	bool operator==(const FString& InUserID) const;
+
+	bool operator==(const FFriendData& Other) const;
 };

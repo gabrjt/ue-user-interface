@@ -43,17 +43,20 @@ public:
 
 	virtual FDelegateHandle SubscribeOnFriendUpdated(const FOnFriendUpdatedDelegate& Callback) override;
 
-	virtual void UnsubscribeOnFriendUpdated(FDelegateHandle Handle) override;
+	virtual void UnsubscribeOnFriendUpdated(const FDelegateHandle Handle) override;
 
 	// Public API
 	void UpdateFriend(const FFriendData& InFriend);
 
 	UFUNCTION(BlueprintCallable, Category = "Friends")
-	void SetFriendIsConnected(const FString& UserID, bool bIsConnected);
+	void SetFriendIsConnected(const FString& UserID, const bool bIsConnected);
 
 	UFUNCTION(BlueprintCallable, Category = "Friends")
 	void AddFriend(const FFriendData& InFriend);
 
 	UFUNCTION(BlueprintCallable, Category = "Friends")
 	void RemoveFriend(const FString& UserID);
+
+private:
+	void UpdateFriend(const int Index, const TFunction<void(FFriendData&)>& UpdateFunction);
 };

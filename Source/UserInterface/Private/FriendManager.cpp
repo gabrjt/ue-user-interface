@@ -57,48 +57,42 @@ FDelegateHandle UFriendManager::SubscribeOnFriendUpdated(const FOnFriendUpdatedD
 	return OnFriendUpdated.Add(Callback);
 }
 
-void UFriendManager::UnsubscribeOnFriendUpdated(FDelegateHandle Handle)
+void UFriendManager::UnsubscribeOnFriendUpdated(const FDelegateHandle Handle)
 {
 	OnFriendUpdated.Remove(Handle);
 }
 
 void UFriendManager::UpdateFriend(const FFriendData& InFriend)
 {
-	// Find and update existing friend or add new one
-	bool bFound = false;
+	int32 Index { Friends.IndexOfByKey(InFriend) };
 
-	for (auto& Friend : Friends)
+	if (Index == INDEX_NONE)
 	{
-		if (Friend.UserID == InFriend.UserID)
+		Index = Friends.Add(InFriend);
+	}
+
+	UpdateFriend(Index,
+		[&InFriend](FFriendData& Friend)
 		{
 			Friend = InFriend;
-			bFound = true;
-			break;
-		}
-	}
-
-	if (!bFound)
-	{
-		Friends.Add(InFriend);
-	}
-
-	OnFriendUpdated.Broadcast(InFriend);
-	OnFriendUpdatedBP.Broadcast(InFriend);
+		});
 }
 
 void UFriendManager::SetFriendIsConnected(const FString& UserID, bool bIsConnected)
 {
-	for (const auto& Friend : Friends)
+	const int32 Index { Friends.IndexOfByKey(UserID) };
+
+	if (Index == INDEX_NONE)
 	{
-		if (Friend.UserID == UserID)
-		{
-			FFriendData UpdatedData  = Friend;
-			UpdatedData.bIsConnected = bIsConnected;
-			UpdatedData.LastSeen     = FFriendData::GetLastSeen(bIsConnected);
-			UpdateFriend(UpdatedData);
-			break;
-		}
+		return;
 	}
+
+	UpdateFriend(Index,
+		[bIsConnected](FFriendData& Friend)
+		{
+			Friend.bIsConnected = bIsConnected;
+			Friend.LastSeen     = FFriendData::GetLastSeen(bIsConnected);
+		});
 }
 
 void UFriendManager::AddFriend(const FFriendData& InFriend)
@@ -112,4 +106,16 @@ void UFriendManager::RemoveFriend(const FString& UserID)
 	{
 		return Friend.UserID == UserID;
 	});
+}
+
+void UFriendManager::UpdateFriend(const int32 Index, const TFunction<void(FFriendData&)>& UpdateFunction)
+{
+	ensure(Index != INDEX_NONE && Index >= 0 && Index < Friends.Num());
+
+	FFriendData& Friend = Friends[Index];
+
+	UpdateFunction(Friend);
+
+	OnFriendUpdated.Broadcast(Friend);
+	OnFriendUpdatedBP.Broadcast(Friend);
 }
