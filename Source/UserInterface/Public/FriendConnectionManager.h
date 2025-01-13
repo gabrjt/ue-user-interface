@@ -29,8 +29,10 @@ public:
 	virtual void Deinitialize() override;
 
 	// IFriendConnectionService interface
+	UFUNCTION(BlueprintCallable, Category = "Friends")
 	virtual TArray<FFriendConnectionData> GetConnectedFriends() const override;
 
+	UFUNCTION(BlueprintCallable, Category = "Friends")
 	virtual TArray<FFriendConnectionData> GetDisconnectedFriends() const override;
 
 	virtual FDelegateHandle RegisterForFriendStatusUpdates(const FOnFriendStatusChangedDelegate& Callback) override;
@@ -40,9 +42,12 @@ public:
 	// Public API
 	void UpdateFriendStatus(const FFriendConnectionData& FriendData);
 
+	UFUNCTION(BlueprintCallable, Category = "Friends")
 	void HandleOnlineStatusUpdate(const FString& UserID, bool bConnected);
 
+	UFUNCTION(BlueprintCallable, Category = "Friends")
 	void AddFriend(const FFriendConnectionData& NewFriend);
 
+	UFUNCTION(BlueprintCallable, Category = "Friends")
 	void RemoveFriend(const FString& UserID);
 };
