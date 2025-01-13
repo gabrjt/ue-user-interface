@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "FriendHUD.h"
-#include "FriendManager.h"
+#include "FriendSubsystem.h"
 #include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -26,7 +26,7 @@ void AFriendHUD::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	Super::EndPlay(EndPlayReason);
 }
 
-void AFriendHUD::ShowFriendList()
+void AFriendHUD::ShowFriendList() const
 {
 	if (FriendListWidget)
 	{
@@ -34,7 +34,7 @@ void AFriendHUD::ShowFriendList()
 	}
 }
 
-void AFriendHUD::HideFriendList()
+void AFriendHUD::HideFriendList() const
 {
 	if (FriendListWidget)
 	{
@@ -42,7 +42,7 @@ void AFriendHUD::HideFriendList()
 	}
 }
 
-void AFriendHUD::ToggleFriendList()
+void AFriendHUD::ToggleFriendList() const
 {
 	if (FriendListWidget && FriendListWidget->IsInViewport())
 	{
@@ -54,19 +54,24 @@ void AFriendHUD::ToggleFriendList()
 	}
 }
 
+TScriptInterface<IFriendService> AFriendHUD::GetFriendService() const
+{
+	if (const UGameInstance* GameInstance = UGameplayStatics::GetGameInstance(GetWorld()))
+	{
+		UGameInstanceSubsystem*          Subsystem { GameInstance->GetSubsystemBase(FriendSubsystemClass) };
+		TScriptInterface<IFriendService> Interface;
+		Interface.SetObject(Subsystem);
+		Interface.SetInterface(Cast<IFriendService>(Subsystem));
+
+		return Interface;
+	}
+
+	return TScriptInterface<IFriendService>();
+}
+
 void AFriendHUD::OnFriendListWidgetCreated_Implementation()
 {
 	// Blueprint implementable event for additional setup
-}
-
-IFriendService* AFriendHUD::GetFriendService() const
-{
-	if (UGameInstance* GameInstance = UGameplayStatics::GetGameInstance(GetWorld()))
-	{
-		return CastChecked<IFriendService>(GameInstance->GetSubsystemBase(FriendSubsystemClass));
-	}
-
-	return nullptr;
 }
 
 void AFriendHUD::CreateAndInitializeWidget()
@@ -74,17 +79,16 @@ void AFriendHUD::CreateAndInitializeWidget()
 	if (!FriendListWidgetClass)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("FriendListWidgetClass not set in HUD"));
+
 		return;
 	}
 
-	// Create the widget
 	FriendListWidget = CreateWidget<UUserWidget>(GetOwningPlayerController(), FriendListWidgetClass);
 
 	if (FriendListWidget)
 	{
 		OnFriendListWidgetCreated();
 
-		// Initially show the widget - can be changed based on your needs
 		ShowFriendList();
 	}
 }

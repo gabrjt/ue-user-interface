@@ -16,8 +16,8 @@ class USERINTERFACE_API AFriendHUD : public AHUD
 	GENERATED_BODY()
 
 protected:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Friends")
-	TSubclassOf<UGameInstanceSubsystem> FriendSubsystemClass;
+	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "Friends")
+	TSubclassOf<UGameInstanceSubsystem> FriendSubsystemClass {};
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "UI")
 	TSubclassOf<UUserWidget> FriendListWidgetClass {};
@@ -32,15 +32,17 @@ public:
 
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
-	// Blueprint API to show/hide friend list
 	UFUNCTION(BlueprintCallable, Category = "Friends | UI")
-	void ShowFriendList();
+	void ShowFriendList() const;
 
 	UFUNCTION(BlueprintCallable, Category = "Friends | UI")
-	void HideFriendList();
+	void HideFriendList() const;
 
 	UFUNCTION(BlueprintCallable, Category = "Friends | UI")
-	void ToggleFriendList();
+	void ToggleFriendList() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Friends")
+	TScriptInterface<IFriendService> GetFriendService() const;
 
 protected:
 	// Called when the widget is created - can be overridden in Blueprint to do additional setup
@@ -50,7 +52,5 @@ protected:
 	virtual void OnFriendListWidgetCreated_Implementation();
 
 private:
-	IFriendService* GetFriendService() const;
-
 	void CreateAndInitializeWidget();
 };

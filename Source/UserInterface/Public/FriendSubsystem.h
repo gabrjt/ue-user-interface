@@ -5,13 +5,13 @@
 #include "CoreMinimal.h"
 #include "FriendService.h"
 #include "Subsystems/GameInstanceSubsystem.h"
-#include "FriendManager.generated.h"
+#include "FriendSubsystem.generated.h"
 
 struct FFriendData;
 class UDataTable;
 
 UCLASS(BlueprintType)
-class USERINTERFACE_API UFriendManager : public UGameInstanceSubsystem, public IFriendService
+class USERINTERFACE_API UFriendSubsystem : public UGameInstanceSubsystem, public IFriendService
 {
 	GENERATED_BODY()
 
@@ -30,22 +30,19 @@ public:
 	virtual void Deinitialize() override;
 
 	// IFriendConnectionService interface
-	UFUNCTION(BlueprintCallable, Category = "Friends")
-	virtual bool GetFriend(const FString& UserID, FFriendData& OutFriend) const override;
+	virtual bool GetFriend_Implementation(const FString& UserID, FFriendData& OutFriend) const override;
 
-	UFUNCTION(BlueprintCallable, Category = "Friends")
-	virtual const TArray<FFriendData>& GetFriends() const override;
+	virtual TArray<FFriendData> GetFriends_Implementation() const override;
 
-	UFUNCTION(BlueprintCallable, Category = "Friends")
-	virtual TArray<FFriendData> GetConnectedFriends() const override;
+	virtual TArray<FFriendData> GetConnectedFriends_Implementation() const override;
 
-	UFUNCTION(BlueprintCallable, Category = "Friends")
-	virtual TArray<FFriendData> GetDisconnectedFriends() const override;
+	virtual TArray<FFriendData> GetDisconnectedFriends_Implementation() const override;
 
 	virtual FDelegateHandle SubscribeOnFriendUpdated(const FOnFriendUpdatedDelegate& Callback) override;
 
 	virtual void UnsubscribeOnFriendUpdated(const FDelegateHandle Handle) override;
 
+	UFUNCTION(BlueprintCallable, Category = "Friends")
 	virtual void UpdateFriend(const FFriendData& InFriend) override;
 
 	UFUNCTION(BlueprintCallable, Category = "Friends")

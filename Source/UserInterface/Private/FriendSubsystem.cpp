@@ -1,15 +1,15 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "FriendManager.h"
+#include "FriendSubsystem.h"
 #include "FriendData.h"
 #include "Engine/DataTable.h"
 
-void UFriendManager::Initialize(FSubsystemCollectionBase& Collection)
+void UFriendSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
 }
 
-void UFriendManager::Deinitialize()
+void UFriendSubsystem::Deinitialize()
 {
 	Friends.Empty();
 	OnFriendUpdated.Clear();
@@ -17,7 +17,7 @@ void UFriendManager::Deinitialize()
 	Super::Deinitialize();
 }
 
-bool UFriendManager::GetFriend(const FString& UserID, FFriendData& OutFriend) const
+bool UFriendSubsystem::GetFriend_Implementation(const FString& UserID, FFriendData& OutFriend) const
 {
 	for (auto& Friend : Friends)
 	{
@@ -32,12 +32,12 @@ bool UFriendManager::GetFriend(const FString& UserID, FFriendData& OutFriend) co
 	return false;
 }
 
-const TArray<FFriendData>& UFriendManager::GetFriends() const
+TArray<FFriendData> UFriendSubsystem::GetFriends_Implementation() const
 {
 	return Friends;
 }
 
-TArray<FFriendData> UFriendManager::GetConnectedFriends() const
+TArray<FFriendData> UFriendSubsystem::GetConnectedFriends_Implementation() const
 {
 	return Friends.FilterByPredicate([](const FFriendData& Friend)
 	{
@@ -45,7 +45,7 @@ TArray<FFriendData> UFriendManager::GetConnectedFriends() const
 	});
 }
 
-TArray<FFriendData> UFriendManager::GetDisconnectedFriends() const
+TArray<FFriendData> UFriendSubsystem::GetDisconnectedFriends_Implementation() const
 {
 	return Friends.FilterByPredicate([](const FFriendData& Friend)
 	{
@@ -53,17 +53,17 @@ TArray<FFriendData> UFriendManager::GetDisconnectedFriends() const
 	});
 }
 
-FDelegateHandle UFriendManager::SubscribeOnFriendUpdated(const FOnFriendUpdatedDelegate& Callback)
+FDelegateHandle UFriendSubsystem::SubscribeOnFriendUpdated(const FOnFriendUpdatedDelegate& Callback)
 {
 	return OnFriendUpdated.Add(Callback);
 }
 
-void UFriendManager::UnsubscribeOnFriendUpdated(const FDelegateHandle Handle)
+void UFriendSubsystem::UnsubscribeOnFriendUpdated(const FDelegateHandle Handle)
 {
 	OnFriendUpdated.Remove(Handle);
 }
 
-void UFriendManager::UpdateFriend(const FFriendData& InFriend)
+void UFriendSubsystem::UpdateFriend(const FFriendData& InFriend)
 {
 	int32 Index { Friends.IndexOfByKey(InFriend) };
 
@@ -79,7 +79,7 @@ void UFriendManager::UpdateFriend(const FFriendData& InFriend)
 		});
 }
 
-void UFriendManager::SetFriendIsConnected(const FString& UserID, bool bIsConnected)
+void UFriendSubsystem::SetFriendIsConnected(const FString& UserID, bool bIsConnected)
 {
 	if (const int32 Index { Friends.IndexOfByKey(UserID) }; Index != INDEX_NONE)
 	{
@@ -92,12 +92,12 @@ void UFriendManager::SetFriendIsConnected(const FString& UserID, bool bIsConnect
 	}
 }
 
-void UFriendManager::AddFriend(const FFriendData& InFriend)
+void UFriendSubsystem::AddFriend(const FFriendData& InFriend)
 {
 	UpdateFriend(InFriend);
 }
 
-void UFriendManager::RemoveFriend(const FString& UserID)
+void UFriendSubsystem::RemoveFriend(const FString& UserID)
 {
 	if (const int32 Index { Friends.IndexOfByKey(UserID) }; Index != INDEX_NONE)
 	{
@@ -105,7 +105,7 @@ void UFriendManager::RemoveFriend(const FString& UserID)
 	}
 }
 
-void UFriendManager::LoadFriends(const UDataTable* FriendsDataTable)
+void UFriendSubsystem::LoadFriends(const UDataTable* FriendsDataTable)
 {
 	if (!IsValid(FriendsDataTable))
 	{
@@ -121,7 +121,7 @@ void UFriendManager::LoadFriends(const UDataTable* FriendsDataTable)
 	}
 }
 
-void UFriendManager::UpdateFriend(const int32 Index, const TFunction<void(FFriendData&)>& UpdateFunction)
+void UFriendSubsystem::UpdateFriend(const int32 Index, const TFunction<void(FFriendData&)>& UpdateFunction)
 {
 	ensure(Index != INDEX_NONE && Index >= 0 && Index < Friends.Num());
 

@@ -12,7 +12,7 @@ using FOnFriendUpdatedDelegate = FOnFriendUpdated::FDelegate;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnFriendUpdatedDelegateDynamic, FFriendData, FriendData);
 
-UINTERFACE(MinimalAPI, Blueprintable)
+UINTERFACE(MinimalAPI, Blueprintable, BlueprintType)
 class UFriendService : public UInterface
 {
 	GENERATED_BODY()
@@ -23,13 +23,25 @@ class USERINTERFACE_API IFriendService
 	GENERATED_BODY()
 
 public:
-	virtual bool GetFriend(const FString& UserID, FFriendData& OutFriend) const = 0;
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Friends")
+	bool GetFriend(const FString& UserID, FFriendData& OutFriend) const;
 
-	virtual const TArray<FFriendData>& GetFriends() const = 0;
+	virtual bool GetFriend_Implementation(const FString& UserID, FFriendData& OutFriend) const { return false; }
 
-	virtual TArray<FFriendData> GetConnectedFriends() const = 0;
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Friends")
+	TArray<FFriendData> GetFriends() const;
 
-	virtual TArray<FFriendData> GetDisconnectedFriends() const = 0;
+	virtual TArray<FFriendData> GetFriends_Implementation() const { return TArray<FFriendData>(); }
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Friends")
+	TArray<FFriendData> GetConnectedFriends() const;
+
+	virtual TArray<FFriendData> GetConnectedFriends_Implementation() const { return TArray<FFriendData>(); }
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Friends")
+	TArray<FFriendData> GetDisconnectedFriends() const;
+
+	virtual TArray<FFriendData> GetDisconnectedFriends_Implementation() const { return TArray<FFriendData>(); }
 
 	virtual FDelegateHandle SubscribeOnFriendUpdated(const FOnFriendUpdatedDelegate& Callback) = 0;
 
