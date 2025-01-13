@@ -2,6 +2,7 @@
 
 #include "FriendManager.h"
 #include "FriendData.h"
+#include "Engine/DataTable.h"
 
 void UFriendManager::Initialize(FSubsystemCollectionBase& Collection)
 {
@@ -62,6 +63,22 @@ void UFriendManager::UnsubscribeOnFriendUpdated(const FDelegateHandle Handle)
 	OnFriendUpdated.Remove(Handle);
 }
 
+void UFriendManager::LoadFriends(const UDataTable* FriendsDataTable)
+{
+	if (!IsValid(FriendsDataTable))
+	{
+		return;
+	}
+
+	for (const TArray<FName>& RowNames = FriendsDataTable->GetRowNames(); const FName& RowName : RowNames)
+	{
+		if (const FFriendData* FriendData = FriendsDataTable->FindRow<FFriendData>(RowName, TEXT("")))
+		{
+			UpdateFriend(*FriendData);
+		}
+	}
+}
+
 void UFriendManager::UpdateFriend(const FFriendData& InFriend)
 {
 	int32 Index { Friends.IndexOfByKey(InFriend) };
@@ -80,19 +97,15 @@ void UFriendManager::UpdateFriend(const FFriendData& InFriend)
 
 void UFriendManager::SetFriendIsConnected(const FString& UserID, bool bIsConnected)
 {
-	const int32 Index { Friends.IndexOfByKey(UserID) };
-
-	if (Index == INDEX_NONE)
+	if (const int32 Index { Friends.IndexOfByKey(UserID) }; Index != INDEX_NONE)
 	{
-		return;
+		UpdateFriend(Index,
+			[bIsConnected](FFriendData& Friend)
+			{
+				Friend.bIsConnected = bIsConnected;
+				Friend.LastSeen     = FFriendData::GetLastSeen(bIsConnected);
+			});
 	}
-
-	UpdateFriend(Index,
-		[bIsConnected](FFriendData& Friend)
-		{
-			Friend.bIsConnected = bIsConnected;
-			Friend.LastSeen     = FFriendData::GetLastSeen(bIsConnected);
-		});
 }
 
 void UFriendManager::AddFriend(const FFriendData& InFriend)
@@ -102,10 +115,10 @@ void UFriendManager::AddFriend(const FFriendData& InFriend)
 
 void UFriendManager::RemoveFriend(const FString& UserID)
 {
-	Friends.RemoveAll([UserID](const FFriendData& Friend)
+	if (const int32 Index { Friends.IndexOfByKey(UserID) }; Index != INDEX_NONE)
 	{
-		return Friend.UserID == UserID;
-	});
+		Friends.RemoveAtSwap(Index);
+	}
 }
 
 void UFriendManager::UpdateFriend(const int32 Index, const TFunction<void(FFriendData&)>& UpdateFunction)

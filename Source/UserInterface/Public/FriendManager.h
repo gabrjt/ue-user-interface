@@ -8,6 +8,7 @@
 #include "FriendManager.generated.h"
 
 struct FFriendData;
+class UDataTable;
 
 UCLASS(BlueprintType)
 class USERINTERFACE_API UFriendManager : public UGameInstanceSubsystem, public IFriendService
@@ -46,6 +47,8 @@ public:
 	virtual void UnsubscribeOnFriendUpdated(const FDelegateHandle Handle) override;
 
 	// Public API
+	void LoadFriends(const UDataTable* FriendsDataTable);
+
 	void UpdateFriend(const FFriendData& InFriend);
 
 	UFUNCTION(BlueprintCallable, Category = "Friends")

@@ -160,3 +160,74 @@ bool FFriendManagerDuplicateTest::RunTest(const FString& Parameters)
 
 	return true;
 }
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FFriendManagerNonexistentTest,
+	"UserProject.Editor.FriendManager.NonexistentFriend",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
+
+bool FFriendManagerNonexistentTest::RunTest(const FString& Parameters)
+{
+	const FFriendManagerTestHelper Helper;
+	FFriendData                    Friend;
+
+	Helper.FriendManager->AddFriend(Helper.CreateTestFriend("TestUser1"));
+
+	TestEqual("Friend was added successfully", Helper.FriendManager->GetFriends().Num(), 1);
+	TestTrue("Found Friend", Helper.FriendManager->GetFriend("TestUser1", Friend));
+
+	Helper.FriendManager->RemoveFriend("TestUser2");
+
+	TestEqual("Friend was not removed", Helper.FriendManager->GetFriends().Num(), 1);
+	TestFalse("Friend not found", Helper.FriendManager->GetFriend("TestUser2", Friend));
+
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FFriendManagerLoadTest,
+	"UserProject.Editor.FriendManager.LoadFriends",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
+
+bool FFriendManagerLoadTest::RunTest(const FString& Parameters)
+{
+	const FFriendManagerTestHelper Helper;
+
+	// Create a test DataTable
+	UDataTable* FriendsTable { NewObject<UDataTable>() };
+	FriendsTable->RowStruct = FFriendData::StaticStruct();
+
+	// Add test rows to the DataTable
+	FriendsTable->AddRow(FName("Row1"), Helper.CreateTestFriend("TestUser1", "User One"));
+	FriendsTable->AddRow(FName("Row2"), Helper.CreateTestFriend("TestUser2", "User Two", true));
+
+	// Load friends from the DataTable
+	Helper.FriendManager->LoadFriends(FriendsTable);
+
+	// Verify friends were loaded correctly
+	const TArray<FFriendData>& LoadedFriends = Helper.FriendManager->GetFriends();
+	TestEqual("Correct number of friends loaded", LoadedFriends.Num(), 2);
+
+	FFriendData Friend1, Friend2;
+	TestTrue("Found first friend", Helper.FriendManager->GetFriend("TestUser1", Friend1));
+	TestTrue("Found second friend", Helper.FriendManager->GetFriend("TestUser2", Friend2));
+
+	TestEqual("First friend nickname correct", Friend1.Nickname, "User One");
+	TestEqual("Second friend nickname correct", Friend2.Nickname, "User Two");
+	TestEqual("Second friend connection status correct", Friend2.bIsConnected, true);
+
+	// Test updating existing friend via LoadFriends
+	UDataTable* UpdateTable { NewObject<UDataTable>() };
+	UpdateTable->RowStruct = FFriendData::StaticStruct();
+	UpdateTable->AddRow(FName("UpdateRow"), Helper.CreateTestFriend("TestUser1", "Updated User"));
+
+	Helper.FriendManager->LoadFriends(UpdateTable);
+
+	TestTrue("Found updated friend", Helper.FriendManager->GetFriend("TestUser1", Friend1));
+	TestEqual("Nickname was updated", Friend1.Nickname, "Updated User");
+	TestEqual("Friend count unchanged", Helper.FriendManager->GetFriends().Num(), 2);
+
+	// Test with invalid DataTable
+	Helper.FriendManager->LoadFriends(nullptr);
+	TestEqual("Friends list unchanged with null DataTable", Helper.FriendManager->GetFriends().Num(), 2);
+
+	return true;
+}
