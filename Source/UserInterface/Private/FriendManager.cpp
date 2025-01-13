@@ -16,6 +16,26 @@ void UFriendManager::Deinitialize()
 	Super::Deinitialize();
 }
 
+bool UFriendManager::GetFriend(const FString& UserID, FFriendData& OutFriend) const
+{
+	for (auto& Friend : Friends)
+	{
+		if (Friend.UserID == UserID)
+		{
+			OutFriend = Friend;
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
+const TArray<FFriendData>& UFriendManager::GetFriends() const
+{
+	return Friends;
+}
+
 TArray<FFriendData> UFriendManager::GetConnectedFriends() const
 {
 	return Friends.FilterByPredicate([](const FFriendData& Friend)
@@ -74,7 +94,7 @@ void UFriendManager::SetFriendIsConnected(const FString& UserID, bool bIsConnect
 		{
 			FFriendData UpdatedData  = Friend;
 			UpdatedData.bIsConnected = bIsConnected;
-			UpdatedData.LastSeen     = bIsConnected ? TEXT("Online Now") : FDateTime::Now().ToString();
+			UpdatedData.LastSeen     = FFriendData::GetLastSeen(bIsConnected);
 			UpdateFriend(UpdatedData);
 			break;
 		}

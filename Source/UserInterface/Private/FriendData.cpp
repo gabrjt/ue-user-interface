@@ -7,7 +7,22 @@ FFriendData::FFriendData()
 	, Nickname("")
 	, Level(1)
 	, bIsConnected(false)
-	, LastSeen("")
+	, LastSeen(GetLastSeen(bIsConnected))
 	, StatusMessage("")
 {
+}
+
+FFriendData::FFriendData(const FString& UserID, const FString& Nickname, const bool bIsConnected)
+	: UserID(UserID)
+	, Nickname(Nickname)
+	, Level(1)
+	, bIsConnected(bIsConnected)
+	, LastSeen(GetLastSeen(bIsConnected))
+	, StatusMessage("")
+{
+}
+
+FString FFriendData::GetLastSeen(bool bIsConnected)
+{
+	return bIsConnected ? TEXT("Online Now") : FDateTime::Now().ToString();
 }

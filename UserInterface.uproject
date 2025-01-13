@@ -13,6 +13,17 @@
 				"UMG",
 				"Engine"
 			]
+		},
+		{
+			"Name": "EditorTests",
+			"Type": "Editor",
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"ModelViewViewModel",
+				"UMG",
+				"Engine",
+				"FunctionalTestingEditor"
+			]
 		}
 	],
 	"Plugins": [
@@ -33,6 +44,10 @@
 		},
 		{
 			"Name": "CommonUI",
+			"Enabled": true
+		},
+		{
+			"Name": "FunctionalTestingEditor",
 			"Enabled": true
 		}
 	]

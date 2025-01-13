@@ -1,0 +1,10 @@
+{
+	"id": "UserProject",
+	"name": "UserProject",
+	"enabledTests": [
+		"UserProject.Editor.FriendManager.AddFriend",
+		"UserProject.Editor.FriendManager.ConnectionStatus",
+		"UserProject.Editor.FriendManager.RemoveFriend",
+		"UserProject.Editor.FriendManager.UpdateNotification"
+	]
+}

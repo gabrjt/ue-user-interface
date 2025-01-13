@@ -30,6 +30,12 @@ public:
 
 	// IFriendConnectionService interface
 	UFUNCTION(BlueprintCallable, Category = "Friends")
+	virtual bool GetFriend(const FString& UserID, FFriendData& OutFriend) const override;
+
+	UFUNCTION(BlueprintCallable, Category = "Friends")
+	virtual const TArray<FFriendData>& GetFriends() const override;
+
+	UFUNCTION(BlueprintCallable, Category = "Friends")
 	virtual TArray<FFriendData> GetConnectedFriends() const override;
 
 	UFUNCTION(BlueprintCallable, Category = "Friends")

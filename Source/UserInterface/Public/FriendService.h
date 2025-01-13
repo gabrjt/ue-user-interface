@@ -23,6 +23,10 @@ class USERINTERFACE_API IFriendService
 	GENERATED_BODY()
 
 public:
+	virtual bool GetFriend(const FString& UserID, FFriendData& OutFriend) const = 0;
+
+	virtual const TArray<FFriendData>& GetFriends() const = 0;
+
 	virtual TArray<FFriendData> GetConnectedFriends() const = 0;
 
 	virtual TArray<FFriendData> GetDisconnectedFriends() const = 0;
