@@ -40,7 +40,7 @@ public:
 
 	void SetLevel(const int32 InLevel);
 
-	void SetIsConnected(const bool InIsConnected);
+	void SetIsConnected(const bool bInIsConnected);
 
 	void SetLastSeen(const FString& InLastSeen);
 

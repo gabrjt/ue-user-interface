@@ -34,5 +34,5 @@ bool FFriendData::operator==(const FFriendData& Other) const
 
 FString FFriendData::GetLastSeen(bool bIsConnected)
 {
-	return bIsConnected ? TEXT("Online Now") : FDateTime::Now().ToString();
+	return bIsConnected ? TEXT("Now") : FDateTime::Now().ToString();
 }

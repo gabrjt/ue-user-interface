@@ -61,7 +61,7 @@ bool FFriendManagerConnectionTest::RunTest(const FString& Parameters)
 	Helper.FriendManager->SetFriendIsConnected("TestUser1", true);
 
 	TestTrue("Found Friend", Helper.FriendManager->GetFriend("TestUser1", Friend));
-	TestEqual("Friend is online now", Friend.LastSeen, "Online Now");
+	TestEqual("Friend is online now", Friend.LastSeen, "Now");
 	TestEqual("Connected friends count is correct", Helper.FriendManager->GetConnectedFriends().Num(), 1);
 	TestEqual("Disconnected friends count is correct", Helper.FriendManager->GetDisconnectedFriends().Num(), 0);
 

@@ -28,12 +28,11 @@ void UFriendViewModel::SetLevel(const int32 InLevel)
 	UE_MVVM_SET_PROPERTY_VALUE(Level, InLevel);
 }
 
-void UFriendViewModel::SetIsConnected(const bool InIsConnected)
+void UFriendViewModel::SetIsConnected(const bool bInIsConnected)
 {
-	if (UE_MVVM_SET_PROPERTY_VALUE(bIsConnected, InIsConnected))
+	if (UE_MVVM_SET_PROPERTY_VALUE(bIsConnected, bInIsConnected))
 	{
-		SetLastSeen(InIsConnected ? TEXT("Now") : FDateTime::Now().ToString());
-		SetStatusMessage(InIsConnected ? TEXT("Online") : TEXT("Offline"));
+		SetLastSeen(FFriendData::GetLastSeen(bInIsConnected));
 	}
 }
 
