@@ -34,4 +34,12 @@ public:
 	virtual FDelegateHandle SubscribeOnFriendUpdated(const FOnFriendUpdatedDelegate& Callback) = 0;
 
 	virtual void UnsubscribeOnFriendUpdated(FDelegateHandle Handle) = 0;
+
+	virtual void UpdateFriend(const FFriendData& InFriend) = 0;
+
+	virtual void SetFriendIsConnected(const FString& UserID, const bool bIsConnected) = 0;
+
+	virtual void AddFriend(const FFriendData& InFriend) = 0;
+
+	virtual void RemoveFriend(const FString& UserID) = 0;
 };

@@ -46,19 +46,19 @@ public:
 
 	virtual void UnsubscribeOnFriendUpdated(const FDelegateHandle Handle) override;
 
+	virtual void UpdateFriend(const FFriendData& InFriend) override;
+
+	UFUNCTION(BlueprintCallable, Category = "Friends")
+	virtual void SetFriendIsConnected(const FString& UserID, const bool bIsConnected) override;
+
+	UFUNCTION(BlueprintCallable, Category = "Friends")
+	virtual void AddFriend(const FFriendData& InFriend) override;
+
+	UFUNCTION(BlueprintCallable, Category = "Friends")
+	virtual void RemoveFriend(const FString& UserID) override;
+
 	// Public API
 	void LoadFriends(const UDataTable* FriendsDataTable);
-
-	void UpdateFriend(const FFriendData& InFriend);
-
-	UFUNCTION(BlueprintCallable, Category = "Friends")
-	void SetFriendIsConnected(const FString& UserID, const bool bIsConnected);
-
-	UFUNCTION(BlueprintCallable, Category = "Friends")
-	void AddFriend(const FFriendData& InFriend);
-
-	UFUNCTION(BlueprintCallable, Category = "Friends")
-	void RemoveFriend(const FString& UserID);
 
 private:
 	void UpdateFriend(const int Index, const TFunction<void(FFriendData&)>& UpdateFunction);

@@ -63,22 +63,6 @@ void UFriendManager::UnsubscribeOnFriendUpdated(const FDelegateHandle Handle)
 	OnFriendUpdated.Remove(Handle);
 }
 
-void UFriendManager::LoadFriends(const UDataTable* FriendsDataTable)
-{
-	if (!IsValid(FriendsDataTable))
-	{
-		return;
-	}
-
-	for (const TArray<FName>& RowNames = FriendsDataTable->GetRowNames(); const FName& RowName : RowNames)
-	{
-		if (const FFriendData* FriendData = FriendsDataTable->FindRow<FFriendData>(RowName, TEXT("")))
-		{
-			UpdateFriend(*FriendData);
-		}
-	}
-}
-
 void UFriendManager::UpdateFriend(const FFriendData& InFriend)
 {
 	int32 Index { Friends.IndexOfByKey(InFriend) };
@@ -118,6 +102,22 @@ void UFriendManager::RemoveFriend(const FString& UserID)
 	if (const int32 Index { Friends.IndexOfByKey(UserID) }; Index != INDEX_NONE)
 	{
 		Friends.RemoveAtSwap(Index);
+	}
+}
+
+void UFriendManager::LoadFriends(const UDataTable* FriendsDataTable)
+{
+	if (!IsValid(FriendsDataTable))
+	{
+		return;
+	}
+
+	for (const TArray<FName>& RowNames = FriendsDataTable->GetRowNames(); const FName& RowName : RowNames)
+	{
+		if (const FFriendData* FriendData = FriendsDataTable->FindRow<FFriendData>(RowName, TEXT("")))
+		{
+			UpdateFriend(*FriendData);
+		}
 	}
 }
 
