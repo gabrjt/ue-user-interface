@@ -1,8 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "FriendConnectionData.h"
+#include "FriendData.h"
 
-FFriendConnectionData::FFriendConnectionData()
+FFriendData::FFriendData()
 	: UserID("")
 	, Nickname("")
 	, Level(1)

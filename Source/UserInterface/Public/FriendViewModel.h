@@ -4,12 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "MVVMViewModelBase.h"
-#include "FriendConnectionViewModel.generated.h"
+#include "FriendViewModel.generated.h"
 
-struct FFriendConnectionData;
+struct FFriendData;
 
 UCLASS(BlueprintType)
-class USERINTERFACE_API UFriendConnectionViewModel : public UMVVMViewModelBase
+class USERINTERFACE_API UFriendViewModel : public UMVVMViewModelBase
 {
 	GENERATED_BODY()
 
@@ -32,7 +32,7 @@ class USERINTERFACE_API UFriendConnectionViewModel : public UMVVMViewModelBase
 	FString StatusMessage {};
 
 public:
-	UFriendConnectionViewModel();
+	UFriendViewModel();
 
 	void SetUserID(const FString& InUserID);
 
@@ -59,5 +59,5 @@ public:
 	const FString& GetStatusMessage() const;
 
 	UFUNCTION(BlueprintCallable)
-	void UpdateFromFriendData(const FFriendConnectionData& FriendData);
+	void Set(const FFriendData& InFriend);
 };

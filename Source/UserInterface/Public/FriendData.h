@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataTable.h"
-#include "FriendConnectionData.generated.h"
+#include "FriendData.generated.h"
 
 /**
  *
  */
 USTRUCT(BlueprintType)
-struct USERINTERFACE_API FFriendConnectionData : public FTableRowBase
+struct USERINTERFACE_API FFriendData : public FTableRowBase
 {
 	GENERATED_BODY()
 
@@ -32,5 +32,5 @@ struct USERINTERFACE_API FFriendConnectionData : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Friend Data")
 	FString StatusMessage {};
 
-	FFriendConnectionData();
+	FFriendData();
 };
