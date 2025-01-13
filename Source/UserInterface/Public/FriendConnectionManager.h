@@ -4,25 +4,24 @@
 
 #include "CoreMinimal.h"
 #include "FriendConnectionService.h"
-#include "FriendConnectionViewModel.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "FriendConnectionManager.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnFriendStatusChangedDynamic, UFriendConnectionViewModel*, FriendData);
+struct FFriendConnectionData;
 
 UCLASS(BlueprintType)
 class USERINTERFACE_API UFriendConnectionManager : public UGameInstanceSubsystem, public IFriendConnectionService
 {
 	GENERATED_BODY()
 
-	UPROPERTY()
-	TArray<FFriendConnectionData> Friends;
+	UPROPERTY(Transient)
+	TArray<FFriendConnectionData> Friends {};
 
-	FOnFriendStatusChanged OnFriendStatusChanged;
+	FOnFriendStatusChanged OnFriendStatusChanged {};
 
 public:
 	UPROPERTY(BlueprintAssignable, Category = "Friends")
-	FOnFriendStatusChangedDynamic OnFriendStatusChangedBP;
+	FOnFriendStatusChangedDynamic OnFriendStatusChangedBP {};
 
 	// UGameInstanceSubsystem interface
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;

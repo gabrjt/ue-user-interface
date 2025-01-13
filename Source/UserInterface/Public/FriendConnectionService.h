@@ -10,6 +10,8 @@
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnFriendStatusChanged, const FFriendConnectionData&);
 using FOnFriendStatusChangedDelegate = FOnFriendStatusChanged::FDelegate;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnFriendStatusChangedDynamic, FFriendConnectionData, FriendData);
+
 UINTERFACE(MinimalAPI, Blueprintable)
 class UFriendConnectionService : public UInterface
 {

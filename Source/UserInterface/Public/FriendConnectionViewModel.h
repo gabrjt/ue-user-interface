@@ -3,9 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "FriendConnectionData.h"
 #include "MVVMViewModelBase.h"
 #include "FriendConnectionViewModel.generated.h"
+
+struct FFriendConnectionData;
 
 UCLASS(BlueprintType)
 class USERINTERFACE_API UFriendConnectionViewModel : public UMVVMViewModelBase
@@ -13,22 +14,22 @@ class USERINTERFACE_API UFriendConnectionViewModel : public UMVVMViewModelBase
 	GENERATED_BODY()
 
 	UPROPERTY(BlueprintReadWrite, FieldNotify, Setter, Getter, meta=(AllowPrivateAccess))
-	FString UserID;
+	FString UserID {};
 
 	UPROPERTY(BlueprintReadWrite, FieldNotify, Setter, Getter, meta=(AllowPrivateAccess))
-	FString Nickname;
+	FString Nickname {};
 
 	UPROPERTY(BlueprintReadWrite, FieldNotify, Setter, Getter, meta=(AllowPrivateAccess))
-	int32 Level;
+	int32 Level {};
 
 	UPROPERTY(BlueprintReadWrite, FieldNotify, Setter="SetIsConnected", Getter="GetIsConnected", meta=(AllowPrivateAccess))
-	bool bIsConnected;
+	bool bIsConnected {};
 
 	UPROPERTY(BlueprintReadWrite, FieldNotify, Setter, Getter, meta=(AllowPrivateAccess))
-	FString LastSeen;
+	FString LastSeen {};
 
 	UPROPERTY(BlueprintReadWrite, FieldNotify, Setter, Getter, meta=(AllowPrivateAccess))
-	FString StatusMessage;
+	FString StatusMessage {};
 
 public:
 	UFriendConnectionViewModel();

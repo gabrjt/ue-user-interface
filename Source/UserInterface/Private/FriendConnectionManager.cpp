@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "FriendConnectionManager.h"
+#include "FriendConnectionData.h"
 
 void UFriendConnectionManager::Initialize(FSubsystemCollectionBase& Collection)
 {
@@ -60,15 +61,8 @@ void UFriendConnectionManager::UpdateFriendStatus(const FFriendConnectionData& F
 		Friends.Add(FriendData);
 	}
 
-	// Notify C++ listeners
 	OnFriendStatusChanged.Broadcast(FriendData);
-
-	// Create ViewModel for Blueprint listeners
-	if (UFriendConnectionViewModel* ViewModel = NewObject<UFriendConnectionViewModel>(this))
-	{
-		ViewModel->UpdateFromFriendData(FriendData);
-		OnFriendStatusChangedBP.Broadcast(ViewModel);
-	}
+	OnFriendStatusChangedBP.Broadcast(FriendData);
 }
 
 void UFriendConnectionManager::HandleOnlineStatusUpdate(const FString& UserID, bool bConnected)
