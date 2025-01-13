@@ -136,3 +136,27 @@ bool FFriendManagerRemovalTest::RunTest(const FString& Parameters)
 
 	return true;
 }
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FFriendManagerDuplicateTest,
+	"UserProject.Editor.FriendManager.DuplicateFriend",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
+
+bool FFriendManagerDuplicateTest::RunTest(const FString& Parameters)
+{
+	const FFriendManagerTestHelper Helper;
+	FFriendData                    Friend;
+
+	Helper.FriendManager->AddFriend(Helper.CreateTestFriend("TestUser1"));
+
+	TestEqual("Friend was added successfully", Helper.FriendManager->GetFriends().Num(), 1);
+	TestTrue("Found Friend", Helper.FriendManager->GetFriend("TestUser1", Friend));
+	TestEqual("Nickname is default", Friend.Nickname, "Test User");
+
+	Helper.FriendManager->AddFriend(Helper.CreateTestFriend("TestUser1", "I'm the same"));
+
+	TestEqual("Friend was not added", Helper.FriendManager->GetFriends().Num(), 1);
+	TestTrue("Found Friend", Helper.FriendManager->GetFriend("TestUser1", Friend));
+	TestEqual("Nickname updated", Friend.Nickname, "I'm the same");
+
+	return true;
+}
