@@ -20,6 +20,9 @@ public:
 	// Getter for the Friends array
 	const TArray<UFriendViewModel*>& GetFriends() const;
 
+	UFUNCTION(BlueprintCallable)
+	void SetFriends(const TArray<FFriendData>& InFriends);
+
 	// Add a friend to the list
 	UFUNCTION(BlueprintCallable)
 	void AddFriend(UFriendViewModel* Friend);

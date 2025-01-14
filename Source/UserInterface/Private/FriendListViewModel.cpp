@@ -1,6 +1,5 @@
 ﻿// FriendListViewModel.cpp
 #include "FriendListViewModel.h"
-
 #include "FriendData.h"
 
 UFriendListViewModel::UFriendListViewModel()
@@ -10,6 +9,14 @@ UFriendListViewModel::UFriendListViewModel()
 const TArray<UFriendViewModel*>& UFriendListViewModel::GetFriends() const
 {
 	return Friends;
+}
+
+void UFriendListViewModel::SetFriends(const TArray<FFriendData>& InFriends)
+{
+	for (auto& Friend : InFriends)
+	{
+		UpdateFriend(Friend);
+	}
 }
 
 void UFriendListViewModel::AddFriend(UFriendViewModel* Friend)
