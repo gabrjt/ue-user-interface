@@ -26,6 +26,9 @@ protected:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	UTextBlock* NicknameText;
 
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	UTextBlock* IsConnectedText;
+
 	UPROPERTY()
 	UFriendViewModel* ViewModel;
 };

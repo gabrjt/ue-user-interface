@@ -5,9 +5,12 @@
 void UFriendListViewEntryWidget::NativeOnListItemObjectSet(UObject* ListItemObject)
 {
 	// Cast to your data type and update the widget
-	if (UFriendViewModel* Data = Cast<UFriendViewModel>(ListItemObject))
+	ViewModel = Cast<UFriendViewModel>(ListItemObject);
+
+	if (ViewModel)
 	{
-		NicknameText->SetText(FText::FromString(Data->GetNickname()));
+		NicknameText->SetText(FText::FromString(ViewModel->GetNickname()));
+		IsConnectedText->SetText(FText::FromString(LexToString(ViewModel->GetIsConnected())));
 	}
 }
 
