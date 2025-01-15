@@ -48,6 +48,8 @@ public:
 
 	virtual TArray<FFriendData> GetFriends_Implementation() const override;
 
+	virtual const TArray<FFriendData>& GetFriendsRef() const override;
+
 	virtual TArray<FFriendData> GetConnectedFriends_Implementation() const override;
 
 	virtual TArray<FFriendData> GetDisconnectedFriends_Implementation() const override;

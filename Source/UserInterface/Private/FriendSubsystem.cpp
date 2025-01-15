@@ -65,6 +65,11 @@ TArray<FFriendData> UFriendSubsystem::GetFriends_Implementation() const
 	return Friends;
 }
 
+const TArray<FFriendData>& UFriendSubsystem::GetFriendsRef() const
+{
+	return Friends;
+}
+
 TArray<FFriendData> UFriendSubsystem::GetConnectedFriends_Implementation() const
 {
 	return Friends.FilterByPredicate([](const FFriendData& Friend)

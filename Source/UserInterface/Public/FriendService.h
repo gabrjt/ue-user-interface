@@ -45,6 +45,8 @@ public:
 
 	virtual TArray<FFriendData> GetFriends_Implementation() const;
 
+	virtual const TArray<FFriendData>& GetFriendsRef() const = 0;
+
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Friends")
 	TArray<FFriendData> GetConnectedFriends() const;
 
