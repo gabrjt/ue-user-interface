@@ -32,6 +32,8 @@ class USERINTERFACE_API UFriendViewModel : public UMVVMViewModelBase
 public:
 	UFriendViewModel();
 
+	static UFriendViewModel* Create(UObject* InOuter, const FFriendData& InFriend);
+
 	void SetUserID(const FString& InUserID);
 
 	void SetNickname(const FString& InNickname);

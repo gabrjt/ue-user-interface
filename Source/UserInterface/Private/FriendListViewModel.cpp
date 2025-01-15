@@ -17,9 +17,7 @@ void UFriendListViewModel::SetFriends(const TArray<FFriendData>& InFriends)
 
 	for (auto& Friend : InFriends)
 	{
-		UFriendViewModel* FriendViewModel { NewObject<UFriendViewModel>(this) };
-		FriendViewModel->Set(Friend);
-		Friends.Add(FriendViewModel);
+		Friends.Add(UFriendViewModel::Create(this, Friend));
 	}
 
 	UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(Friends);
@@ -30,6 +28,7 @@ void UFriendListViewModel::AddFriend(UFriendViewModel* Friend)
 	if (Friend)
 	{
 		Friends.Add(Friend);
+
 		UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(Friends);
 	}
 }
@@ -40,22 +39,25 @@ void UFriendListViewModel::RemoveFriend(const FString& UserID)
 	{
 		return Friend && Friend->GetUserID() == UserID;
 	});
+
 	UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(Friends);
 }
 
 void UFriendListViewModel::ClearFriends()
 {
 	Friends.Empty();
+
 	UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(Friends);
 }
 
-void UFriendListViewModel::UpdateFriend(const FFriendData& FriendData)
+void UFriendListViewModel::UpdateFriend(const FFriendData& InFriend)
 {
 	// Try to find existing friend
 	UFriendViewModel* ExistingFriend = nullptr;
+
 	for (UFriendViewModel* Friend : Friends)
 	{
-		if (Friend && Friend->GetUserID() == FriendData.UserID)
+		if (Friend && Friend->GetUserID() == InFriend.UserID)
 		{
 			ExistingFriend = Friend;
 			break;
@@ -65,13 +67,11 @@ void UFriendListViewModel::UpdateFriend(const FFriendData& FriendData)
 	if (ExistingFriend)
 	{
 		// Update existing friend
-		ExistingFriend->Set(FriendData);
+		ExistingFriend->Set(InFriend);
 	}
 	else
 	{
 		// Create and add new friend
-		UFriendViewModel* NewFriend = NewObject<UFriendViewModel>(this);
-		NewFriend->Set(FriendData);
-		AddFriend(NewFriend);
+		AddFriend(UFriendViewModel::Create(this, InFriend));
 	}
 }

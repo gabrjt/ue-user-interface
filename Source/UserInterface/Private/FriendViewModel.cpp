@@ -11,6 +11,14 @@ UFriendViewModel::UFriendViewModel()
 {
 }
 
+UFriendViewModel* UFriendViewModel::Create(UObject* InOuter, const FFriendData& InFriend)
+{
+	UFriendViewModel* FriendViewModel = NewObject<UFriendViewModel>(InOuter);
+	FriendViewModel->Set(InFriend);
+
+	return FriendViewModel;
+}
+
 void UFriendViewModel::SetUserID(const FString& InUserID)
 {
 	UE_MVVM_SET_PROPERTY_VALUE(UserID, InUserID);

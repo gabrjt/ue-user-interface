@@ -33,5 +33,5 @@ public:
 	void ClearFriends();
 
 	UFUNCTION(BlueprintCallable)
-	void UpdateFriend(const FFriendData& FriendData);
+	void UpdateFriend(const FFriendData& InFriend);
 };
