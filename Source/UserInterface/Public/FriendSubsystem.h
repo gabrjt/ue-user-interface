@@ -10,10 +10,13 @@
 struct FFriendData;
 class UDataTable;
 
-UCLASS(BlueprintType)
+UCLASS(BlueprintType, Config=Game)
 class USERINTERFACE_API UFriendSubsystem : public UGameInstanceSubsystem, public IFriendService
 {
 	GENERATED_BODY()
+
+	UPROPERTY(Config)
+	FString DataTablePath {};
 
 	UPROPERTY(Transient)
 	TArray<FFriendData> Friends {};
@@ -30,6 +33,13 @@ public:
 	virtual void Deinitialize() override;
 
 	// IFriendConnectionService interface
+	virtual FDelegateHandle SubscribeOnFriendUpdated(const FOnFriendUpdatedDelegate& Callback) override;
+
+	virtual void UnsubscribeOnFriendUpdated(const FDelegateHandle Handle) override;
+
+	UFUNCTION(BlueprintCallable, Category = "Friends")
+	virtual void LoadFriends_Implementation() override;
+
 	virtual bool GetFriend_Implementation(const FString& UserID, FFriendData& OutFriend) const override;
 
 	virtual TArray<FFriendData> GetFriends_Implementation() const override;
@@ -38,25 +48,20 @@ public:
 
 	virtual TArray<FFriendData> GetDisconnectedFriends_Implementation() const override;
 
-	virtual FDelegateHandle SubscribeOnFriendUpdated(const FOnFriendUpdatedDelegate& Callback) override;
-
-	virtual void UnsubscribeOnFriendUpdated(const FDelegateHandle Handle) override;
+	UFUNCTION(BlueprintCallable, Category = "Friends")
+	virtual void UpdateFriend_Implementation(const FFriendData& InFriend) override;
 
 	UFUNCTION(BlueprintCallable, Category = "Friends")
-	virtual void UpdateFriend(const FFriendData& InFriend) override;
+	virtual void SetFriendIsConnected_Implementation(const FString& UserID, const bool bIsConnected) override;
 
 	UFUNCTION(BlueprintCallable, Category = "Friends")
-	virtual void SetFriendIsConnected(const FString& UserID, const bool bIsConnected) override;
+	virtual void AddFriend_Implementation(const FFriendData& InFriend) override;
 
 	UFUNCTION(BlueprintCallable, Category = "Friends")
-	virtual void AddFriend(const FFriendData& InFriend) override;
-
-	UFUNCTION(BlueprintCallable, Category = "Friends")
-	virtual void RemoveFriend(const FString& UserID) override;
+	virtual void RemoveFriend_Implementation(const FString& UserID) override;
 
 	// Public API
-	UFUNCTION(BlueprintCallable, Category = "Friends")
-	void LoadFriends(const UDataTable* FriendsDataTable);
+	void LoadFriends(const UDataTable* DataTable);
 
 private:
 	void UpdateFriend(const int Index, const TFunction<void(FFriendData&)>& UpdateFunction);

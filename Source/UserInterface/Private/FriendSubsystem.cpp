@@ -17,6 +17,21 @@ void UFriendSubsystem::Deinitialize()
 	Super::Deinitialize();
 }
 
+FDelegateHandle UFriendSubsystem::SubscribeOnFriendUpdated(const FOnFriendUpdatedDelegate& Callback)
+{
+	return OnFriendUpdated.Add(Callback);
+}
+
+void UFriendSubsystem::UnsubscribeOnFriendUpdated(const FDelegateHandle Handle)
+{
+	OnFriendUpdated.Remove(Handle);
+}
+
+void UFriendSubsystem::LoadFriends_Implementation()
+{
+	LoadFriends({ Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, *DataTablePath)) });
+}
+
 bool UFriendSubsystem::GetFriend_Implementation(const FString& UserID, FFriendData& OutFriend) const
 {
 	for (auto& Friend : Friends)
@@ -53,17 +68,7 @@ TArray<FFriendData> UFriendSubsystem::GetDisconnectedFriends_Implementation() co
 	});
 }
 
-FDelegateHandle UFriendSubsystem::SubscribeOnFriendUpdated(const FOnFriendUpdatedDelegate& Callback)
-{
-	return OnFriendUpdated.Add(Callback);
-}
-
-void UFriendSubsystem::UnsubscribeOnFriendUpdated(const FDelegateHandle Handle)
-{
-	OnFriendUpdated.Remove(Handle);
-}
-
-void UFriendSubsystem::UpdateFriend(const FFriendData& InFriend)
+void UFriendSubsystem::UpdateFriend_Implementation(const FFriendData& InFriend)
 {
 	int32 Index { Friends.IndexOfByKey(InFriend) };
 
@@ -79,7 +84,7 @@ void UFriendSubsystem::UpdateFriend(const FFriendData& InFriend)
 		});
 }
 
-void UFriendSubsystem::SetFriendIsConnected(const FString& UserID, bool bIsConnected)
+void UFriendSubsystem::SetFriendIsConnected_Implementation(const FString& UserID, bool bIsConnected)
 {
 	if (const int32 Index { Friends.IndexOfByKey(UserID) }; Index != INDEX_NONE)
 	{
@@ -92,32 +97,16 @@ void UFriendSubsystem::SetFriendIsConnected(const FString& UserID, bool bIsConne
 	}
 }
 
-void UFriendSubsystem::AddFriend(const FFriendData& InFriend)
+void UFriendSubsystem::AddFriend_Implementation(const FFriendData& InFriend)
 {
-	UpdateFriend(InFriend);
+	UpdateFriend_Implementation(InFriend);
 }
 
-void UFriendSubsystem::RemoveFriend(const FString& UserID)
+void UFriendSubsystem::RemoveFriend_Implementation(const FString& UserID)
 {
 	if (const int32 Index { Friends.IndexOfByKey(UserID) }; Index != INDEX_NONE)
 	{
 		Friends.RemoveAtSwap(Index);
-	}
-}
-
-void UFriendSubsystem::LoadFriends(const UDataTable* FriendsDataTable)
-{
-	if (!IsValid(FriendsDataTable))
-	{
-		return;
-	}
-
-	for (const TArray<FName>& RowNames = FriendsDataTable->GetRowNames(); const FName& RowName : RowNames)
-	{
-		if (const FFriendData* FriendData = FriendsDataTable->FindRow<FFriendData>(RowName, TEXT("")))
-		{
-			UpdateFriend(*FriendData);
-		}
 	}
 }
 
@@ -131,4 +120,20 @@ void UFriendSubsystem::UpdateFriend(const int32 Index, const TFunction<void(FFri
 
 	OnFriendUpdated.Broadcast(Friend);
 	OnFriendUpdatedBP.Broadcast(Friend);
+}
+
+void UFriendSubsystem::LoadFriends(const UDataTable* DataTable)
+{
+	if (!IsValid(DataTable))
+	{
+		return;
+	}
+
+	for (const TArray<FName>& RowNames = DataTable->GetRowNames(); const FName& RowName : RowNames)
+	{
+		if (const FFriendData* FriendData = DataTable->FindRow<FFriendData>(RowName, TEXT("")))
+		{
+			UpdateFriend_Implementation(*FriendData);
+		}
+	}
 }

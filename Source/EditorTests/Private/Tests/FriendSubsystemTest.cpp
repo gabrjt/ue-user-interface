@@ -37,7 +37,7 @@ bool FFriendManagerAddTest::RunTest(const FString& Parameters)
 {
 	const FFriendSubsystemTestHelper Helper;
 
-	Helper.FriendSubsystem->AddFriend(Helper.CreateTestFriend("TestUser1"));
+	Helper.FriendSubsystem->AddFriend_Implementation(Helper.CreateTestFriend("TestUser1"));
 
 	const TArray Friends { Helper.FriendSubsystem->GetFriends_Implementation() };
 
@@ -56,15 +56,15 @@ bool FFriendManagerConnectionTest::RunTest(const FString& Parameters)
 	const FFriendSubsystemTestHelper Helper;
 	FFriendData                      Friend;
 
-	Helper.FriendSubsystem->AddFriend(Helper.CreateTestFriend("TestUser1"));
-	Helper.FriendSubsystem->SetFriendIsConnected("TestUser1", true);
+	Helper.FriendSubsystem->AddFriend_Implementation(Helper.CreateTestFriend("TestUser1"));
+	Helper.FriendSubsystem->SetFriendIsConnected_Implementation("TestUser1", true);
 
 	TestTrue("Found Friend", Helper.FriendSubsystem->GetFriend_Implementation("TestUser1", Friend));
 	TestEqual("Friend is online now", Friend.LastSeen, "Now");
 	TestEqual("Connected friends count is correct", Helper.FriendSubsystem->GetConnectedFriends_Implementation().Num(), 1);
 	TestEqual("Disconnected friends count is correct", Helper.FriendSubsystem->GetDisconnectedFriends_Implementation().Num(), 0);
 
-	Helper.FriendSubsystem->SetFriendIsConnected("TestUser1", false);
+	Helper.FriendSubsystem->SetFriendIsConnected_Implementation("TestUser1", false);
 
 	TestTrue("Found Friend", Helper.FriendSubsystem->GetFriend_Implementation("TestUser1", Friend));
 	TestEqual("Friend last seen now", Friend.LastSeen, FDateTime::Now().ToString());
@@ -92,10 +92,10 @@ bool FFriendManagerNotificationTest::RunTest(const FString& Parameters)
 	const FDelegateHandle DelegateHandle = Helper.FriendSubsystem->SubscribeOnFriendUpdated(UpdateDelegate);
 
 	FFriendData Friend { Helper.CreateTestFriend("TestUser1", "Original Name") };
-	Helper.FriendSubsystem->AddFriend(Friend);
+	Helper.FriendSubsystem->AddFriend_Implementation(Friend);
 
 	Friend.Nickname = "Updated Name";
-	Helper.FriendSubsystem->UpdateFriend(Friend);
+	Helper.FriendSubsystem->UpdateFriend_Implementation(Friend);
 
 	TestTrue("Update notification was received", bNotificationReceived);
 	TestTrue("Found Friend", Helper.FriendSubsystem->GetFriend_Implementation("TestUser1", Friend));
@@ -104,7 +104,7 @@ bool FFriendManagerNotificationTest::RunTest(const FString& Parameters)
 	Helper.FriendSubsystem->UnsubscribeOnFriendUpdated(DelegateHandle);
 	bNotificationReceived = false;
 	Friend.Nickname       = "Another Name";
-	Helper.FriendSubsystem->UpdateFriend(Friend);
+	Helper.FriendSubsystem->UpdateFriend_Implementation(Friend);
 
 	TestFalse("Update notification was not received", bNotificationReceived);
 	TestTrue("Found Friend", Helper.FriendSubsystem->GetFriend_Implementation("TestUser1", Friend));
@@ -122,12 +122,12 @@ bool FFriendManagerRemovalTest::RunTest(const FString& Parameters)
 	const FFriendSubsystemTestHelper Helper;
 
 	// Add a test friend
-	Helper.FriendSubsystem->AddFriend(Helper.CreateTestFriend("TestUser1"));
+	Helper.FriendSubsystem->AddFriend_Implementation(Helper.CreateTestFriend("TestUser1"));
 
 	TestEqual("Friend was added successfully", Helper.FriendSubsystem->GetFriends_Implementation().Num(), 1);
 
 	// Remove the friend
-	Helper.FriendSubsystem->RemoveFriend("TestUser1");
+	Helper.FriendSubsystem->RemoveFriend_Implementation("TestUser1");
 
 	TestEqual("All friends list is empty after removal",
 		Helper.FriendSubsystem->GetFriends_Implementation().Num() + Helper.FriendSubsystem->GetConnectedFriends_Implementation().Num() + Helper.FriendSubsystem->GetDisconnectedFriends_Implementation().
@@ -146,13 +146,13 @@ bool FFriendManagerDuplicateTest::RunTest(const FString& Parameters)
 	const FFriendSubsystemTestHelper Helper;
 	FFriendData                      Friend;
 
-	Helper.FriendSubsystem->AddFriend(Helper.CreateTestFriend("TestUser1"));
+	Helper.FriendSubsystem->AddFriend_Implementation(Helper.CreateTestFriend("TestUser1"));
 
 	TestEqual("Friend was added successfully", Helper.FriendSubsystem->GetFriends_Implementation().Num(), 1);
 	TestTrue("Found Friend", Helper.FriendSubsystem->GetFriend_Implementation("TestUser1", Friend));
 	TestEqual("Nickname is default", Friend.Nickname, "Test User");
 
-	Helper.FriendSubsystem->AddFriend(Helper.CreateTestFriend("TestUser1", "I'm the same"));
+	Helper.FriendSubsystem->AddFriend_Implementation(Helper.CreateTestFriend("TestUser1", "I'm the same"));
 
 	TestEqual("Friend was not added", Helper.FriendSubsystem->GetFriends_Implementation().Num(), 1);
 	TestTrue("Found Friend", Helper.FriendSubsystem->GetFriend_Implementation("TestUser1", Friend));
@@ -170,12 +170,12 @@ bool FFriendManagerNonexistentTest::RunTest(const FString& Parameters)
 	const FFriendSubsystemTestHelper Helper;
 	FFriendData                      Friend;
 
-	Helper.FriendSubsystem->AddFriend(Helper.CreateTestFriend("TestUser1"));
+	Helper.FriendSubsystem->AddFriend_Implementation(Helper.CreateTestFriend("TestUser1"));
 
 	TestEqual("Friend was added successfully", Helper.FriendSubsystem->GetFriends_Implementation().Num(), 1);
 	TestTrue("Found Friend", Helper.FriendSubsystem->GetFriend_Implementation("TestUser1", Friend));
 
-	Helper.FriendSubsystem->RemoveFriend("TestUser2");
+	Helper.FriendSubsystem->RemoveFriend_Implementation("TestUser2");
 
 	TestEqual("Friend was not removed", Helper.FriendSubsystem->GetFriends_Implementation().Num(), 1);
 	TestFalse("Friend not found", Helper.FriendSubsystem->GetFriend_Implementation("TestUser2", Friend));
@@ -192,7 +192,7 @@ bool FFriendManagerGetFriendTest::RunTest(const FString& Parameters)
 	const FFriendSubsystemTestHelper Helper;
 	FFriendData                      Friend1, Friend2;
 
-	Helper.FriendSubsystem->AddFriend(Helper.CreateTestFriend("TestUser1"));
+	Helper.FriendSubsystem->AddFriend_Implementation(Helper.CreateTestFriend("TestUser1"));
 
 	TestEqual("Friend was added successfully", Helper.FriendSubsystem->GetFriends_Implementation().Num(), 1);
 	TestTrue("Found Friend", Helper.FriendSubsystem->GetFriend_Implementation("TestUser1", Friend1));
@@ -202,7 +202,7 @@ bool FFriendManagerGetFriendTest::RunTest(const FString& Parameters)
 	TestTrue("Found Friend", Helper.FriendSubsystem->GetFriend_Implementation("TestUser1", Friend2));
 	TestNotEqual("Friend was not updated", Friend1.Nickname, Friend2.Nickname);
 
-	Helper.FriendSubsystem->UpdateFriend(Friend1);
+	Helper.FriendSubsystem->UpdateFriend_Implementation(Friend1);
 
 	TestTrue("Found Friend", Helper.FriendSubsystem->GetFriend_Implementation("TestUser1", Friend2));
 	TestEqual("Friend was updated", Friend1.Nickname, Friend2.Nickname);
