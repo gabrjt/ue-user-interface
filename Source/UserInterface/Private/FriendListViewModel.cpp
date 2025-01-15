@@ -69,6 +69,16 @@ const FString& UFriendListViewModel::GetTitle() const
 	return Title;
 }
 
+void UFriendListViewModel::SetTextColor(const FSlateColor& InTextColor)
+{
+	UE_MVVM_SET_PROPERTY_VALUE(TextColor, InTextColor);
+}
+
+const FSlateColor& UFriendListViewModel::GetTextColor() const
+{
+	return TextColor;
+}
+
 int UFriendListViewModel::GetFriendsCount() const
 {
 	return Friends.Num();

@@ -18,6 +18,9 @@ class USERINTERFACE_API UFriendListViewModel : public UMVVMViewModelBase
 	UPROPERTY(BlueprintReadWrite, FieldNotify, Setter, Getter, meta=(AllowPrivateAccess))
 	FString Title;
 
+	UPROPERTY(BlueprintReadWrite, FieldNotify, Setter, Getter, meta=(AllowPrivateAccess))
+	FSlateColor TextColor;
+
 public:
 	UFriendListViewModel();
 
@@ -38,6 +41,10 @@ public:
 	void SetTitle(const FString& InTitle);
 
 	const FString& GetTitle() const;
+
+	void SetTextColor(const FSlateColor& InTextColor);
+
+	const FSlateColor& GetTextColor() const;
 
 	UFUNCTION(BlueprintPure, FieldNotify)
 	int GetFriendsCount() const;
