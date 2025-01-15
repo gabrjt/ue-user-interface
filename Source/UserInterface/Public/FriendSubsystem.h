@@ -14,7 +14,7 @@ class USERINTERFACE_API UFriendSubsystem : public UGameInstanceSubsystem, public
 	GENERATED_BODY()
 
 	UPROPERTY(Config)
-	FString DataTablePath {};
+	FSoftObjectPath FriendsDataTablePath;
 
 	UPROPERTY(Transient)
 	TArray<FFriendData> Friends {};
@@ -59,8 +59,12 @@ public:
 	virtual void RemoveFriend_Implementation(const FString& UserID) override;
 
 	// Public API
+	void LoadFriendsAsync();
+
 	void LoadFriends(const UDataTable* DataTable);
 
 private:
+	void OnFriendsDataTableLoaded();
+
 	void UpdateFriend(const int Index, const TFunction<void(FFriendData&)>& UpdateFunction);
 };

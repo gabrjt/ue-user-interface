@@ -2,7 +2,9 @@
 #include "FriendData.h"
 #include "FriendServiceProviderSubsystem.h"
 #include "FriendViewModelSubsystem.h"
+#include "Engine/AssetManager.h"
 #include "Engine/DataTable.h"
+#include "Engine/StreamableManager.h"
 
 void UFriendSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
@@ -29,14 +31,14 @@ void UFriendSubsystem::UnsubscribeOnFriendUpdated(const FDelegateHandle Handle)
 
 void UFriendSubsystem::LoadFriends_Implementation()
 {
-	LoadFriends({ Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, *DataTablePath)) });
+	LoadFriendsAsync();
 }
 
 bool UFriendSubsystem::GetFriend_Implementation(const FString& UserID, FFriendData& OutFriend) const
 {
 	for (auto& Friend : Friends)
 	{
-		if (Friend.UserID == UserID)
+		if (Friend == UserID)
 		{
 			OutFriend = Friend;
 
@@ -110,6 +112,42 @@ void UFriendSubsystem::RemoveFriend_Implementation(const FString& UserID)
 	}
 }
 
+void UFriendSubsystem::LoadFriendsAsync()
+{
+	if (!FriendsDataTablePath.IsValid())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Invalid Friends DataTable path: %s"), *FriendsDataTablePath.ToString());
+
+		return;
+	}
+
+	FStreamableManager& StreamableManager { UAssetManager::GetStreamableManager() };
+	StreamableManager.RequestAsyncLoad(FriendsDataTablePath, FStreamableDelegate::CreateUObject(this, &UFriendSubsystem::OnFriendsDataTableLoaded));
+}
+
+void UFriendSubsystem::LoadFriends(const UDataTable* DataTable)
+{
+	if (!IsValid(DataTable))
+	{
+		return;
+	}
+
+	for (const TArray<FName>& RowNames { DataTable->GetRowNames() }; const FName& RowName : RowNames)
+	{
+		if (const FFriendData* FriendData { DataTable->FindRow<FFriendData>(RowName, TEXT("")) })
+		{
+			UpdateFriend_Implementation(*FriendData);
+		}
+	}
+}
+
+void UFriendSubsystem::OnFriendsDataTableLoaded()
+{
+	const UDataTable* DataTable { Cast<UDataTable>(FriendsDataTablePath.ResolveObject()) };
+
+	LoadFriends(DataTable);
+}
+
 void UFriendSubsystem::UpdateFriend(const int32 Index, const TFunction<void(FFriendData&)>& UpdateFunction)
 {
 	check(Index != INDEX_NONE && Index >= 0 && Index < Friends.Num());
@@ -120,20 +158,4 @@ void UFriendSubsystem::UpdateFriend(const int32 Index, const TFunction<void(FFri
 
 	OnFriendUpdated.Broadcast(Friend);
 	OnFriendUpdatedBP.Broadcast(Friend);
-}
-
-void UFriendSubsystem::LoadFriends(const UDataTable* DataTable)
-{
-	if (!IsValid(DataTable))
-	{
-		return;
-	}
-
-	for (const TArray<FName>& RowNames = DataTable->GetRowNames(); const FName& RowName : RowNames)
-	{
-		if (const FFriendData* FriendData = DataTable->FindRow<FFriendData>(RowName, TEXT("")))
-		{
-			UpdateFriend_Implementation(*FriendData);
-		}
-	}
 }
