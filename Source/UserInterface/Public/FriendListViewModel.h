@@ -1,10 +1,10 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
+#include "FriendViewModel.h"
 #include "MVVMViewModelBase.h"
 #include "FriendListViewModel.generated.h"
 
-class UFriendViewModel;
 struct FFriendData;
 
 UCLASS(BlueprintType)
@@ -24,9 +24,6 @@ public:
 	void SetFriends(const TArray<FFriendData>& InFriends);
 
 	UFUNCTION(BlueprintCallable)
-	void AddFriend(UFriendViewModel* Friend);
-
-	UFUNCTION(BlueprintCallable)
 	void RemoveFriend(const FString& UserID);
 
 	UFUNCTION(BlueprintCallable)
@@ -34,4 +31,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void UpdateFriend(const FFriendData& InFriend);
+
+private:
+	FORCEINLINE void AddFriend(const FFriendData& InFriend)
+	{
+		Friends.Add(UFriendViewModel::Create(this, InFriend));
+	}
 };

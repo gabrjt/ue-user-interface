@@ -91,3 +91,18 @@ void UFriendViewModel::Set(const FFriendData& InFriend)
 	SetLastSeen(InFriend.LastSeen);
 	SetStatusMessage(InFriend.StatusMessage);
 }
+
+bool UFriendViewModel::operator==(const FString& InUserID) const
+{
+	return UserID == InUserID;
+}
+
+bool UFriendViewModel::operator==(const FFriendData& Other) const
+{
+	return UserID == Other;
+}
+
+bool UFriendViewModel::operator==(const UFriendViewModel& Other) const
+{
+	return UserID == Other.UserID;
+}

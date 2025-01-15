@@ -88,18 +88,19 @@ TArray<FFriendData> UFriendSubsystem::GetDisconnectedFriends_Implementation() co
 
 void UFriendSubsystem::UpdateFriend_Implementation(const FFriendData& InFriend)
 {
-	int32 Index { Friends.IndexOfByKey(InFriend) };
+	int32                         Index { Friends.IndexOfByKey(InFriend) };
+	TFunction<void(FFriendData&)> UpdateFunction = [&InFriend](FFriendData& Friend)
+	{
+		Friend = InFriend;
+	};
 
 	if (Index == INDEX_NONE)
 	{
-		Index = Friends.Add(InFriend);
+		Index          = Friends.Add(InFriend);
+		UpdateFunction = nullptr;
 	}
 
-	UpdateFriend(Index,
-		[&InFriend](FFriendData& Friend)
-		{
-			Friend = InFriend;
-		});
+	UpdateFriend(Index, UpdateFunction);
 }
 
 void UFriendSubsystem::SetFriendIsConnected_Implementation(const FString& UserID, bool bIsConnected)
@@ -179,7 +180,10 @@ void UFriendSubsystem::UpdateFriend(const int32 Index, const TFunction<void(FFri
 
 	FFriendData& Friend { Friends[Index] };
 
-	UpdateFunction(Friend);
+	if (UpdateFunction)
+	{
+		UpdateFunction(Friend);
+	}
 
 	if (OnFriendUpdated.IsBound())
 	{

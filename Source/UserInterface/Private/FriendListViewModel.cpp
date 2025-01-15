@@ -17,30 +17,23 @@ void UFriendListViewModel::SetFriends(const TArray<FFriendData>& InFriends)
 
 	for (auto& Friend : InFriends)
 	{
-		Friends.Add(UFriendViewModel::Create(this, Friend));
+		AddFriend(Friend);
 	}
 
 	UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(Friends);
-}
-
-void UFriendListViewModel::AddFriend(UFriendViewModel* Friend)
-{
-	if (Friend)
-	{
-		Friends.Add(Friend);
-
-		UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(Friends);
-	}
 }
 
 void UFriendListViewModel::RemoveFriend(const FString& UserID)
 {
-	Friends.RemoveAll([UserID](const UFriendViewModel* Friend)
+	if (const int32 Index = Friends.IndexOfByPredicate([&UserID](const UFriendViewModel* Friend)
 	{
-		return Friend && Friend->GetUserID() == UserID;
-	});
+		return Friend && *Friend == UserID;
+	}); Index != INDEX_NONE)
+	{
+		Friends.RemoveAtSwap(Index);
 
-	UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(Friends);
+		UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(Friends);
+	}
 }
 
 void UFriendListViewModel::ClearFriends()
@@ -52,26 +45,17 @@ void UFriendListViewModel::ClearFriends()
 
 void UFriendListViewModel::UpdateFriend(const FFriendData& InFriend)
 {
-	// Try to find existing friend
-	UFriendViewModel* ExistingFriend = nullptr;
-
-	for (UFriendViewModel* Friend : Friends)
+	if (const int32 Index = Friends.IndexOfByPredicate([&InFriend](const UFriendViewModel* Friend)
 	{
-		if (Friend && Friend->GetUserID() == InFriend.UserID)
-		{
-			ExistingFriend = Friend;
-			break;
-		}
-	}
-
-	if (ExistingFriend)
+		return Friend && *Friend == InFriend;
+	}); Index != INDEX_NONE)
 	{
-		// Update existing friend
-		ExistingFriend->Set(InFriend);
+		Friends[Index]->Set(InFriend);
 	}
 	else
 	{
-		// Create and add new friend
-		AddFriend(UFriendViewModel::Create(this, InFriend));
+		AddFriend(InFriend);
+
+		UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(Friends);
 	}
 }

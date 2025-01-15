@@ -60,4 +60,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void Set(const FFriendData& InFriend);
+
+	bool operator==(const FString& InUserID) const;
+
+	bool operator==(const FFriendData& Other) const;
+
+	bool operator==(const UFriendViewModel& Other) const;
 };
