@@ -115,3 +115,34 @@ bool FFriendViewModelSubsystemViewModelsDataTest::RunTest(const FString& Paramet
 
 	return true;
 }
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FFriendViewModelSubsystemViewModelDataIsUpdatedTest,
+	"UserProject.Editor.FriendViewModelSubsystem.ViewModelDataIsUpdated",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
+
+bool FFriendViewModelSubsystemViewModelDataIsUpdatedTest::RunTest(const FString& Parameters)
+{
+	const FFriendViewModelSubsystemTestHelper Helper;
+
+	Helper.LoadFriends();
+
+	UFriendSubsystem* FriendSubsystem { Helper.GameInstance->GetSubsystem<UFriendSubsystem>() };
+
+	FFriendData Friend;
+	FriendSubsystem->GetFriend_Implementation("TestUser2", Friend);
+	Friend.Nickname = "Foo";
+	FriendSubsystem->UpdateFriend_Implementation(Friend);
+
+	const TArray<FFriendData>        ConnectedFriends = FriendSubsystem->GetConnectedFriends_Implementation();
+	const TArray<UFriendViewModel*>& ConnectedFriendsViewModels { Helper.Subsystem->GetConnectedFriendsViewModel().GetFriends() };
+
+	Friend = ConnectedFriends[0];
+	const UFriendViewModel* ViewModel { ConnectedFriendsViewModels[0] };
+
+	TestEqual("UserID matches", ViewModel->GetUserID(), Friend.UserID);
+	TestEqual("Nickname matches", ViewModel->GetNickname(), Friend.Nickname);
+	TestEqual("bIsConnected matches", ViewModel->GetIsConnected(), Friend.bIsConnected);
+	TestEqual("Nickname updates", ViewModel->GetNickname(), "Foo");
+
+	return true;
+}
