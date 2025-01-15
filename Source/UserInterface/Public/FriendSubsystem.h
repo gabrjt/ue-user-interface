@@ -19,6 +19,8 @@ class USERINTERFACE_API UFriendSubsystem : public UGameInstanceSubsystem, public
 	UPROPERTY(Transient)
 	TArray<FFriendData> Friends {};
 
+	FOnFriendsLoaded OnFriendsLoaded {};
+
 	FOnFriendUpdated OnFriendUpdated {};
 
 public:
@@ -31,9 +33,13 @@ public:
 	virtual void Deinitialize() override;
 
 	// IFriendConnectionService interface
-	virtual FDelegateHandle SubscribeOnFriendUpdated(const FOnFriendUpdatedDelegate& Callback) override;
+	virtual void SubscribeOnFriendsLoaded(const FOnFriendsLoaded& Callback) override;
 
-	virtual void UnsubscribeOnFriendUpdated(const FDelegateHandle Handle) override;
+	virtual void UnsubscribeOnFriendsLoaded() override;
+
+	virtual void SubscribeOnFriendUpdated(const FOnFriendUpdated& Callback) override;
+
+	virtual void UnsubscribeOnFriendUpdated() override;
 
 	UFUNCTION(BlueprintCallable, Category = "Friends")
 	virtual void LoadFriends_Implementation() override;

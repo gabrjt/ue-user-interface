@@ -10,8 +10,8 @@ void UFriendViewModelSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 
 	IFriendService* FriendService { GetGameInstance()->GetSubsystem<UFriendServiceProviderSubsystem>()->GetFriendServiceInterface() };
 
-	// TODO: load friends event for batch initialization
-	OnFriendUpdatedHandle = FriendService->SubscribeOnFriendUpdated(FOnFriendUpdatedDelegate::CreateUObject(this, &UFriendViewModelSubsystem::OnFriendUpdated));
+	FriendService->SubscribeOnFriendsLoaded(FOnFriendsLoaded::CreateUObject(this, &UFriendViewModelSubsystem::OnFriendsLoaded));
+	FriendService->SubscribeOnFriendUpdated(FOnFriendUpdated::CreateUObject(this, &UFriendViewModelSubsystem::OnFriendUpdated));
 }
 
 void UFriendViewModelSubsystem::Deinitialize()
@@ -21,10 +21,17 @@ void UFriendViewModelSubsystem::Deinitialize()
 
 	if (IFriendService* FriendService { GetGameInstance()->GetSubsystem<UFriendServiceProviderSubsystem>()->GetFriendServiceInterface() }; FriendService)
 	{
-		FriendService->UnsubscribeOnFriendUpdated(OnFriendUpdatedHandle);
+		FriendService->UnsubscribeOnFriendsLoaded();
+		FriendService->UnsubscribeOnFriendUpdated();
 	}
+}
 
-	OnFriendUpdatedHandle.Reset();
+void UFriendViewModelSubsystem::OnFriendsLoaded() const
+{
+	const IFriendService* FriendService { GetGameInstance()->GetSubsystem<UFriendServiceProviderSubsystem>()->GetFriendServiceInterface() };
+
+	ConnectedFriendsViewModel->SetFriends(FriendService->GetConnectedFriends_Implementation());
+	DisconnectedFriendsViewModel->SetFriends(FriendService->GetDisconnectedFriends_Implementation());
 }
 
 void UFriendViewModelSubsystem::OnFriendUpdated(const FFriendData& FriendData) const

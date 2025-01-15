@@ -82,14 +82,14 @@ bool FFriendManagerNotificationTest::RunTest(const FString& Parameters)
 {
 	const FFriendSubsystemTestHelper Helper;
 	bool                             bNotificationReceived = false;
-	FOnFriendUpdatedDelegate         UpdateDelegate;
+	FOnFriendUpdated                 UpdateDelegate;
 
 	UpdateDelegate.BindLambda([&bNotificationReceived](const FFriendData& UpdatedFriend)
 	{
 		bNotificationReceived = true;
 	});
 
-	const FDelegateHandle DelegateHandle = Helper.FriendSubsystem->SubscribeOnFriendUpdated(UpdateDelegate);
+	Helper.FriendSubsystem->SubscribeOnFriendUpdated(UpdateDelegate);
 
 	FFriendData Friend { Helper.CreateTestFriend("TestUser1", "Original Name") };
 	Helper.FriendSubsystem->AddFriend_Implementation(Friend);
@@ -101,7 +101,7 @@ bool FFriendManagerNotificationTest::RunTest(const FString& Parameters)
 	TestTrue("Found Friend", Helper.FriendSubsystem->GetFriend_Implementation("TestUser1", Friend));
 	TestEqual("Nickname updated", Friend.Nickname, "Updated Name");
 
-	Helper.FriendSubsystem->UnsubscribeOnFriendUpdated(DelegateHandle);
+	Helper.FriendSubsystem->UnsubscribeOnFriendUpdated();
 	bNotificationReceived = false;
 	Friend.Nickname       = "Another Name";
 	Helper.FriendSubsystem->UpdateFriend_Implementation(Friend);

@@ -15,18 +15,29 @@ void UFriendSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 void UFriendSubsystem::Deinitialize()
 {
 	Friends.Empty();
-	OnFriendUpdated.Clear();
+	OnFriendsLoaded.Unbind();
+	OnFriendUpdated.Unbind();
 	OnFriendUpdatedBP.Clear();
 }
 
-FDelegateHandle UFriendSubsystem::SubscribeOnFriendUpdated(const FOnFriendUpdatedDelegate& Callback)
+void UFriendSubsystem::SubscribeOnFriendsLoaded(const FOnFriendsLoaded& Callback)
 {
-	return OnFriendUpdated.Add(Callback);
+	OnFriendsLoaded = Callback;
 }
 
-void UFriendSubsystem::UnsubscribeOnFriendUpdated(const FDelegateHandle Handle)
+void UFriendSubsystem::UnsubscribeOnFriendsLoaded()
 {
-	OnFriendUpdated.Remove(Handle);
+	OnFriendsLoaded.Unbind();
+}
+
+void UFriendSubsystem::SubscribeOnFriendUpdated(const FOnFriendUpdated& Callback)
+{
+	OnFriendUpdated = Callback;
+}
+
+void UFriendSubsystem::UnsubscribeOnFriendUpdated()
+{
+	OnFriendUpdated.Unbind();
 }
 
 void UFriendSubsystem::LoadFriends_Implementation()
@@ -139,6 +150,11 @@ void UFriendSubsystem::LoadFriends(const UDataTable* DataTable)
 			UpdateFriend_Implementation(*FriendData);
 		}
 	}
+
+	if (OnFriendsLoaded.IsBound())
+	{
+		OnFriendsLoaded.Execute();
+	}
 }
 
 void UFriendSubsystem::OnFriendsDataTableLoaded()
@@ -156,6 +172,10 @@ void UFriendSubsystem::UpdateFriend(const int32 Index, const TFunction<void(FFri
 
 	UpdateFunction(Friend);
 
-	OnFriendUpdated.Broadcast(Friend);
+	if (OnFriendUpdated.IsBound())
+	{
+		OnFriendUpdated.Execute(Friend);
+	}
+
 	OnFriendUpdatedBP.Broadcast(Friend);
 }

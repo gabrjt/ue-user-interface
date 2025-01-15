@@ -11,8 +11,6 @@ class USERINTERFACE_API UFriendViewModelSubsystem : public UGameInstanceSubsyste
 {
 	GENERATED_BODY()
 
-	FDelegateHandle OnFriendUpdatedHandle {};
-
 	UPROPERTY(Transient, BlueprintReadOnly, meta=(AllowPrivateAccess))
 	UFriendListViewModel* ConnectedFriendsViewModel {};
 
@@ -26,5 +24,7 @@ public:
 	virtual void Deinitialize() override;
 
 private:
+	void OnFriendsLoaded() const;
+
 	void OnFriendUpdated(const FFriendData& FriendData) const;
 };
