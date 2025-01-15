@@ -1,6 +1,6 @@
-﻿// FriendListViewModel.cpp
-#include "FriendListViewModel.h"
+﻿#include "FriendListViewModel.h"
 #include "FriendData.h"
+#include "FriendViewModel.h"
 
 UFriendListViewModel::UFriendListViewModel()
 {

@@ -1,10 +1,10 @@
-﻿// FriendServiceProviderSubsystem.h
-#pragma once
+﻿#pragma once
 
 #include "CoreMinimal.h"
-#include "FriendService.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "FriendServiceProviderSubsystem.generated.h"
+
+class IFriendService;
 
 UCLASS(Config=Game)
 class USERINTERFACE_API UFriendServiceProviderSubsystem : public UGameInstanceSubsystem
@@ -15,10 +15,12 @@ class USERINTERFACE_API UFriendServiceProviderSubsystem : public UGameInstanceSu
 	FSoftClassPath FriendServiceClass;
 
 public:
+	// UGameInstanceSubsystem interface
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 
 	virtual void Deinitialize() override;
 
+	// Public API
 	UFUNCTION(BlueprintCallable, Category = "Friends")
 	TScriptInterface<IFriendService> GetFriendService() const;
 

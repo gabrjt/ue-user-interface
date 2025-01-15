@@ -11,7 +11,6 @@ class USERINTERFACE_API UFriendListViewEntryWidget : public UUserWidget, public 
 {
 	GENERATED_BODY()
 
-	// Your entry widget properties
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess))
 	UTextBlock* NicknameText;
 

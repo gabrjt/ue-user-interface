@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -7,8 +5,8 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "FriendSubsystem.generated.h"
 
-struct FFriendData;
 class UDataTable;
+struct FFriendData;
 
 UCLASS(BlueprintType, Config=Game)
 class USERINTERFACE_API UFriendSubsystem : public UGameInstanceSubsystem, public IFriendService

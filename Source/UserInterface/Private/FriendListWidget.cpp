@@ -1,2 +1,1 @@
-﻿// FriendListWidget.cpp
-#include "FriendListWidget.h"
+﻿#include "FriendListWidget.h"

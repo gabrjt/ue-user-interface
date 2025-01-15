@@ -1,10 +1,10 @@
 ﻿#pragma once
 
-#include "FriendService.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "FriendViewModelSubsystem.generated.h"
 
 class UFriendListViewModel;
+struct FFriendData;
 
 UCLASS(BlueprintType)
 class USERINTERFACE_API UFriendViewModelSubsystem : public UGameInstanceSubsystem

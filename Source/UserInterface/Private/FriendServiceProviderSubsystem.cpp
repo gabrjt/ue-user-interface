@@ -1,5 +1,4 @@
-﻿// FriendServiceProviderSubsystem.cpp
-#include "FriendServiceProviderSubsystem.h"
+﻿#include "FriendServiceProviderSubsystem.h"
 #include "FriendSubsystem.h"
 
 void UFriendServiceProviderSubsystem::Initialize(FSubsystemCollectionBase& Collection)

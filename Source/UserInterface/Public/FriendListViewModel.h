@@ -1,10 +1,11 @@
-﻿// FriendListViewModel.h
-#pragma once
+﻿#pragma once
 
 #include "CoreMinimal.h"
-#include "FriendViewModel.h"
 #include "MVVMViewModelBase.h"
 #include "FriendListViewModel.generated.h"
+
+class UFriendViewModel;
+struct FFriendData;
 
 UCLASS(BlueprintType)
 class USERINTERFACE_API UFriendListViewModel : public UMVVMViewModelBase
@@ -17,25 +18,20 @@ class USERINTERFACE_API UFriendListViewModel : public UMVVMViewModelBase
 public:
 	UFriendListViewModel();
 
-	// Getter for the Friends array
 	const TArray<UFriendViewModel*>& GetFriends() const;
 
 	UFUNCTION(BlueprintCallable)
 	void SetFriends(const TArray<FFriendData>& InFriends);
 
-	// Add a friend to the list
 	UFUNCTION(BlueprintCallable)
 	void AddFriend(UFriendViewModel* Friend);
 
-	// Remove a friend from the list
 	UFUNCTION(BlueprintCallable)
 	void RemoveFriend(const FString& UserID);
 
-	// Clear all friends
 	UFUNCTION(BlueprintCallable)
 	void ClearFriends();
 
-	// Update or add a friend
 	UFUNCTION(BlueprintCallable)
 	void UpdateFriend(const FFriendData& FriendData);
 };
