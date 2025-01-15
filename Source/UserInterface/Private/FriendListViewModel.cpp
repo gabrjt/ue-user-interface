@@ -13,10 +13,16 @@ const TArray<UFriendViewModel*>& UFriendListViewModel::GetFriends() const
 
 void UFriendListViewModel::SetFriends(const TArray<FFriendData>& InFriends)
 {
+	Friends.Reset(InFriends.Num());
+
 	for (auto& Friend : InFriends)
 	{
-		UpdateFriend(Friend);
+		UFriendViewModel* FriendViewModel { NewObject<UFriendViewModel>(this) };
+		FriendViewModel->Set(Friend);
+		Friends.Add(FriendViewModel);
 	}
+
+	UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(Friends);
 }
 
 void UFriendListViewModel::AddFriend(UFriendViewModel* Friend)

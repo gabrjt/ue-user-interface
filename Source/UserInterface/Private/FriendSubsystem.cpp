@@ -150,13 +150,13 @@ void UFriendSubsystem::LoadFriends(const UDataTable* DataTable)
 
 	const TArray<FName>& RowNames { DataTable->GetRowNames() };
 
-	Friends.Reserve(RowNames.Num());
+	Friends.Reset(RowNames.Num());
 
 	for (const FName& RowName : RowNames)
 	{
 		if (const FFriendData* FriendData { DataTable->FindRow<FFriendData>(RowName, TEXT("")) })
 		{
-			UpdateFriend_Implementation(*FriendData);
+			Friends.Add(*FriendData);
 		}
 	}
 

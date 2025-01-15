@@ -225,7 +225,7 @@ bool FFriendSubsystemLoadTest::RunTest(const FString& Parameters)
 	TestEqual("Second friend nickname correct", Friend2.Nickname, "User Two");
 	TestEqual("Second friend connection status correct", Friend2.bIsConnected, true);
 
-	// Test updating existing friend via LoadFriends
+	// Test overwriting friends with new DataTable
 	UDataTable* UpdateTable { NewObject<UDataTable>() };
 	UpdateTable->RowStruct = FFriendData::StaticStruct();
 	UpdateTable->AddRow(FName("UpdateRow"), Helper.CreateTestFriend("TestUser1", "Updated User"));
@@ -234,11 +234,11 @@ bool FFriendSubsystemLoadTest::RunTest(const FString& Parameters)
 
 	TestTrue("Found updated friend", Helper.Subsystem->GetFriend_Implementation("TestUser1", Friend1));
 	TestEqual("Nickname was updated", Friend1.Nickname, "Updated User");
-	TestEqual("Friend count unchanged", Helper.Subsystem->GetFriendsRef().Num(), 2);
+	TestEqual("Friend count changed", Helper.Subsystem->GetFriendsRef().Num(), 1);
 
 	// Test with invalid DataTable
 	Helper.Subsystem->LoadFriends(nullptr);
-	TestEqual("Friends list unchanged with null DataTable", Helper.Subsystem->GetFriendsRef().Num(), 2);
+	TestEqual("Friends list unchanged with null DataTable", Helper.Subsystem->GetFriendsRef().Num(), 1);
 
 	return true;
 }
