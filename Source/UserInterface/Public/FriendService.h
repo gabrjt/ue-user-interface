@@ -68,11 +68,6 @@ public:
 	virtual void SetFriendIsConnected_Implementation(const FString& UserID, const bool bIsConnected);
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Friends")
-	void AddFriend(const FFriendData& InFriend);
-
-	virtual void AddFriend_Implementation(const FFriendData& InFriend);
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Friends")
 	void RemoveFriend(const FString& UserID);
 
 	virtual void RemoveFriend_Implementation(const FString& UserID);

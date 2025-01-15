@@ -116,11 +116,6 @@ void UFriendSubsystem::SetFriendIsConnected_Implementation(const FString& UserID
 	}
 }
 
-void UFriendSubsystem::AddFriend_Implementation(const FFriendData& InFriend)
-{
-	UpdateFriend_Implementation(InFriend);
-}
-
 void UFriendSubsystem::RemoveFriend_Implementation(const FString& UserID)
 {
 	if (const int32 Index { Friends.IndexOfByKey(UserID) }; Index != INDEX_NONE)

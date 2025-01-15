@@ -32,10 +32,6 @@ void IFriendService::SetFriendIsConnected_Implementation(const FString& UserID, 
 {
 }
 
-void IFriendService::AddFriend_Implementation(const FFriendData& InFriend)
-{
-}
-
 void IFriendService::RemoveFriend_Implementation(const FString& UserID)
 {
 }

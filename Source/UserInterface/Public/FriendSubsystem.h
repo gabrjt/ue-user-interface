@@ -62,9 +62,6 @@ public:
 	virtual void SetFriendIsConnected_Implementation(const FString& UserID, const bool bIsConnected) override;
 
 	UFUNCTION(BlueprintCallable, Category = "Friends")
-	virtual void AddFriend_Implementation(const FFriendData& InFriend) override;
-
-	UFUNCTION(BlueprintCallable, Category = "Friends")
 	virtual void RemoveFriend_Implementation(const FString& UserID) override;
 
 	// Public API
