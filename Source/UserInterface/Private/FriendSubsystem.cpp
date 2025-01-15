@@ -143,7 +143,11 @@ void UFriendSubsystem::LoadFriends(const UDataTable* DataTable)
 		return;
 	}
 
-	for (const TArray<FName>& RowNames { DataTable->GetRowNames() }; const FName& RowName : RowNames)
+	const TArray<FName>& RowNames { DataTable->GetRowNames() };
+
+	Friends.Reserve(RowNames.Num());
+
+	for (const FName& RowName : RowNames)
 	{
 		if (const FFriendData* FriendData { DataTable->FindRow<FFriendData>(RowName, TEXT("")) })
 		{
