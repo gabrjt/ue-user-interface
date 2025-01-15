@@ -1,6 +1,8 @@
 ﻿#include "FriendSubsystem.h"
 #include "Engine/GameInstance.h"
+#include "Engine/StreamableManager.h"
 #include "Misc/AutomationTest.h"
+#include "Tests/AutomationCommon.h"
 
 class FFriendSubsystemTestHelper
 {
@@ -82,14 +84,14 @@ bool FFriendManagerNotificationTest::RunTest(const FString& Parameters)
 {
 	const FFriendSubsystemTestHelper Helper;
 	bool                             bNotificationReceived = false;
-	FOnFriendUpdated                 UpdateDelegate;
+	FOnFriendUpdated                 OnFriendUpdatedDelegate;
 
-	UpdateDelegate.BindLambda([&bNotificationReceived](const FFriendData& UpdatedFriend)
+	OnFriendUpdatedDelegate.BindLambda([&bNotificationReceived](const FFriendData& UpdatedFriend)
 	{
 		bNotificationReceived = true;
 	});
 
-	Helper.FriendSubsystem->SubscribeOnFriendUpdated(UpdateDelegate);
+	Helper.FriendSubsystem->SubscribeOnFriendUpdated(OnFriendUpdatedDelegate);
 
 	FFriendData Friend { Helper.CreateTestFriend("TestUser1", "Original Name") };
 	Helper.FriendSubsystem->AddFriend_Implementation(Friend);
@@ -255,6 +257,24 @@ bool FFriendManagerLoadTest::RunTest(const FString& Parameters)
 	// Test with invalid DataTable
 	Helper.FriendSubsystem->LoadFriends(nullptr);
 	TestEqual("Friends list unchanged with null DataTable", Helper.FriendSubsystem->GetFriendsRef().Num(), 2);
+
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FFriendManagerLoadAsyncTest,
+	"UserProject.Editor.FriendManager.LoadFriendsAsync",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
+
+bool FFriendManagerLoadAsyncTest::RunTest(const FString& Parameters)
+{
+	const FFriendSubsystemTestHelper Helper;
+	TSharedPtr<FStreamableHandle>    LoadFriendsHandle = Helper.FriendSubsystem->LoadFriendsAsync();
+
+	ADD_LATENT_AUTOMATION_COMMAND(FFunctionLatentCommand([LoadFriendsHandle] { return LoadFriendsHandle->HasLoadCompletedOrStalled(); }));
+
+	ADD_LATENT_AUTOMATION_COMMAND(
+		FFunctionLatentCommand([this, Helper] { TestNotEqual("Loaded Friends count not equal to 0", Helper.FriendSubsystem->GetFriendsRef().Num(), 0); return
+			true; }));
 
 	return true;
 }

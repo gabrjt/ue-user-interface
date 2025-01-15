@@ -128,17 +128,17 @@ void UFriendSubsystem::RemoveFriend_Implementation(const FString& UserID)
 	}
 }
 
-void UFriendSubsystem::LoadFriendsAsync()
+TSharedPtr<FStreamableHandle> UFriendSubsystem::LoadFriendsAsync()
 {
 	if (!FriendsDataTablePath.IsValid())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Invalid Friends DataTable path: %s"), *FriendsDataTablePath.ToString());
 
-		return;
+		return {};
 	}
 
 	FStreamableManager& StreamableManager { UAssetManager::GetStreamableManager() };
-	StreamableManager.RequestAsyncLoad(FriendsDataTablePath, FStreamableDelegate::CreateUObject(this, &UFriendSubsystem::OnFriendsDataTableLoaded));
+	return StreamableManager.RequestAsyncLoad(FriendsDataTablePath, FStreamableDelegate::CreateUObject(this, &UFriendSubsystem::OnFriendsDataTableLoaded));
 }
 
 void UFriendSubsystem::LoadFriends(const UDataTable* DataTable)

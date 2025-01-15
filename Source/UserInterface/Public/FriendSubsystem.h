@@ -7,6 +7,7 @@
 
 class UDataTable;
 struct FFriendData;
+struct FStreamableHandle;
 
 UCLASS(BlueprintType, Config=Game)
 class USERINTERFACE_API UFriendSubsystem : public UGameInstanceSubsystem, public IFriendService
@@ -14,7 +15,7 @@ class USERINTERFACE_API UFriendSubsystem : public UGameInstanceSubsystem, public
 	GENERATED_BODY()
 
 	UPROPERTY(Config)
-	FSoftObjectPath FriendsDataTablePath;
+	FSoftObjectPath FriendsDataTablePath {};
 
 	UPROPERTY(Transient)
 	TArray<FFriendData> Friends {};
@@ -67,7 +68,7 @@ public:
 	virtual void RemoveFriend_Implementation(const FString& UserID) override;
 
 	// Public API
-	void LoadFriendsAsync();
+	TSharedPtr<FStreamableHandle> LoadFriendsAsync();
 
 	void LoadFriends(const UDataTable* DataTable);
 
