@@ -104,5 +104,5 @@ bool UFriendViewModel::operator==(const FFriendData& Other) const
 
 bool UFriendViewModel::operator==(const UFriendViewModel& Other) const
 {
-	return UserID == Other.UserID;
+	return operator==(Other.UserID);
 }

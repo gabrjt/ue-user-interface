@@ -27,11 +27,11 @@ struct USERINTERFACE_API FFriendData : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Friend Data")
 	FString StatusMessage {};
 
-	static FString GetLastSeen(bool bIsConnected);
-
 	FFriendData();
 
 	FFriendData(const FString& UserID, const FString& Nickname, const bool bIsConnected);
+
+	static FString GetLastSeen(bool bIsConnected);
 
 	bool operator==(const FString& InUserID) const;
 

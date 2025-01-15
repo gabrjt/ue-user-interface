@@ -20,6 +20,11 @@ FFriendData::FFriendData(const FString& UserID, const FString& Nickname, const b
 {
 }
 
+FString FFriendData::GetLastSeen(const bool bIsConnected)
+{
+	return bIsConnected ? TEXT("Now") : FDateTime::Now().ToString();
+}
+
 bool FFriendData::operator==(const FString& InUserID) const
 {
 	return UserID == InUserID;
@@ -27,10 +32,5 @@ bool FFriendData::operator==(const FString& InUserID) const
 
 bool FFriendData::operator==(const FFriendData& Other) const
 {
-	return UserID == Other.UserID;
-}
-
-FString FFriendData::GetLastSeen(bool bIsConnected)
-{
-	return bIsConnected ? TEXT("Now") : FDateTime::Now().ToString();
+	return operator==(Other.UserID);
 }
