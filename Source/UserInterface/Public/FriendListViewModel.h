@@ -47,4 +47,10 @@ private:
 	{
 		Friends.Add(UFriendViewModel::Create(this, InFriend));
 	}
+
+	FORCEINLINE void BroadcastFriends()
+	{
+		UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(Friends);
+		UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(GetFriendsCount);
+	}
 };
