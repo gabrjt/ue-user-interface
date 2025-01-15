@@ -26,6 +26,16 @@ void UFriendViewModelSubsystem::Deinitialize()
 	}
 }
 
+const UFriendListViewModel& UFriendViewModelSubsystem::GetConnectedFriendsViewModel() const
+{
+	return *ConnectedFriendsViewModel;
+}
+
+const UFriendListViewModel& UFriendViewModelSubsystem::GetDisconnectedFriendsViewModel() const
+{
+	return *DisconnectedFriendsViewModel;
+}
+
 void UFriendViewModelSubsystem::OnFriendsLoaded() const
 {
 	const IFriendService* FriendService { GetGameInstance()->GetSubsystem<UFriendServiceProviderSubsystem>()->GetFriendServiceInterface() };

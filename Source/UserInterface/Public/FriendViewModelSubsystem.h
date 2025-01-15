@@ -23,6 +23,10 @@ public:
 
 	virtual void Deinitialize() override;
 
+	const UFriendListViewModel& GetConnectedFriendsViewModel() const;
+
+	const UFriendListViewModel& GetDisconnectedFriendsViewModel() const;
+
 private:
 	void OnFriendsLoaded() const;
 
