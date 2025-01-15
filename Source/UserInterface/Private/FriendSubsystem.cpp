@@ -2,11 +2,14 @@
 
 #include "FriendSubsystem.h"
 #include "FriendData.h"
+#include "FriendServiceProviderSubsystem.h"
+#include "FriendViewModelSubsystem.h"
 #include "Engine/DataTable.h"
 
 void UFriendSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
-	Super::Initialize(Collection);
+	Collection.InitializeDependency(UFriendServiceProviderSubsystem::StaticClass());
+	Collection.InitializeDependency(UFriendViewModelSubsystem::StaticClass());
 }
 
 void UFriendSubsystem::Deinitialize()
@@ -14,7 +17,6 @@ void UFriendSubsystem::Deinitialize()
 	Friends.Empty();
 	OnFriendUpdated.Clear();
 	OnFriendUpdatedBP.Clear();
-	Super::Deinitialize();
 }
 
 FDelegateHandle UFriendSubsystem::SubscribeOnFriendUpdated(const FOnFriendUpdatedDelegate& Callback)
@@ -112,9 +114,9 @@ void UFriendSubsystem::RemoveFriend_Implementation(const FString& UserID)
 
 void UFriendSubsystem::UpdateFriend(const int32 Index, const TFunction<void(FFriendData&)>& UpdateFunction)
 {
-	ensure(Index != INDEX_NONE && Index >= 0 && Index < Friends.Num());
+	check(Index != INDEX_NONE && Index >= 0 && Index < Friends.Num());
 
-	FFriendData& Friend = Friends[Index];
+	FFriendData& Friend { Friends[Index] };
 
 	UpdateFunction(Friend);
 

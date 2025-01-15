@@ -130,8 +130,8 @@ bool FFriendManagerRemovalTest::RunTest(const FString& Parameters)
 	Helper.FriendSubsystem->RemoveFriend_Implementation("TestUser1");
 
 	TestEqual("All friends list is empty after removal",
-		Helper.FriendSubsystem->GetFriends_Implementation().Num() + Helper.FriendSubsystem->GetConnectedFriends_Implementation().Num() + Helper.FriendSubsystem->GetDisconnectedFriends_Implementation().
-		Num(),
+		Helper.FriendSubsystem->GetFriends_Implementation().Num() + Helper.FriendSubsystem->GetConnectedFriends_Implementation().Num() + Helper.FriendSubsystem
+		->GetDisconnectedFriends_Implementation().Num(),
 		0);
 
 	return true;

@@ -4,14 +4,11 @@
 
 void UFriendServiceProviderSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
-	Super::Initialize(Collection);
-
 	SetFriendServiceImplementation(FriendServiceClass);
 }
 
 void UFriendServiceProviderSubsystem::Deinitialize()
 {
-	Super::Deinitialize();
 }
 
 TScriptInterface<IFriendService> UFriendServiceProviderSubsystem::GetFriendService() const
@@ -24,6 +21,13 @@ TScriptInterface<IFriendService> UFriendServiceProviderSubsystem::GetFriendServi
 	Interface.SetInterface(CastChecked<IFriendService>(Subsystem));
 
 	return Interface;
+}
+
+IFriendService* UFriendServiceProviderSubsystem::GetFriendServiceInterface() const
+{
+	const TScriptInterface Interface { GetFriendService() };
+
+	return Interface.GetInterface();
 }
 
 void UFriendServiceProviderSubsystem::SetFriendServiceImplementation(FSoftClassPath InFriendServiceClass)

@@ -22,6 +22,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Friends")
 	TScriptInterface<IFriendService> GetFriendService() const;
 
+	IFriendService* GetFriendServiceInterface() const;
+
 	// Optional: Allow runtime switching of implementation
 	UFUNCTION(BlueprintCallable, Category = "Friends")
 	void SetFriendServiceImplementation(FSoftClassPath InFriendServiceClass);
