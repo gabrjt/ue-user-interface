@@ -59,3 +59,13 @@ void UFriendListViewModel::UpdateFriend(const FFriendData& InFriend)
 		UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(Friends);
 	}
 }
+
+void UFriendListViewModel::SetTitle(const FString& InTitle)
+{
+	UE_MVVM_SET_PROPERTY_VALUE(Title, InTitle);
+}
+
+const FString& UFriendListViewModel::GetTitle() const
+{
+	return Title;
+}

@@ -15,6 +15,9 @@ class USERINTERFACE_API UFriendListViewModel : public UMVVMViewModelBase
 	UPROPERTY(BlueprintReadWrite, FieldNotify, Getter, meta=(AllowPrivateAccess))
 	TArray<UFriendViewModel*> Friends;
 
+	UPROPERTY(BlueprintReadWrite, FieldNotify, Setter, Getter, meta=(AllowPrivateAccess))
+	FString Title;
+
 public:
 	UFriendListViewModel();
 
@@ -31,6 +34,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void UpdateFriend(const FFriendData& InFriend);
+
+	void SetTitle(const FString& InTitle);
+
+	const FString& GetTitle() const;
 
 private:
 	FORCEINLINE void AddFriend(const FFriendData& InFriend)
