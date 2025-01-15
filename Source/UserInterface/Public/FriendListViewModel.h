@@ -39,6 +39,9 @@ public:
 
 	const FString& GetTitle() const;
 
+	UFUNCTION(BlueprintPure, FieldNotify)
+	int GetFriendsCount() const;
+
 private:
 	FORCEINLINE void AddFriend(const FFriendData& InFriend)
 	{

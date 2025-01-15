@@ -21,6 +21,7 @@ void UFriendListViewModel::SetFriends(const TArray<FFriendData>& InFriends)
 	}
 
 	UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(Friends);
+	UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(GetFriendsCount);
 }
 
 void UFriendListViewModel::RemoveFriend(const FString& UserID)
@@ -33,6 +34,7 @@ void UFriendListViewModel::RemoveFriend(const FString& UserID)
 		Friends.RemoveAtSwap(Index);
 
 		UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(Friends);
+		UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(GetFriendsCount);
 	}
 }
 
@@ -41,6 +43,7 @@ void UFriendListViewModel::ClearFriends()
 	Friends.Empty();
 
 	UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(Friends);
+	UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(GetFriendsCount);
 }
 
 void UFriendListViewModel::UpdateFriend(const FFriendData& InFriend)
@@ -57,6 +60,7 @@ void UFriendListViewModel::UpdateFriend(const FFriendData& InFriend)
 		AddFriend(InFriend);
 
 		UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(Friends);
+		UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(GetFriendsCount);
 	}
 }
 
@@ -68,4 +72,9 @@ void UFriendListViewModel::SetTitle(const FString& InTitle)
 const FString& UFriendListViewModel::GetTitle() const
 {
 	return Title;
+}
+
+int UFriendListViewModel::GetFriendsCount() const
+{
+	return Friends.Num();
 }
