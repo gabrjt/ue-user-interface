@@ -57,16 +57,42 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FFriendViewModelSubsystemUpdateViewModelsTest,
 bool FFriendViewModelSubsystemUpdateViewModelsTest::RunTest(const FString& Parameters)
 {
 	const FFriendViewModelSubsystemTestHelper Helper;
+	UFriendSubsystem*                         FriendSubsystem { Helper.GameInstance->GetSubsystem<UFriendSubsystem>() };
 
 	Helper.LoadFriends();
 
 	TestEqual("Disconnected Friends populated", Helper.Subsystem->GetDisconnectedFriendsViewModel().GetFriends().Num(), 1);
 	TestEqual("Connected Friends populated", Helper.Subsystem->GetConnectedFriendsViewModel().GetFriends().Num(), 1);
 
-	Helper.GameInstance->GetSubsystem<UFriendSubsystem>()->SetFriendIsConnected_Implementation("TestUser1", true);
+	FriendSubsystem->SetFriendIsConnected_Implementation("TestUser1", true);
 
 	TestEqual("Disconnected Friends View Model updated", Helper.Subsystem->GetDisconnectedFriendsViewModel().GetFriends().Num(), 0);
 	TestEqual("Connected Friends View Model updated", Helper.Subsystem->GetConnectedFriendsViewModel().GetFriends().Num(), 2);
+
+	FriendSubsystem->SetFriendLevel_Implementation("TestUser1", 2);
+	FriendSubsystem->SetFriendLevel_Implementation("TestUser2", 3);
+
+	const TArray<UFriendViewModel*>& ConnectedFriendsViewModels { Helper.Subsystem->GetConnectedFriendsViewModel().GetFriends() };
+
+	const int32 TestUser1Index {
+		ConnectedFriendsViewModels.IndexOfByPredicate([](const UFriendViewModel* Friend)
+		{
+			return Friend && *Friend == "TestUser1";
+		})
+	};
+
+	const int32 TestUser2Index {
+		ConnectedFriendsViewModels.IndexOfByPredicate([](const UFriendViewModel* Friend)
+		{
+			return Friend && *Friend == "TestUser2";
+		})
+	};
+
+	TestNotEqual("TestUser1 Index is valid", TestUser1Index, static_cast<int32>(INDEX_NONE));
+	TestNotEqual("TestUser2 Index is valid", TestUser2Index, static_cast<int32>(INDEX_NONE));
+	TestNotEqual("Indexes are different", TestUser1Index, TestUser2Index);
+	TestEqual("TestUser1 Level updated", ConnectedFriendsViewModels[TestUser1Index]->GetLevel(), 2);
+	TestEqual("TestUser2 Level updated", ConnectedFriendsViewModels[TestUser2Index]->GetLevel(), 3);
 
 	return true;
 }

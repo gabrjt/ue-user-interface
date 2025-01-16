@@ -30,10 +30,12 @@ void UFriendListViewModel::SetFriends(const TArray<FFriendData>& InFriends)
 
 void UFriendListViewModel::RemoveFriend(const FString& UserID)
 {
-	if (const int32 Index = Friends.IndexOfByPredicate([&UserID](const UFriendViewModel* Friend)
-	{
-		return Friend && *Friend == UserID;
-	}); Index != INDEX_NONE)
+	if (const int32 Index {
+		Friends.IndexOfByPredicate([&UserID](const UFriendViewModel* Friend)
+		{
+			return Friend && *Friend == UserID;
+		})
+	}; Index != INDEX_NONE)
 	{
 		Friends.RemoveAt(Index);
 
@@ -50,10 +52,12 @@ void UFriendListViewModel::ClearFriends()
 
 void UFriendListViewModel::UpdateFriend(const FFriendData& InFriend)
 {
-	if (const int32 Index = Friends.IndexOfByPredicate([&InFriend](const UFriendViewModel* Friend)
-	{
-		return Friend && *Friend == InFriend;
-	}); Index != INDEX_NONE)
+	if (const int32 Index {
+		Friends.IndexOfByPredicate([&InFriend](const UFriendViewModel* Friend)
+		{
+			return Friend && *Friend == InFriend;
+		})
+	}; Index != INDEX_NONE)
 	{
 		Friends[Index]->Set(InFriend);
 	}
