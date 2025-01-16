@@ -44,7 +44,6 @@ public:
 
 	virtual void UnsubscribeOnFriendUpdated() override;
 
-	UFUNCTION(BlueprintCallable, Category = "Friends")
 	virtual void LoadFriends_Implementation() override;
 
 	virtual bool GetFriend_Implementation(const FString& UserID, FFriendData& OutFriend) const override;
@@ -57,13 +56,12 @@ public:
 
 	virtual TArray<FFriendData> GetDisconnectedFriends_Implementation() const override;
 
-	UFUNCTION(BlueprintCallable, Category = "Friends")
 	virtual void UpdateFriend_Implementation(const FFriendData& InFriend) override;
 
-	UFUNCTION(BlueprintCallable, Category = "Friends")
 	virtual void SetFriendIsConnected_Implementation(const FString& UserID, const bool bIsConnected) override;
 
-	UFUNCTION(BlueprintCallable, Category = "Friends")
+	virtual void SetFriendLevel_Implementation(const FString& UserID, const int Level) override;
+
 	virtual void RemoveFriend_Implementation(const FString& UserID) override;
 
 	// Public API

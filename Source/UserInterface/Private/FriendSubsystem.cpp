@@ -124,6 +124,18 @@ void UFriendSubsystem::SetFriendIsConnected_Implementation(const FString& UserID
 	}
 }
 
+void UFriendSubsystem::SetFriendLevel_Implementation(const FString& UserID, const int Level)
+{
+	if (const int32 Index { Friends.IndexOfByKey(UserID) }; Index != INDEX_NONE)
+	{
+		UpdateFriend(Index,
+			[Level](FFriendData& Friend)
+			{
+				Friend.Level = Level;
+			});
+	}
+}
+
 void UFriendSubsystem::RemoveFriend_Implementation(const FString& UserID)
 {
 	if (const int32 Index { Friends.IndexOfByKey(UserID) }; Index != INDEX_NONE)

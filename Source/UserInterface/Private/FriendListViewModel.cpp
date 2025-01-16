@@ -35,7 +35,7 @@ void UFriendListViewModel::RemoveFriend(const FString& UserID)
 		return Friend && *Friend == UserID;
 	}); Index != INDEX_NONE)
 	{
-		Friends.RemoveAtSwap(Index);
+		Friends.RemoveAt(Index);
 
 		BroadcastFriends();
 	}

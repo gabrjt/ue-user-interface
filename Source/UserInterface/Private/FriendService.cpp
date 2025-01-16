@@ -32,6 +32,10 @@ void IFriendService::SetFriendIsConnected_Implementation(const FString& UserID, 
 {
 }
 
+void IFriendService::SetFriendLevel_Implementation(const FString& UserID, const int Level)
+{
+}
+
 void IFriendService::RemoveFriend_Implementation(const FString& UserID)
 {
 }
