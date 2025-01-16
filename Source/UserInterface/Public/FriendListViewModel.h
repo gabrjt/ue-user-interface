@@ -13,13 +13,16 @@ class USERINTERFACE_API UFriendListViewModel : public UMVVMViewModelBase
 	GENERATED_BODY()
 
 	UPROPERTY(BlueprintReadWrite, FieldNotify, Getter, meta=(AllowPrivateAccess))
-	TArray<UFriendViewModel*> Friends;
+	TArray<UFriendViewModel*> Friends {};
 
 	UPROPERTY(BlueprintReadWrite, FieldNotify, Setter, Getter, meta=(AllowPrivateAccess))
-	FString Title;
+	FString Title {};
 
 	UPROPERTY(BlueprintReadWrite, FieldNotify, Setter, Getter, meta=(AllowPrivateAccess))
-	FSlateColor TextColor;
+	FSlateColor TextColor {};
+
+	UPROPERTY(BlueprintReadWrite, FieldNotify, Setter, Getter, meta=(AllowPrivateAccess))
+	ESlateVisibility Visibility {};
 
 public:
 	UFriendListViewModel();
@@ -46,8 +49,18 @@ public:
 
 	const FSlateColor& GetTextColor() const;
 
+	void SetVisibility(const ESlateVisibility& InVisibility);
+
+	const ESlateVisibility& GetVisibility() const;
+
+	UFUNCTION(BlueprintCallable)
+	void ToggleVisibility();
+
 	UFUNCTION(BlueprintPure, FieldNotify)
 	int GetFriendsCount() const;
+
+	UFUNCTION(BlueprintPure, FieldNotify)
+	const FString& GetVisibilityText() const;
 
 private:
 	FORCEINLINE void AddFriend(const FFriendData& InFriend)

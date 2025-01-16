@@ -1,8 +1,12 @@
 ﻿#include "FriendListViewModel.h"
 #include "FriendData.h"
 #include "FriendViewModel.h"
+#include "Components/SlateWrapperTypes.h"
 
 UFriendListViewModel::UFriendListViewModel()
+	: Title("Friends List")
+	, TextColor(FLinearColor::White)
+	, Visibility(ESlateVisibility::Visible)
 {
 }
 
@@ -79,7 +83,46 @@ const FSlateColor& UFriendListViewModel::GetTextColor() const
 	return TextColor;
 }
 
+void UFriendListViewModel::SetVisibility(const ESlateVisibility& InVisibility)
+{
+	UE_MVVM_SET_PROPERTY_VALUE(Visibility, InVisibility);
+}
+
+const ESlateVisibility& UFriendListViewModel::GetVisibility() const
+{
+	return Visibility;
+}
+
+void UFriendListViewModel::ToggleVisibility()
+{
+	switch (Visibility)
+	{
+		case ESlateVisibility::Collapsed:
+			SetVisibility(ESlateVisibility::Visible);
+
+			break;
+		default:
+			SetVisibility(ESlateVisibility::Collapsed);
+	}
+
+	UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(GetVisibilityText);
+}
+
 int UFriendListViewModel::GetFriendsCount() const
 {
 	return Friends.Num();
+}
+
+const FString& UFriendListViewModel::GetVisibilityText() const
+{
+	static FString Collapsed { "+" };
+	static FString Visible { "-" };
+
+	switch (Visibility)
+	{
+		case ESlateVisibility::Collapsed:
+			return Collapsed;
+		default:
+			return Visible;
+	}
 }

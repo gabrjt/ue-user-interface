@@ -6,6 +6,8 @@
 
 class UListView;
 class UTextBlock;
+class UButton;
+class UVerticalBox;
 
 UCLASS()
 class USERINTERFACE_API UFriendListWidget : public UUserWidget
@@ -20,4 +22,13 @@ class USERINTERFACE_API UFriendListWidget : public UUserWidget
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess))
 	UTextBlock* FriendListCountText;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess))
+	UVerticalBox* FriendListContainer;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess))
+	UButton* CollapseButton;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess))
+	UTextBlock* CollapseButtonText;
 };
