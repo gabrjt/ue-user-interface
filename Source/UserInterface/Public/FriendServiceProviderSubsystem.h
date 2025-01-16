@@ -15,6 +15,8 @@ class USERINTERFACE_API UFriendServiceProviderSubsystem : public UGameInstanceSu
 	FSoftClassPath FriendServiceClass;
 
 public:
+	UFriendServiceProviderSubsystem();
+
 	// UGameInstanceSubsystem interface
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 

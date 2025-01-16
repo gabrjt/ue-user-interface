@@ -6,6 +6,14 @@
 #include "Engine/DataTable.h"
 #include "Engine/StreamableManager.h"
 
+UFriendSubsystem::UFriendSubsystem()
+	: FriendsDataTablePath()
+	, Friends()
+	, OnFriendsLoaded()
+	, OnFriendUpdated()
+{
+}
+
 void UFriendSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Collection.InitializeDependency(UFriendServiceProviderSubsystem::StaticClass());

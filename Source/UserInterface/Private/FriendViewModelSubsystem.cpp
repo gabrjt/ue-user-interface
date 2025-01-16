@@ -3,6 +3,12 @@
 #include "FriendService.h"
 #include "FriendServiceProviderSubsystem.h"
 
+UFriendViewModelSubsystem::UFriendViewModelSubsystem()
+	: ConnectedFriendsViewModel()
+	, DisconnectedFriendsViewModel()
+{
+}
+
 void UFriendViewModelSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	ConnectedFriendsViewModel    = NewObject<UFriendListViewModel>();

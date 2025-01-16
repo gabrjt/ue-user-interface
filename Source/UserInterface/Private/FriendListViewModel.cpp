@@ -4,7 +4,8 @@
 #include "Components/SlateWrapperTypes.h"
 
 UFriendListViewModel::UFriendListViewModel()
-	: Title("Friends List")
+	: Friends()
+	, Title("Friends List")
 	, TextColor(FLinearColor::White)
 	, Visibility(ESlateVisibility::Visible)
 {

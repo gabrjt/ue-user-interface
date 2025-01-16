@@ -2,12 +2,12 @@
 #include "FriendData.h"
 
 UFriendViewModel::UFriendViewModel()
-	: UserID("")
-	, Nickname("")
-	, Level(1)
+	: UserID()
+	, Nickname()
+	, Level(-1)
 	, bIsConnected(false)
-	, LastSeen("")
-	, StatusMessage("")
+	, LastSeen()
+	, StatusMessage()
 {
 }
 

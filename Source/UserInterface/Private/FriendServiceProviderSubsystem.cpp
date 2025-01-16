@@ -1,6 +1,11 @@
 ﻿#include "FriendServiceProviderSubsystem.h"
 #include "FriendSubsystem.h"
 
+UFriendServiceProviderSubsystem::UFriendServiceProviderSubsystem()
+	: FriendServiceClass()
+{
+}
+
 void UFriendServiceProviderSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	SetFriendServiceImplementation(FriendServiceClass);

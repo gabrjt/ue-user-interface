@@ -12,12 +12,14 @@ class USERINTERFACE_API UFriendViewModelSubsystem : public UGameInstanceSubsyste
 	GENERATED_BODY()
 
 	UPROPERTY(Transient, BlueprintReadOnly, meta=(AllowPrivateAccess))
-	UFriendListViewModel* ConnectedFriendsViewModel {};
+	UFriendListViewModel* ConnectedFriendsViewModel;
 
 	UPROPERTY(Transient, BlueprintReadOnly, meta=(AllowPrivateAccess))
-	UFriendListViewModel* DisconnectedFriendsViewModel {};
+	UFriendListViewModel* DisconnectedFriendsViewModel;
 
 public:
+	UFriendViewModelSubsystem();
+
 	// UGameInstanceSubsystem interface
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 

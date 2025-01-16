@@ -10,22 +10,22 @@ struct USERINTERFACE_API FFriendData : public FTableRowBase
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Friend Data")
-	FString UserID {};
+	FString UserID;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Friend Data")
-	FString Nickname {};
+	FString Nickname;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Friend Data")
-	int32 Level {};
+	int32 Level;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Friend Data")
-	bool bIsConnected {};
+	bool bIsConnected;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Friend Data")
-	FString LastSeen {};
+	FString LastSeen;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Friend Data")
-	FString StatusMessage {};
+	FString StatusMessage;
 
 	FFriendData();
 

@@ -2,6 +2,8 @@
 #include "Blueprint/UserWidget.h"
 
 AFriendHUD::AFriendHUD()
+	: MainWidget()
+	, MainWidgetClass()
 {
 	PrimaryActorTick.bCanEverTick = false;
 }

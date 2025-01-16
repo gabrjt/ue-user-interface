@@ -12,10 +12,10 @@ class USERINTERFACE_API AFriendHUD : public AHUD
 	GENERATED_BODY()
 
 	UPROPERTY(Transient)
-	UUserWidget* MainWidget {};
+	UUserWidget* MainWidget;
 
 	UPROPERTY(EditDefaultsOnly, Category = "HUD")
-	TSubclassOf<UUserWidget> MainWidgetClass {};
+	TSubclassOf<UUserWidget> MainWidgetClass;
 
 public:
 	AFriendHUD();

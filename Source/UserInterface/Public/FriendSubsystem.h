@@ -15,16 +15,18 @@ class USERINTERFACE_API UFriendSubsystem : public UGameInstanceSubsystem, public
 	GENERATED_BODY()
 
 	UPROPERTY(Config)
-	FSoftObjectPath FriendsDataTablePath {};
+	FSoftObjectPath FriendsDataTablePath;
 
 	UPROPERTY(Transient)
-	TArray<FFriendData> Friends {};
+	TArray<FFriendData> Friends;
 
-	FOnFriendsLoaded OnFriendsLoaded {};
+	FOnFriendsLoaded OnFriendsLoaded;
 
-	FOnFriendUpdated OnFriendUpdated {};
+	FOnFriendUpdated OnFriendUpdated;
 
 public:
+	UFriendSubsystem();
+
 	UPROPERTY(BlueprintAssignable, Category = "Friends")
 	FOnFriendUpdatedDelegateDynamic OnFriendUpdatedBP {};
 
