@@ -15,5 +15,8 @@ class USERINTERFACE_API UFriendListViewEntryWidget : public UUserWidget, public 
 	UTextBlock* NicknameText;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess))
-	UTextBlock* IsConnectedText;
+	UTextBlock* LevelText;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess))
+	UTextBlock* StatusMessageText;
 };
