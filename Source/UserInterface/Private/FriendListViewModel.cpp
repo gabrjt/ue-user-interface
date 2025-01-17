@@ -91,6 +91,7 @@ const FSlateColor& UFriendListViewModel::GetTextColor() const
 void UFriendListViewModel::SetVisibility(const ESlateVisibility& InVisibility)
 {
 	UE_MVVM_SET_PROPERTY_VALUE(Visibility, InVisibility);
+	UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(GetVisibilityText);
 }
 
 const ESlateVisibility& UFriendListViewModel::GetVisibility() const
@@ -109,8 +110,6 @@ void UFriendListViewModel::ToggleVisibility()
 		default:
 			SetVisibility(ESlateVisibility::Collapsed);
 	}
-
-	UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(GetVisibilityText);
 }
 
 int UFriendListViewModel::GetFriendsCount() const
