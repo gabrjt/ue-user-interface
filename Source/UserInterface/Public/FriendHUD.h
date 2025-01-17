@@ -11,7 +11,7 @@ class USERINTERFACE_API AFriendHUD : public AHUD
 {
 	GENERATED_BODY()
 
-	UPROPERTY(Transient)
+	UPROPERTY(Transient, BlueprintReadOnly, Category = "HUD", meta = (AllowPrivateAccess = "true"))
 	UUserWidget* MainWidget;
 
 	UPROPERTY(EditDefaultsOnly, Category = "HUD")

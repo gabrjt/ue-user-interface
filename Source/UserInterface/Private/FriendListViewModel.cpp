@@ -7,7 +7,7 @@ UFriendListViewModel::UFriendListViewModel()
 	: Friends()
 	, Title("Friends List")
 	, TextColor(FLinearColor::White)
-	, Visibility(ESlateVisibility::Visible)
+	, Visibility(ESlateVisibility::Collapsed)
 	, VisibilityText(GetVisibilityTextFromEnum(Visibility))
 {
 }
