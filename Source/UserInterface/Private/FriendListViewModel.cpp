@@ -8,6 +8,7 @@ UFriendListViewModel::UFriendListViewModel()
 	, Title("Friends List")
 	, TextColor(FLinearColor::White)
 	, Visibility(ESlateVisibility::Visible)
+	, VisibilityText(GetVisibilityTextFromEnum(Visibility))
 {
 }
 
@@ -88,10 +89,15 @@ const FSlateColor& UFriendListViewModel::GetTextColor() const
 	return TextColor;
 }
 
+void UFriendListViewModel::SetVisibilityAndText(const ESlateVisibility& InVisibility)
+{
+	SetVisibility(InVisibility);
+	SetVisibilityTextFromEnum(InVisibility);
+}
+
 void UFriendListViewModel::SetVisibility(const ESlateVisibility& InVisibility)
 {
 	UE_MVVM_SET_PROPERTY_VALUE(Visibility, InVisibility);
-	UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(GetVisibilityText);
 }
 
 const ESlateVisibility& UFriendListViewModel::GetVisibility() const
@@ -99,16 +105,32 @@ const ESlateVisibility& UFriendListViewModel::GetVisibility() const
 	return Visibility;
 }
 
+void UFriendListViewModel::SetVisibilityTextFromEnum(const ESlateVisibility& InVisibility)
+{
+	SetVisibilityText(GetVisibilityTextFromEnum(InVisibility));
+}
+
+void UFriendListViewModel::SetVisibilityText(const FString& InVisibilityText)
+{
+	UE_MVVM_SET_PROPERTY_VALUE(VisibilityText, InVisibilityText);
+}
+
+const FString& UFriendListViewModel::GetVisibilityText() const
+{
+	return VisibilityText;
+}
+
 void UFriendListViewModel::ToggleVisibility()
 {
 	switch (Visibility)
 	{
 		case ESlateVisibility::Collapsed:
-			SetVisibility(ESlateVisibility::Visible);
+			SetVisibilityAndText(ESlateVisibility::Visible);
 
 			break;
+
 		default:
-			SetVisibility(ESlateVisibility::Collapsed);
+			SetVisibilityAndText(ESlateVisibility::Collapsed);
 	}
 }
 
@@ -117,12 +139,12 @@ int UFriendListViewModel::GetFriendsCount() const
 	return Friends.Num();
 }
 
-const FString& UFriendListViewModel::GetVisibilityText() const
+const FString& UFriendListViewModel::GetVisibilityTextFromEnum(const ESlateVisibility& InVisibility)
 {
 	static FString Collapsed { "+" };
 	static FString Visible { "-" };
 
-	switch (Visibility)
+	switch (InVisibility)
 	{
 		case ESlateVisibility::Collapsed:
 			return Collapsed;

@@ -24,6 +24,9 @@ class USERINTERFACE_API UFriendListViewModel : public UMVVMViewModelBase
 	UPROPERTY(BlueprintReadWrite, FieldNotify, Setter, Getter, meta=(AllowPrivateAccess))
 	ESlateVisibility Visibility;
 
+	UPROPERTY(BlueprintReadWrite, FieldNotify, Getter, meta=(AllowPrivateAccess))
+	FString VisibilityText;
+
 public:
 	UFriendListViewModel();
 
@@ -49,9 +52,19 @@ public:
 
 	const FSlateColor& GetTextColor() const;
 
+	UFUNCTION(BlueprintCallable)
+	void SetVisibilityAndText(const ESlateVisibility& InVisibility);
+
 	void SetVisibility(const ESlateVisibility& InVisibility);
 
 	const ESlateVisibility& GetVisibility() const;
+
+	UFUNCTION(BlueprintCallable)
+	void SetVisibilityTextFromEnum(const ESlateVisibility& InVisibility);
+
+	void SetVisibilityText(const FString& InVisibilityText);
+
+	const FString& GetVisibilityText() const;
 
 	UFUNCTION(BlueprintCallable)
 	void ToggleVisibility();
@@ -59,10 +72,9 @@ public:
 	UFUNCTION(BlueprintPure, FieldNotify)
 	int GetFriendsCount() const;
 
-	UFUNCTION(BlueprintPure, FieldNotify)
-	const FString& GetVisibilityText() const;
-
 private:
+	static const FString& GetVisibilityTextFromEnum(const ESlateVisibility& InVisibility);
+
 	FORCEINLINE void AddFriend(const FFriendData& InFriend)
 	{
 		Friends.Add(UFriendViewModel::Create(this, InFriend));
