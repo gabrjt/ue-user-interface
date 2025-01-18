@@ -34,6 +34,12 @@ protected:
 	                   UFriendListWidget*    DisconnectedFriendsWidget,
 	                   UFriendListViewModel* DisconnectedFriendsViewModel);
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void ViewModelsDataLoaded(UFriendListWidget*    ConnectedFriendsWidget,
+	                          UFriendListViewModel* ConnectedFriendsViewModel,
+	                          UFriendListWidget*    DisconnectedFriendsWidget,
+	                          UFriendListViewModel* DisconnectedFriendsViewModel);
+
 private:
-	void OnDataAssetsLoaded() const;
+	void OnDataAssetsLoaded();
 };

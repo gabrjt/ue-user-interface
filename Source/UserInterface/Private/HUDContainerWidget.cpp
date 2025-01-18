@@ -25,13 +25,17 @@ void UHUDContainerWidget::NativeOnInitialized()
 	StreamableManager.RequestAsyncLoad(AssetsToLoad, FStreamableDelegate::CreateUObject(this, &UHUDContainerWidget::OnDataAssetsLoaded));
 }
 
-void UHUDContainerWidget::OnDataAssetsLoaded() const
+void UHUDContainerWidget::OnDataAssetsLoaded()
 {
 	const UFriendViewModelSubsystem* FriendViewModelSubsystem { GetGameInstance()->GetSubsystem<UFriendViewModelSubsystem>() };
+	UFriendListViewModel*            ConnectedFriendsViewModel { FriendViewModelSubsystem->GetConnectedFriendsViewModel() };
+	UFriendListViewModel*            DisconnectedFriendsViewModel { FriendViewModelSubsystem->GetDisconnectedFriendsViewModel() };
 
-	FriendViewModelSubsystem->GetConnectedFriendsViewModel()->Set(ConnectedFriendsDataAsset.Get());
-	FriendViewModelSubsystem->GetDisconnectedFriendsViewModel()->Set(DisconnectedFriendsDataAsset.Get());
+	ConnectedFriendsViewModel->Set(ConnectedFriendsDataAsset.Get());
+	DisconnectedFriendsViewModel->Set(DisconnectedFriendsDataAsset.Get());
 
 	ConnectedFriends->SetVisibility(ESlateVisibility::Visible);
 	DisconnectedFriends->SetVisibility(ESlateVisibility::Visible);
+
+	ViewModelsDataLoaded(ConnectedFriends, ConnectedFriendsViewModel, DisconnectedFriends, DisconnectedFriendsViewModel);
 }
