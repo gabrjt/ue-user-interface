@@ -10,22 +10,19 @@ void UHUDContainerWidget::NativeOnInitialized()
 {
 	Super::NativeOnInitialized();
 
-	ConnectedFriends->SetVisibility(ESlateVisibility::Hidden);
-	DisconnectedFriends->SetVisibility(ESlateVisibility::Hidden);
-
 	const UFriendViewModelSubsystem* FriendViewModelSubsystem { GetGameInstance()->GetSubsystem<UFriendViewModelSubsystem>() };
 
-	SetViewModels(ConnectedFriends,
-		FriendViewModelSubsystem->GetConnectedFriendsViewModel(),
-		DisconnectedFriends,
-		FriendViewModelSubsystem->GetDisconnectedFriendsViewModel());
+	ConnectedFriends->SetVisibility(ESlateVisibility::Hidden);
+	DisconnectedFriends->SetVisibility(ESlateVisibility::Hidden);
+	ConnectedFriends->SetViewModel(FriendViewModelSubsystem->GetConnectedFriendsViewModel());
+	DisconnectedFriends->SetViewModel(FriendViewModelSubsystem->GetDisconnectedFriendsViewModel());
 
 	TArray              AssetsToLoad { ConnectedFriendsDataAsset.ToSoftObjectPath(), DisconnectedFriendsDataAsset.ToSoftObjectPath() };
 	FStreamableManager& StreamableManager = UAssetManager::GetStreamableManager();
 	StreamableManager.RequestAsyncLoad(AssetsToLoad, FStreamableDelegate::CreateUObject(this, &UHUDContainerWidget::OnDataAssetsLoaded));
 }
 
-void UHUDContainerWidget::OnDataAssetsLoaded()
+void UHUDContainerWidget::OnDataAssetsLoaded() const
 {
 	const UFriendViewModelSubsystem* FriendViewModelSubsystem { GetGameInstance()->GetSubsystem<UFriendViewModelSubsystem>() };
 	UFriendListViewModel*            ConnectedFriendsViewModel { FriendViewModelSubsystem->GetConnectedFriendsViewModel() };
@@ -37,5 +34,6 @@ void UHUDContainerWidget::OnDataAssetsLoaded()
 	ConnectedFriends->SetVisibility(ESlateVisibility::Visible);
 	DisconnectedFriends->SetVisibility(ESlateVisibility::Visible);
 
-	ViewModelsDataLoaded(ConnectedFriends, ConnectedFriendsViewModel, DisconnectedFriends, DisconnectedFriendsViewModel);
+	ConnectedFriends->ViewModelDataLoaded(ConnectedFriendsViewModel);
+	DisconnectedFriends->ViewModelDataLoaded(DisconnectedFriendsViewModel);
 }

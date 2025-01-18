@@ -28,18 +28,6 @@ class USERINTERFACE_API UHUDContainerWidget : public UCommonUserWidget
 protected:
 	virtual void NativeOnInitialized() override;
 
-	UFUNCTION(BlueprintImplementableEvent)
-	void SetViewModels(UFriendListWidget*    ConnectedFriendsWidget,
-	                   UFriendListViewModel* ConnectedFriendsViewModel,
-	                   UFriendListWidget*    DisconnectedFriendsWidget,
-	                   UFriendListViewModel* DisconnectedFriendsViewModel);
-
-	UFUNCTION(BlueprintImplementableEvent)
-	void ViewModelsDataLoaded(UFriendListWidget*    ConnectedFriendsWidget,
-	                          UFriendListViewModel* ConnectedFriendsViewModel,
-	                          UFriendListWidget*    DisconnectedFriendsWidget,
-	                          UFriendListViewModel* DisconnectedFriendsViewModel);
-
 private:
-	void OnDataAssetsLoaded();
+	void OnDataAssetsLoaded() const;
 };

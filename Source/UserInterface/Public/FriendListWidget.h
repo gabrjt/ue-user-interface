@@ -8,6 +8,7 @@ class UListView;
 class UTextBlock;
 class UButton;
 class UVerticalBox;
+class UFriendListViewModel;
 
 UCLASS()
 class USERINTERFACE_API UFriendListWidget : public UUserWidget
@@ -31,4 +32,11 @@ class USERINTERFACE_API UFriendListWidget : public UUserWidget
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess))
 	UTextBlock* CollapseButtonText;
+
+public:
+	UFUNCTION(BlueprintImplementableEvent)
+	void SetViewModel(UFriendListViewModel* InFriendListViewModel);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void ViewModelDataLoaded(UFriendListViewModel* InFriendListViewModel);
 };

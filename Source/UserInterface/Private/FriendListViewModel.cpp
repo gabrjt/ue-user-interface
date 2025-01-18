@@ -142,9 +142,12 @@ int UFriendListViewModel::GetFriendsCount() const
 
 void UFriendListViewModel::Set(const UFriendListViewModelDataAsset* DataAsset)
 {
-	SetTitle(DataAsset->Title);
-	SetTextColor(DataAsset->TextColor);
-	SetVisibilityAndText(DataAsset->Visibility);
+	if (ensure(DataAsset))
+	{
+		SetTitle(DataAsset->Title);
+		SetTextColor(DataAsset->TextColor);
+		SetVisibilityAndText(DataAsset->Visibility);
+	}
 }
 
 const FString& UFriendListViewModel::GetVisibilityTextFromEnum(const ESlateVisibility& InVisibility)
