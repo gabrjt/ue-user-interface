@@ -1,5 +1,6 @@
 ﻿#include "FriendListViewModel.h"
 #include "FriendData.h"
+#include "FriendListViewModelDataAsset.h"
 #include "FriendViewModel.h"
 #include "Components/SlateWrapperTypes.h"
 
@@ -12,12 +13,7 @@ UFriendListViewModel::UFriendListViewModel()
 {
 }
 
-const TArray<UFriendViewModel*>& UFriendListViewModel::GetFriends() const
-{
-	return Friends;
-}
-
-void UFriendListViewModel::SetFriends(const TArray<FFriendData>& InFriends)
+void UFriendListViewModel::SetFriendsFromData(const TArray<FFriendData>& InFriends)
 {
 	Friends.Reset(InFriends.Num());
 
@@ -27,6 +23,11 @@ void UFriendListViewModel::SetFriends(const TArray<FFriendData>& InFriends)
 	}
 
 	BroadcastFriends();
+}
+
+const TArray<UFriendViewModel*>& UFriendListViewModel::GetFriends() const
+{
+	return Friends;
 }
 
 void UFriendListViewModel::RemoveFriend(const FString& UserID)
@@ -137,6 +138,13 @@ void UFriendListViewModel::ToggleVisibility()
 int UFriendListViewModel::GetFriendsCount() const
 {
 	return Friends.Num();
+}
+
+void UFriendListViewModel::Set(const UFriendListViewModelDataAsset* DataAsset)
+{
+	SetTitle(DataAsset->Title);
+	SetTextColor(DataAsset->TextColor);
+	SetVisibilityAndText(DataAsset->Visibility);
 }
 
 const FString& UFriendListViewModel::GetVisibilityTextFromEnum(const ESlateVisibility& InVisibility)

@@ -6,6 +6,7 @@
 #include "FriendListViewModel.generated.h"
 
 struct FFriendData;
+class UFriendListViewModelDataAsset;
 
 UCLASS(BlueprintType)
 class USERINTERFACE_API UFriendListViewModel : public UMVVMViewModelBase
@@ -30,10 +31,9 @@ class USERINTERFACE_API UFriendListViewModel : public UMVVMViewModelBase
 public:
 	UFriendListViewModel();
 
-	const TArray<UFriendViewModel*>& GetFriends() const;
+	void SetFriendsFromData(const TArray<FFriendData>& InFriends);
 
-	UFUNCTION(BlueprintCallable)
-	void SetFriends(const TArray<FFriendData>& InFriends);
+	const TArray<UFriendViewModel*>& GetFriends() const;
 
 	UFUNCTION(BlueprintCallable)
 	void RemoveFriend(const FString& UserID);
@@ -71,6 +71,8 @@ public:
 
 	UFUNCTION(BlueprintPure, FieldNotify)
 	int GetFriendsCount() const;
+
+	void Set(const UFriendListViewModelDataAsset* DataAsset);
 
 private:
 	static const FString& GetVisibilityTextFromEnum(const ESlateVisibility& InVisibility);

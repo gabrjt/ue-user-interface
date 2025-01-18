@@ -2,13 +2,20 @@
 	"id": "UserProject",
 	"name": "UserProject",
 	"enabledTests": [
-		"UserProject.Editor.FriendManager.AddFriend",
-		"UserProject.Editor.FriendManager.ConnectionStatus",
-		"UserProject.Editor.FriendManager.DuplicateFriend",
-		"UserProject.Editor.FriendManager.GetFriendByValue",
-		"UserProject.Editor.FriendManager.LoadFriends",
-		"UserProject.Editor.FriendManager.NonexistentFriend",
-		"UserProject.Editor.FriendManager.RemoveFriend",
-		"UserProject.Editor.FriendManager.UpdateNotification"
+		"UserProject.Editor.FriendServiceProviderSubsystem.GetInterface",
+		"UserProject.Editor.FriendSubsystem.AddFriend",
+		"UserProject.Editor.FriendSubsystem.ConnectionStatus",
+		"UserProject.Editor.FriendSubsystem.DuplicateFriend",
+		"UserProject.Editor.FriendSubsystem.GetFriendByValue",
+		"UserProject.Editor.FriendSubsystem.LoadFriends",
+		"UserProject.Editor.FriendSubsystem.LoadFriendsAsync",
+		"UserProject.Editor.FriendSubsystem.NonexistentFriend",
+		"UserProject.Editor.FriendSubsystem.RemoveFriend",
+		"UserProject.Editor.FriendSubsystem.UpdateNotification",
+		"UserProject.Editor.FriendViewModelSubsystem.InitializeViewModels",
+		"UserProject.Editor.FriendViewModelSubsystem.PopulateViewModels",
+		"UserProject.Editor.FriendViewModelSubsystem.UpdateViewModels",
+		"UserProject.Editor.FriendViewModelSubsystem.ViewModelDataIsUpdated",
+		"UserProject.Editor.FriendViewModelSubsystem.ViewModelsDataMatch"
 	]
 }

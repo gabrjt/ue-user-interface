@@ -28,7 +28,7 @@ bool FFriendViewModelSubsystemInitializeTest::RunTest(const FString& Parameters)
 	const FFriendViewModelSubsystemTestHelper Helper;
 
 	TestEqual("No friends loaded yet",
-		Helper.Subsystem->GetDisconnectedFriendsViewModel().GetFriends().Num() + Helper.Subsystem->GetConnectedFriendsViewModel().GetFriends().Num(),
+		Helper.Subsystem->GetDisconnectedFriendsViewModel()->GetFriends().Num() + Helper.Subsystem->GetConnectedFriendsViewModel()->GetFriends().Num(),
 		0);
 
 	return true;
@@ -44,8 +44,8 @@ bool FFriendViewModelSubsystemPopulateViewModelsTest::RunTest(const FString& Par
 
 	Helper.LoadFriends();
 
-	TestEqual("Disconnected Friends populated", Helper.Subsystem->GetDisconnectedFriendsViewModel().GetFriends().Num(), 1);
-	TestEqual("Connected Friends populated", Helper.Subsystem->GetConnectedFriendsViewModel().GetFriends().Num(), 1);
+	TestEqual("Disconnected Friends populated", Helper.Subsystem->GetDisconnectedFriendsViewModel()->GetFriends().Num(), 1);
+	TestEqual("Connected Friends populated", Helper.Subsystem->GetConnectedFriendsViewModel()->GetFriends().Num(), 1);
 
 	return true;
 }
@@ -61,18 +61,18 @@ bool FFriendViewModelSubsystemUpdateViewModelsTest::RunTest(const FString& Param
 
 	Helper.LoadFriends();
 
-	TestEqual("Disconnected Friends populated", Helper.Subsystem->GetDisconnectedFriendsViewModel().GetFriends().Num(), 1);
-	TestEqual("Connected Friends populated", Helper.Subsystem->GetConnectedFriendsViewModel().GetFriends().Num(), 1);
+	TestEqual("Disconnected Friends populated", Helper.Subsystem->GetDisconnectedFriendsViewModel()->GetFriends().Num(), 1);
+	TestEqual("Connected Friends populated", Helper.Subsystem->GetConnectedFriendsViewModel()->GetFriends().Num(), 1);
 
 	FriendSubsystem->SetFriendIsConnected_Implementation("TestUser1", true);
 
-	TestEqual("Disconnected Friends View Model updated", Helper.Subsystem->GetDisconnectedFriendsViewModel().GetFriends().Num(), 0);
-	TestEqual("Connected Friends View Model updated", Helper.Subsystem->GetConnectedFriendsViewModel().GetFriends().Num(), 2);
+	TestEqual("Disconnected Friends View Model updated", Helper.Subsystem->GetDisconnectedFriendsViewModel()->GetFriends().Num(), 0);
+	TestEqual("Connected Friends View Model updated", Helper.Subsystem->GetConnectedFriendsViewModel()->GetFriends().Num(), 2);
 
 	FriendSubsystem->SetFriendLevel_Implementation("TestUser1", 2);
 	FriendSubsystem->SetFriendLevel_Implementation("TestUser2", 3);
 
-	const TArray<UFriendViewModel*>& ConnectedFriendsViewModels { Helper.Subsystem->GetConnectedFriendsViewModel().GetFriends() };
+	const TArray<UFriendViewModel*>& ConnectedFriendsViewModels { Helper.Subsystem->GetConnectedFriendsViewModel()->GetFriends() };
 
 	const int32 TestUser1Index {
 		ConnectedFriendsViewModels.IndexOfByPredicate([](const UFriendViewModel* Friend)
@@ -110,7 +110,7 @@ bool FFriendViewModelSubsystemViewModelsDataTest::RunTest(const FString& Paramet
 	const UFriendSubsystem* FriendSubsystem { Helper.GameInstance->GetSubsystem<UFriendSubsystem>() };
 
 	const TArray<FFriendData>        ConnectedFriends = FriendSubsystem->GetConnectedFriends_Implementation();
-	const TArray<UFriendViewModel*>& ConnectedFriendsViewModels { Helper.Subsystem->GetConnectedFriendsViewModel().GetFriends() };
+	const TArray<UFriendViewModel*>& ConnectedFriendsViewModels { Helper.Subsystem->GetConnectedFriendsViewModel()->GetFriends() };
 
 	TestEqual("Connected Friends count matches", ConnectedFriends.Num(), ConnectedFriendsViewModels.Num());
 
@@ -125,7 +125,7 @@ bool FFriendViewModelSubsystemViewModelsDataTest::RunTest(const FString& Paramet
 	}
 
 	const TArray<FFriendData>        DisconnectedFriends = FriendSubsystem->GetDisconnectedFriends_Implementation();
-	const TArray<UFriendViewModel*>& DisconnectedFriendsViewModels { Helper.Subsystem->GetDisconnectedFriendsViewModel().GetFriends() };
+	const TArray<UFriendViewModel*>& DisconnectedFriendsViewModels { Helper.Subsystem->GetDisconnectedFriendsViewModel()->GetFriends() };
 
 	TestEqual("Disconnected Friends count matches", DisconnectedFriends.Num(), DisconnectedFriendsViewModels.Num());
 
@@ -160,7 +160,7 @@ bool FFriendViewModelSubsystemViewModelDataIsUpdatedTest::RunTest(const FString&
 	FriendSubsystem->UpdateFriend_Implementation(Friend);
 
 	const TArray<FFriendData>        ConnectedFriends = FriendSubsystem->GetConnectedFriends_Implementation();
-	const TArray<UFriendViewModel*>& ConnectedFriendsViewModels { Helper.Subsystem->GetConnectedFriendsViewModel().GetFriends() };
+	const TArray<UFriendViewModel*>& ConnectedFriendsViewModels { Helper.Subsystem->GetConnectedFriendsViewModel()->GetFriends() };
 
 	Friend = ConnectedFriends[0];
 	const UFriendViewModel* ViewModel { ConnectedFriendsViewModels[0] };

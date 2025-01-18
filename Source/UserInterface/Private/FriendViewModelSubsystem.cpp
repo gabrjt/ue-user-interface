@@ -32,22 +32,22 @@ void UFriendViewModelSubsystem::Deinitialize()
 	}
 }
 
-const UFriendListViewModel& UFriendViewModelSubsystem::GetConnectedFriendsViewModel() const
+UFriendListViewModel* UFriendViewModelSubsystem::GetConnectedFriendsViewModel() const
 {
-	return *ConnectedFriendsViewModel;
+	return ConnectedFriendsViewModel;
 }
 
-const UFriendListViewModel& UFriendViewModelSubsystem::GetDisconnectedFriendsViewModel() const
+UFriendListViewModel* UFriendViewModelSubsystem::GetDisconnectedFriendsViewModel() const
 {
-	return *DisconnectedFriendsViewModel;
+	return DisconnectedFriendsViewModel;
 }
 
 void UFriendViewModelSubsystem::OnFriendsLoaded() const
 {
 	const IFriendService* FriendService { GetGameInstance()->GetSubsystem<UFriendServiceProviderSubsystem>()->GetFriendServiceInterface() };
 
-	ConnectedFriendsViewModel->SetFriends(FriendService->GetConnectedFriends_Implementation());
-	DisconnectedFriendsViewModel->SetFriends(FriendService->GetDisconnectedFriends_Implementation());
+	ConnectedFriendsViewModel->SetFriendsFromData(FriendService->GetConnectedFriends_Implementation());
+	DisconnectedFriendsViewModel->SetFriendsFromData(FriendService->GetDisconnectedFriends_Implementation());
 }
 
 void UFriendViewModelSubsystem::OnFriendUpdated(const FFriendData& FriendData) const
