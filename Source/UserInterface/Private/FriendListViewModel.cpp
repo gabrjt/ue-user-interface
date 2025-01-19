@@ -9,6 +9,7 @@ UFriendListViewModel::UFriendListViewModel()
 	, Title("Friends List")
 	, TextColor(FLinearColor::White)
 	, Visibility(ESlateVisibility::Collapsed)
+	, TargetVisibility(ESlateVisibility::Collapsed)
 	, VisibilityText(GetVisibilityTextFromEnum(Visibility))
 {
 }
@@ -103,7 +104,25 @@ void UFriendListViewModel::SetVisibility(const ESlateVisibility& InVisibility)
 
 const ESlateVisibility& UFriendListViewModel::GetVisibility() const
 {
+	static ESlateVisibility Visible { ESlateVisibility::Visible };
+
+	if (IsChangingVisibility())
+	{
+		return Visible;
+	}
+
 	return Visibility;
+}
+
+void UFriendListViewModel::SetTargetVisibility(const ESlateVisibility& InTargetVisibility)
+{
+	UE_MVVM_SET_PROPERTY_VALUE(TargetVisibility, InTargetVisibility);
+	UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(IsChangingVisibility);
+}
+
+const ESlateVisibility& UFriendListViewModel::GetTargetVisibility() const
+{
+	return TargetVisibility;
 }
 
 void UFriendListViewModel::SetVisibilityTextFromEnum(const ESlateVisibility& InVisibility)
@@ -123,21 +142,32 @@ const FString& UFriendListViewModel::GetVisibilityText() const
 
 void UFriendListViewModel::ToggleVisibility()
 {
-	switch (Visibility)
-	{
-		case ESlateVisibility::Collapsed:
-			SetVisibilityAndText(ESlateVisibility::Visible);
+	SetVisibilityAndText(GetNextVisibility(Visibility));
+}
 
-			break;
+ESlateVisibility UFriendListViewModel::ToggleTargetVisibility()
+{
+	SetTargetVisibility(GetNextVisibility(TargetVisibility));
+	SetVisibilityTextFromEnum(TargetVisibility);
+	SetVisibility(ESlateVisibility::Visible);
 
-		default:
-			SetVisibilityAndText(ESlateVisibility::Collapsed);
-	}
+	return TargetVisibility;
+}
+
+void UFriendListViewModel::ApplyTargetVisibility()
+{
+	SetVisibilityAndText(TargetVisibility);
+	UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(IsChangingVisibility);
 }
 
 int UFriendListViewModel::GetFriendsCount() const
 {
 	return Friends.Num();
+}
+
+bool UFriendListViewModel::IsChangingVisibility() const
+{
+	return Visibility != TargetVisibility;
 }
 
 void UFriendListViewModel::Set(const UFriendListViewModelDataAsset* DataAsset)
@@ -147,6 +177,7 @@ void UFriendListViewModel::Set(const UFriendListViewModelDataAsset* DataAsset)
 		SetTitle(DataAsset->Title);
 		SetTextColor(DataAsset->TextColor);
 		SetVisibilityAndText(DataAsset->Visibility);
+		SetTargetVisibility(DataAsset->Visibility);
 	}
 }
 
@@ -161,5 +192,16 @@ const FString& UFriendListViewModel::GetVisibilityTextFromEnum(const ESlateVisib
 			return Collapsed;
 		default:
 			return Visible;
+	}
+}
+
+ESlateVisibility UFriendListViewModel::GetNextVisibility(const ESlateVisibility& InVisibility)
+{
+	switch (InVisibility)
+	{
+		case ESlateVisibility::Collapsed:
+			return ESlateVisibility::Visible;
+		default:
+			return ESlateVisibility::Collapsed;
 	}
 }
