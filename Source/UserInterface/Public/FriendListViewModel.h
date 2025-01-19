@@ -88,6 +88,9 @@ public:
 	UFUNCTION(BlueprintPure, FieldNotify)
 	bool IsChangingVisibility() const;
 
+	UFUNCTION(BlueprintPure, FieldNotify)
+	bool CanChangeVisibility() const;
+
 	void Set(const UFriendListViewModelDataAsset* DataAsset);
 
 private:

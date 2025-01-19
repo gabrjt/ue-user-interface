@@ -117,7 +117,7 @@ const ESlateVisibility& UFriendListViewModel::GetVisibility() const
 void UFriendListViewModel::SetTargetVisibility(const ESlateVisibility& InTargetVisibility)
 {
 	UE_MVVM_SET_PROPERTY_VALUE(TargetVisibility, InTargetVisibility);
-	UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(IsChangingVisibility);
+	UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(CanChangeVisibility);
 }
 
 const ESlateVisibility& UFriendListViewModel::GetTargetVisibility() const
@@ -157,7 +157,7 @@ ESlateVisibility UFriendListViewModel::ToggleTargetVisibility()
 void UFriendListViewModel::ApplyTargetVisibility()
 {
 	SetVisibilityAndText(TargetVisibility);
-	UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(IsChangingVisibility);
+	UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(CanChangeVisibility);
 }
 
 int UFriendListViewModel::GetFriendsCount() const
@@ -168,6 +168,11 @@ int UFriendListViewModel::GetFriendsCount() const
 bool UFriendListViewModel::IsChangingVisibility() const
 {
 	return Visibility != TargetVisibility;
+}
+
+bool UFriendListViewModel::CanChangeVisibility() const
+{
+	return Friends.Num() != 0 && !IsChangingVisibility();
 }
 
 void UFriendListViewModel::Set(const UFriendListViewModelDataAsset* DataAsset)
