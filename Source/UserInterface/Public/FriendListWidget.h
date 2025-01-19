@@ -8,6 +8,7 @@ class UListView;
 class UTextBlock;
 class UButton;
 class UVerticalBox;
+class UWidgetAnimation;
 class UFriendListViewModel;
 
 UCLASS()
@@ -32,6 +33,9 @@ class USERINTERFACE_API UFriendListWidget : public UUserWidget
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess))
 	UTextBlock* CollapseButtonText;
+
+	UPROPERTY(Transient, BlueprintReadWrite, meta=(BindWidgetAnim, AllowPrivateAccess))
+	TObjectPtr<UWidgetAnimation> CollapseAnimation;
 
 public:
 	UFUNCTION(BlueprintImplementableEvent)
