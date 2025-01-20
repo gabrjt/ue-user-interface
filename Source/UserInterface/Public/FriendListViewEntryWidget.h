@@ -19,4 +19,7 @@ class USERINTERFACE_API UFriendListViewEntryWidget : public UUserWidget, public 
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess))
 	UTextBlock* StatusMessageText;
+
+	UPROPERTY(Transient, BlueprintReadWrite, meta=(BindWidgetAnim, AllowPrivateAccess))
+	TObjectPtr<UWidgetAnimation> LevelUpAnimation;
 };
