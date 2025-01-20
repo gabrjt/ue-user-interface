@@ -1,7 +1,6 @@
 ﻿#include "FriendListViewModel.h"
 #include "FriendData.h"
 #include "FriendListViewModelDataAsset.h"
-#include "FriendViewModel.h"
 #include "Components/SlateWrapperTypes.h"
 
 UFriendListViewModel::UFriendListViewModel()
@@ -173,6 +172,16 @@ bool UFriendListViewModel::IsChangingVisibility() const
 bool UFriendListViewModel::CanChangeVisibility() const
 {
 	return Friends.Num() != 0 && !IsChangingVisibility();
+}
+
+UFriendViewModel* UFriendListViewModel::FriendAdded() const
+{
+	if (Friends.IsEmpty())
+	{
+		return nullptr;
+	}
+	
+	return Friends[Friends.Num()-1];
 }
 
 void UFriendListViewModel::Set(const UFriendListViewModelDataAsset* DataAsset)

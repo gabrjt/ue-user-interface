@@ -37,6 +37,9 @@ class USERINTERFACE_API UFriendListWidget : public UUserWidget
 	UPROPERTY(Transient, BlueprintReadWrite, meta=(BindWidgetAnim, AllowPrivateAccess))
 	TObjectPtr<UWidgetAnimation> CollapseAnimation;
 
+	UPROPERTY(Transient, BlueprintReadWrite, meta=(BindWidgetAnim, AllowPrivateAccess))
+	TObjectPtr<UWidgetAnimation> NudgeAnimation;
+
 public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void SetViewModel(UFriendListViewModel* InFriendListViewModel);

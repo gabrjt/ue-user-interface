@@ -90,6 +90,9 @@ public:
 
 	UFUNCTION(BlueprintPure, FieldNotify)
 	bool CanChangeVisibility() const;
+	
+	UFUNCTION(BlueprintPure, FieldNotify)
+	UFriendViewModel* FriendAdded() const;
 
 	void Set(const UFriendListViewModelDataAsset* DataAsset);
 
@@ -101,6 +104,8 @@ private:
 	FORCEINLINE void AddFriend(const FFriendData& InFriend)
 	{
 		Friends.Add(UFriendViewModel::Create(this, InFriend));
+
+		UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(FriendAdded);
 	}
 
 	FORCEINLINE void BroadcastFriends()
