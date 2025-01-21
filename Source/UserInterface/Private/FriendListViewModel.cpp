@@ -103,7 +103,7 @@ void UFriendListViewModel::SetVisibility(const ESlateVisibility& InVisibility)
 
 const ESlateVisibility& UFriendListViewModel::GetVisibility() const
 {
-	static ESlateVisibility Visible { ESlateVisibility::Visible };
+	static constexpr ESlateVisibility Visible { ESlateVisibility::Visible };
 
 	if (IsChangingVisibility())
 	{
@@ -180,8 +180,8 @@ UFriendViewModel* UFriendListViewModel::FriendAdded() const
 	{
 		return nullptr;
 	}
-	
-	return Friends[Friends.Num()-1];
+
+	return Friends[Friends.Num() - 1];
 }
 
 void UFriendListViewModel::Set(const UFriendListViewModelDataAsset* DataAsset)
@@ -197,8 +197,8 @@ void UFriendListViewModel::Set(const UFriendListViewModelDataAsset* DataAsset)
 
 const FString& UFriendListViewModel::GetVisibilityTextFromEnum(const ESlateVisibility& InVisibility)
 {
-	static FString Collapsed { "+" };
-	static FString Visible { "-" };
+	static const FString Collapsed { "+" };
+	static const FString Visible { "-" };
 
 	switch (InVisibility)
 	{

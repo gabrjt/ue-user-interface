@@ -44,7 +44,7 @@ void UFriendViewModel::SetIsConnected(const bool bInIsConnected)
 
 void UFriendViewModel::SetLastSeen(const FString& InLastSeen)
 {
-	UE_MVVM_SET_PROPERTY_VALUE(LastSeen, InLastSeen);
+	UE_MVVM_SET_PROPERTY_VALUE(LastSeen, {"Last Seen: " + InLastSeen});
 }
 
 void UFriendViewModel::SetStatusMessage(const FString& InStatusMessage)
@@ -75,6 +75,13 @@ bool UFriendViewModel::GetIsConnected() const
 const FString& UFriendViewModel::GetLastSeen() const
 {
 	return LastSeen;
+}
+
+const FString& UFriendViewModel::GetLastSeenIfDisconnected() const
+{
+	static const FString None;
+
+	return bIsConnected ? None : GetLastSeen();
 }
 
 const FString& UFriendViewModel::GetStatusMessage() const

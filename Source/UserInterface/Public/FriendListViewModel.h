@@ -90,7 +90,7 @@ public:
 
 	UFUNCTION(BlueprintPure, FieldNotify)
 	bool CanChangeVisibility() const;
-	
+
 	UFUNCTION(BlueprintPure, FieldNotify)
 	UFriendViewModel* FriendAdded() const;
 

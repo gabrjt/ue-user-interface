@@ -56,6 +56,9 @@ public:
 
 	const FString& GetLastSeen() const;
 
+	UFUNCTION(BlueprintPure, FieldNotify)
+	const FString& GetLastSeenIfDisconnected() const;
+
 	const FString& GetStatusMessage() const;
 
 	UFUNCTION(BlueprintCallable)
