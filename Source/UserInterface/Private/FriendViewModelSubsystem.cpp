@@ -66,7 +66,7 @@ void UFriendViewModelSubsystem::OnFriendUpdated(const FFriendData& FriendData) c
 		ConnectedFriendsViewModel->UpdateFriend(FriendData);
 		DisconnectedFriendsViewModel->RemoveFriend(FriendData.UserID);
 
-		ConnectedFriendsNotificationsViewModel->UpdateFriend(FriendData);
+		ConnectedFriendsNotificationsViewModel->AddFriend(FriendData);
 	}
 	else
 	{

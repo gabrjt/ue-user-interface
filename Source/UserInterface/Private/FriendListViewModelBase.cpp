@@ -54,10 +54,10 @@ UFriendViewModel* UFriendListViewModelBase::UpdateFriend(const FFriendData& InFr
 	}
 	else
 	{
-		FriendViewModel = AddFriend(InFriend);
+		FriendViewModel = Friends[AddFriend(InFriend)];
 
 		BroadcastFriends();
-		BroadcastFriendAdded();
+		BroadcastGetLastAddedFriend();
 	}
 
 	return FriendViewModel;
@@ -69,7 +69,7 @@ int UFriendListViewModelBase::GetFriendsCount() const
 }
 
 
-UFriendViewModel* UFriendListViewModelBase::FriendAdded() const
+UFriendViewModel* UFriendListViewModelBase::GetLastAddedFriend() const
 {
 	if (Friends.IsEmpty())
 	{
@@ -79,11 +79,8 @@ UFriendViewModel* UFriendListViewModelBase::FriendAdded() const
 	return Friends[Friends.Num() - 1];
 }
 
-UFriendViewModel* UFriendListViewModelBase::AddFriend(UFriendViewModel* InFriend)
+void UFriendListViewModelBase::OnFriendAdded(int Index)
 {
-	const int Index { Friends.Add(InFriend) };
-
-	return Friends[Index];
 }
 
 void UFriendListViewModelBase::BroadcastFriends()

@@ -4,8 +4,6 @@
 #include "FriendListViewModelBase.h"
 #include "ConnectedFriendListViewModel.generated.h"
 
-class UFriendViewModel;
-
 UCLASS(BlueprintType)
 class USERINTERFACE_API UConnectedFriendListViewModel : public UFriendListViewModelBase
 {
@@ -14,10 +12,6 @@ class USERINTERFACE_API UConnectedFriendListViewModel : public UFriendListViewMo
 public:
 	UConnectedFriendListViewModel();
 
-	/*using UFriendListViewModelBase::AddFriend;
-	
-	virtual UFriendViewModel* AddFriend(UFriendViewModel* InFriend) override;*/
-
-//protected:
-	//virtual void BroadcastFriends() override;
+protected:
+	virtual void OnFriendAdded(int Index) override;
 };

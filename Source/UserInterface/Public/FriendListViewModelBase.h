@@ -20,7 +20,7 @@ public:
 	UFriendListViewModelBase();
 
 	void SetFriends(const TArray<UFriendViewModel*>& InFriends);
-	
+
 	const TArray<UFriendViewModel*>& GetFriends() const;
 
 	UFUNCTION(BlueprintCallable)
@@ -36,20 +36,24 @@ public:
 	int GetFriendsCount() const;
 
 	UFUNCTION(BlueprintPure, FieldNotify)
-	UFriendViewModel* FriendAdded() const;
-	
-	FORCEINLINE UFriendViewModel* AddFriend(const FFriendData& InFriend)
+	UFriendViewModel* GetLastAddedFriend() const;
+
+	FORCEINLINE int AddFriend(const FFriendData& InFriend)
 	{
-		return AddFriend(UFriendViewModel::Create(this, InFriend));
+		const int Index{Friends.Add(UFriendViewModel::Create(this, InFriend))};
+
+		OnFriendAdded(Index);
+
+		return Index;
 	}
 
-	virtual UFriendViewModel* AddFriend(UFriendViewModel* InFriend);
-
 protected:
+	virtual void OnFriendAdded(int Index);
+
 	virtual void BroadcastFriends();
 
-	FORCEINLINE void BroadcastFriendAdded()
+	FORCEINLINE void BroadcastGetLastAddedFriend()
 	{
-		UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(FriendAdded);
+		UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(GetLastAddedFriend);
 	}
 };
