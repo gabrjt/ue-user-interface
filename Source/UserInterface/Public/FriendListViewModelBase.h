@@ -7,6 +7,8 @@
 
 struct FFriendData;
 
+DECLARE_DELEGATE_OneParam(FOnFriendAdded, const FFriendData&);
+
 UCLASS(BlueprintType)
 class USERINTERFACE_API UFriendListViewModelBase : public UMVVMViewModelBase
 {
@@ -17,7 +19,11 @@ protected:
 	TArray<UFriendViewModel*> Friends;
 
 public:
+	FOnFriendAdded OnFriendAdded;
+	
 	UFriendListViewModelBase();
+
+	virtual ~UFriendListViewModelBase() override;
 
 	void SetFriends(const TArray<UFriendViewModel*>& InFriends);
 
@@ -42,13 +48,13 @@ public:
 	{
 		const int Index{Friends.Add(UFriendViewModel::Create(this, InFriend))};
 
-		OnFriendAdded(Index);
+		FriendAdded(Index);
 
 		return Index;
 	}
 
 protected:
-	virtual void OnFriendAdded(int Index);
+	virtual void FriendAdded(const int Index);
 
 	virtual void BroadcastFriends();
 

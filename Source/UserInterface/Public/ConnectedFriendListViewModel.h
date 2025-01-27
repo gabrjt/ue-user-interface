@@ -12,6 +12,8 @@ class USERINTERFACE_API UConnectedFriendListViewModel : public UFriendListViewMo
 public:
 	UConnectedFriendListViewModel();
 
+	void OnFriendConnected(const FFriendData& FriendData);
+
 protected:
-	virtual void OnFriendAdded(int Index) override;
+	virtual void FriendAdded(const int Index) override;
 };

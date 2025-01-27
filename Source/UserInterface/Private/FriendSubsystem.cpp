@@ -11,6 +11,7 @@ UFriendSubsystem::UFriendSubsystem()
 	, Friends()
 	, OnFriendsLoaded()
 	, OnFriendUpdated()
+	, OnFriendUpdatedBP()
 {
 }
 

@@ -6,6 +6,11 @@ UFriendListViewModelBase::UFriendListViewModelBase()
 {
 }
 
+UFriendListViewModelBase::~UFriendListViewModelBase()
+{
+	OnFriendAdded.Unbind();
+}
+
 void UFriendListViewModelBase::SetFriends(const TArray<UFriendViewModel*>& InFriends)
 {
 	Friends = InFriends;
@@ -58,6 +63,11 @@ UFriendViewModel* UFriendListViewModelBase::UpdateFriend(const FFriendData& InFr
 
 		BroadcastFriends();
 		BroadcastGetLastAddedFriend();
+
+		if (OnFriendAdded.IsBound())
+		{
+			OnFriendAdded.Execute(InFriend);
+		}
 	}
 
 	return FriendViewModel;
@@ -79,7 +89,7 @@ UFriendViewModel* UFriendListViewModelBase::GetLastAddedFriend() const
 	return Friends[Friends.Num() - 1];
 }
 
-void UFriendListViewModelBase::OnFriendAdded(int Index)
+void UFriendListViewModelBase::FriendAdded(int Index)
 {
 }
 

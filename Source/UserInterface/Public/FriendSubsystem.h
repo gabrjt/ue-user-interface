@@ -28,7 +28,7 @@ public:
 	UFriendSubsystem();
 
 	UPROPERTY(BlueprintAssignable, Category = "Friends")
-	FOnFriendUpdatedDelegateDynamic OnFriendUpdatedBP {};
+	FOnFriendUpdatedDelegateDynamic OnFriendUpdatedBP;
 
 	// UGameInstanceSubsystem interface
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
