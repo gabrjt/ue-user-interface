@@ -1,10 +1,9 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
+#include "FriendListWidgetBase.h"
 #include "FriendListWidget.generated.h"
 
-class UListView;
 class UTextBlock;
 class UButton;
 class UVerticalBox;
@@ -12,12 +11,9 @@ class UWidgetAnimation;
 class UFriendListViewModel;
 
 UCLASS()
-class USERINTERFACE_API UFriendListWidget : public UUserWidget
+class USERINTERFACE_API UFriendListWidget : public UFriendListWidgetBase
 {
 	GENERATED_BODY()
-
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess))
-	UListView* FriendListView;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess))
 	UTextBlock* FriendListText;
@@ -41,9 +37,6 @@ class USERINTERFACE_API UFriendListWidget : public UUserWidget
 	TObjectPtr<UWidgetAnimation> NudgeAnimation;
 
 public:
-	UFUNCTION(BlueprintImplementableEvent)
-	void SetViewModel(UFriendListViewModel* InFriendListViewModel);
-
 	UFUNCTION(BlueprintImplementableEvent)
 	void ViewModelDataLoaded(UFriendListViewModel* InFriendListViewModel);
 };

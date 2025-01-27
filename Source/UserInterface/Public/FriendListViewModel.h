@@ -1,20 +1,16 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
-#include "FriendViewModel.h"
-#include "MVVMViewModelBase.h"
+#include "FriendListViewModelBase.h"
 #include "FriendListViewModel.generated.h"
 
 struct FFriendData;
 class UFriendListViewModelDataAsset;
 
 UCLASS(BlueprintType)
-class USERINTERFACE_API UFriendListViewModel : public UMVVMViewModelBase
+class USERINTERFACE_API UFriendListViewModel : public UFriendListViewModelBase
 {
 	GENERATED_BODY()
-
-	UPROPERTY(BlueprintReadWrite, FieldNotify, Getter, meta=(AllowPrivateAccess))
-	TArray<UFriendViewModel*> Friends;
 
 	UPROPERTY(BlueprintReadWrite, FieldNotify, Setter, Getter, meta=(AllowPrivateAccess))
 	FString Title;
@@ -35,18 +31,7 @@ public:
 	UFriendListViewModel();
 
 	void SetFriendsFromData(const TArray<FFriendData>& InFriends);
-
-	const TArray<UFriendViewModel*>& GetFriends() const;
-
-	UFUNCTION(BlueprintCallable)
-	void RemoveFriend(const FString& UserID);
-
-	UFUNCTION(BlueprintCallable)
-	void ClearFriends();
-
-	UFUNCTION(BlueprintCallable)
-	void UpdateFriend(const FFriendData& InFriend);
-
+	
 	void SetTitle(const FString& InTitle);
 
 	const FString& GetTitle() const;
@@ -83,35 +68,18 @@ public:
 	void ApplyTargetVisibility();
 
 	UFUNCTION(BlueprintPure, FieldNotify)
-	int GetFriendsCount() const;
-
-	UFUNCTION(BlueprintPure, FieldNotify)
 	bool IsChangingVisibility() const;
 
 	UFUNCTION(BlueprintPure, FieldNotify)
 	bool CanChangeVisibility() const;
-
-	UFUNCTION(BlueprintPure, FieldNotify)
-	UFriendViewModel* FriendAdded() const;
-
+	
 	void Set(const UFriendListViewModelDataAsset* DataAsset);
 
+protected:
+	virtual void BroadcastFriends() override;
+	
 private:
 	static const FString& GetVisibilityTextFromEnum(const ESlateVisibility& InVisibility);
 
 	static ESlateVisibility GetNextVisibility(const ESlateVisibility& InVisibility);
-
-	FORCEINLINE void AddFriend(const FFriendData& InFriend)
-	{
-		Friends.Add(UFriendViewModel::Create(this, InFriend));
-
-		UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(FriendAdded);
-	}
-
-	FORCEINLINE void BroadcastFriends()
-	{
-		UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(Friends);
-		UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(GetFriendsCount);
-		UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(CanChangeVisibility);
-	}
 };

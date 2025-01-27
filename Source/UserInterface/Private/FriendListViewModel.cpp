@@ -4,12 +4,12 @@
 #include "Components/SlateWrapperTypes.h"
 
 UFriendListViewModel::UFriendListViewModel()
-	: Friends()
-	, Title("Friends List")
-	, TextColor(FLinearColor::White)
-	, Visibility(ESlateVisibility::Collapsed)
-	, TargetVisibility(ESlateVisibility::Collapsed)
-	, VisibilityText(GetVisibilityTextFromEnum(Visibility))
+	: UFriendListViewModelBase()
+	  , Title("Friends List")
+	  , TextColor(FLinearColor::White)
+	  , Visibility(ESlateVisibility::Collapsed)
+	  , TargetVisibility(ESlateVisibility::Collapsed)
+	  , VisibilityText(GetVisibilityTextFromEnum(Visibility))
 {
 }
 
@@ -23,51 +23,6 @@ void UFriendListViewModel::SetFriendsFromData(const TArray<FFriendData>& InFrien
 	}
 
 	BroadcastFriends();
-}
-
-const TArray<UFriendViewModel*>& UFriendListViewModel::GetFriends() const
-{
-	return Friends;
-}
-
-void UFriendListViewModel::RemoveFriend(const FString& UserID)
-{
-	if (const int32 Index {
-		Friends.IndexOfByPredicate([&UserID](const UFriendViewModel* Friend)
-		{
-			return Friend && *Friend == UserID;
-		})
-	}; Index != INDEX_NONE)
-	{
-		Friends.RemoveAt(Index);
-
-		BroadcastFriends();
-	}
-}
-
-void UFriendListViewModel::ClearFriends()
-{
-	Friends.Empty();
-
-	BroadcastFriends();
-}
-
-void UFriendListViewModel::UpdateFriend(const FFriendData& InFriend)
-{
-	if (const int32 Index {
-		Friends.IndexOfByPredicate([&InFriend](const UFriendViewModel* Friend)
-		{
-			return Friend && *Friend == InFriend;
-		})
-	}; Index != INDEX_NONE)
-	{
-		Friends[Index]->Set(InFriend);
-	}
-	else
-	{
-		AddFriend(InFriend);
-		BroadcastFriends();
-	}
 }
 
 void UFriendListViewModel::SetTitle(const FString& InTitle)
@@ -103,7 +58,7 @@ void UFriendListViewModel::SetVisibility(const ESlateVisibility& InVisibility)
 
 const ESlateVisibility& UFriendListViewModel::GetVisibility() const
 {
-	static constexpr ESlateVisibility Visible { ESlateVisibility::Visible };
+	static constexpr ESlateVisibility Visible{ESlateVisibility::Visible};
 
 	if (IsChangingVisibility())
 	{
@@ -159,11 +114,6 @@ void UFriendListViewModel::ApplyTargetVisibility()
 	UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(CanChangeVisibility);
 }
 
-int UFriendListViewModel::GetFriendsCount() const
-{
-	return Friends.Num();
-}
-
 bool UFriendListViewModel::IsChangingVisibility() const
 {
 	return Visibility != TargetVisibility;
@@ -172,16 +122,6 @@ bool UFriendListViewModel::IsChangingVisibility() const
 bool UFriendListViewModel::CanChangeVisibility() const
 {
 	return Friends.Num() != 0 && !IsChangingVisibility();
-}
-
-UFriendViewModel* UFriendListViewModel::FriendAdded() const
-{
-	if (Friends.IsEmpty())
-	{
-		return nullptr;
-	}
-
-	return Friends[Friends.Num() - 1];
 }
 
 void UFriendListViewModel::Set(const UFriendListViewModelDataAsset* DataAsset)
@@ -195,17 +135,24 @@ void UFriendListViewModel::Set(const UFriendListViewModelDataAsset* DataAsset)
 	}
 }
 
+void UFriendListViewModel::BroadcastFriends()
+{
+	Super::BroadcastFriends();
+
+	UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(CanChangeVisibility);
+}
+
 const FString& UFriendListViewModel::GetVisibilityTextFromEnum(const ESlateVisibility& InVisibility)
 {
-	static const FString Collapsed { "+" };
-	static const FString Visible { "-" };
+	static const FString Collapsed{"+"};
+	static const FString Visible{"-"};
 
 	switch (InVisibility)
 	{
-		case ESlateVisibility::Collapsed:
-			return Collapsed;
-		default:
-			return Visible;
+	case ESlateVisibility::Collapsed:
+		return Collapsed;
+	default:
+		return Visible;
 	}
 }
 
@@ -213,9 +160,9 @@ ESlateVisibility UFriendListViewModel::GetNextVisibility(const ESlateVisibility&
 {
 	switch (InVisibility)
 	{
-		case ESlateVisibility::Collapsed:
-			return ESlateVisibility::Visible;
-		default:
-			return ESlateVisibility::Collapsed;
+	case ESlateVisibility::Collapsed:
+		return ESlateVisibility::Visible;
+	default:
+		return ESlateVisibility::Collapsed;
 	}
 }
