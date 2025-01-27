@@ -5,6 +5,7 @@
 #include "HUDContainerWidget.generated.h"
 
 class UFriendListWidget;
+class UConnectedFriendListWidget;
 class UFriendListViewModel;
 class UFriendListViewModelDataAsset;
 
@@ -18,6 +19,9 @@ class USERINTERFACE_API UHUDContainerWidget : public UCommonUserWidget
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess))
 	UFriendListWidget* DisconnectedFriends;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess))
+	UConnectedFriendListWidget* ConnectedFriendsNotifications;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Settings")
 	TSoftObjectPtr<UFriendListViewModelDataAsset> ConnectedFriendsDataAsset;

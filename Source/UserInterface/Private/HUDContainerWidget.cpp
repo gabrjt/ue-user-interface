@@ -1,4 +1,6 @@
 #include "HUDContainerWidget.h"
+#include "ConnectedFriendListViewModel.h"
+#include "ConnectedFriendListWidget.h"
 #include "FriendListViewModel.h"
 #include "FriendListViewModelDataAsset.h"
 #include "FriendListWidget.h"
@@ -16,6 +18,7 @@ void UHUDContainerWidget::NativeOnInitialized()
 	DisconnectedFriends->SetVisibility(ESlateVisibility::Hidden);
 	ConnectedFriends->SetViewModel(FriendViewModelSubsystem->GetConnectedFriendsViewModel());
 	DisconnectedFriends->SetViewModel(FriendViewModelSubsystem->GetDisconnectedFriendsViewModel());
+	ConnectedFriendsNotifications->SetViewModel(FriendViewModelSubsystem->GetConnectedFriendsNotificationsViewModel());
 
 	TArray              AssetsToLoad { ConnectedFriendsDataAsset.ToSoftObjectPath(), DisconnectedFriendsDataAsset.ToSoftObjectPath() };
 	FStreamableManager& StreamableManager = UAssetManager::GetStreamableManager();

@@ -13,12 +13,14 @@ class USERINTERFACE_API UFriendListViewModelBase : public UMVVMViewModelBase
 	GENERATED_BODY()
 
 protected:
-	UPROPERTY(BlueprintReadWrite, FieldNotify, Getter, meta=(AllowPrivateAccess))
+	UPROPERTY(BlueprintReadWrite, FieldNotify, Setter, Getter, meta=(AllowPrivateAccess))
 	TArray<UFriendViewModel*> Friends;
 
 public:
 	UFriendListViewModelBase();
 
+	void SetFriends(const TArray<UFriendViewModel*>& InFriends);
+	
 	const TArray<UFriendViewModel*>& GetFriends() const;
 
 	UFUNCTION(BlueprintCallable)
@@ -28,21 +30,26 @@ public:
 	void ClearFriends();
 
 	UFUNCTION(BlueprintCallable)
-	void UpdateFriend(const FFriendData& InFriend);
+	UFriendViewModel* UpdateFriend(const FFriendData& InFriend);
 
 	UFUNCTION(BlueprintPure, FieldNotify)
 	int GetFriendsCount() const;
 
 	UFUNCTION(BlueprintPure, FieldNotify)
 	UFriendViewModel* FriendAdded() const;
-
-protected:
-	FORCEINLINE void AddFriend(const FFriendData& InFriend)
+	
+	FORCEINLINE UFriendViewModel* AddFriend(const FFriendData& InFriend)
 	{
-		Friends.Add(UFriendViewModel::Create(this, InFriend));
-
-		UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(FriendAdded);
+		return AddFriend(UFriendViewModel::Create(this, InFriend));
 	}
 
+	virtual UFriendViewModel* AddFriend(UFriendViewModel* InFriend);
+
+protected:
 	virtual void BroadcastFriends();
+
+	FORCEINLINE void BroadcastFriendAdded()
+	{
+		UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(FriendAdded);
+	}
 };

@@ -1,4 +1,5 @@
 ﻿#include "FriendViewModelSubsystem.h"
+#include "ConnectedFriendListViewModel.h"
 #include "FriendListViewModel.h"
 #include "FriendService.h"
 #include "FriendServiceProviderSubsystem.h"
@@ -6,13 +7,15 @@
 UFriendViewModelSubsystem::UFriendViewModelSubsystem()
 	: ConnectedFriendsViewModel()
 	, DisconnectedFriendsViewModel()
+	, ConnectedFriendsNotificationsViewModel()
 {
 }
 
 void UFriendViewModelSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
-	ConnectedFriendsViewModel    = NewObject<UFriendListViewModel>();
-	DisconnectedFriendsViewModel = NewObject<UFriendListViewModel>();
+	ConnectedFriendsViewModel			   = NewObject<UFriendListViewModel>();
+	DisconnectedFriendsViewModel		   = NewObject<UFriendListViewModel>();
+	ConnectedFriendsNotificationsViewModel = NewObject<UConnectedFriendListViewModel>();
 
 	IFriendService* FriendService { GetGameInstance()->GetSubsystem<UFriendServiceProviderSubsystem>()->GetFriendServiceInterface() };
 
@@ -24,6 +27,7 @@ void UFriendViewModelSubsystem::Deinitialize()
 {
 	ConnectedFriendsViewModel->ClearFriends();
 	DisconnectedFriendsViewModel->ClearFriends();
+	ConnectedFriendsNotificationsViewModel->ClearFriends();
 
 	if (IFriendService* FriendService { GetGameInstance()->GetSubsystem<UFriendServiceProviderSubsystem>()->GetFriendServiceInterface() }; FriendService)
 	{
@@ -42,6 +46,11 @@ UFriendListViewModel* UFriendViewModelSubsystem::GetDisconnectedFriendsViewModel
 	return DisconnectedFriendsViewModel;
 }
 
+UConnectedFriendListViewModel* UFriendViewModelSubsystem::GetConnectedFriendsNotificationsViewModel() const
+{
+	return ConnectedFriendsNotificationsViewModel;
+}
+
 void UFriendViewModelSubsystem::OnFriendsLoaded() const
 {
 	const IFriendService* FriendService { GetGameInstance()->GetSubsystem<UFriendServiceProviderSubsystem>()->GetFriendServiceInterface() };
@@ -56,6 +65,8 @@ void UFriendViewModelSubsystem::OnFriendUpdated(const FFriendData& FriendData) c
 	{
 		ConnectedFriendsViewModel->UpdateFriend(FriendData);
 		DisconnectedFriendsViewModel->RemoveFriend(FriendData.UserID);
+
+		ConnectedFriendsNotificationsViewModel->UpdateFriend(FriendData);
 	}
 	else
 	{

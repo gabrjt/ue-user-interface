@@ -5,7 +5,7 @@
 #include "FriendListWidgetBase.generated.h"
 
 class UListView;
-class UFriendListViewModel;
+class UFriendListViewModelBase;
 
 UCLASS()
 class USERINTERFACE_API UFriendListWidgetBase : public UUserWidget
@@ -18,5 +18,5 @@ protected:
 
 public:
 	UFUNCTION(BlueprintImplementableEvent)
-	void SetViewModel(UFriendListViewModel* InFriendListViewModel);
+	void SetViewModel(UFriendListViewModelBase* InFriendListViewModel);
 };
