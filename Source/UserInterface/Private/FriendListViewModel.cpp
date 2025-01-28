@@ -5,11 +5,11 @@
 
 UFriendListViewModel::UFriendListViewModel()
 	: UFriendListViewModelBase()
-	  , Title("Friends List")
-	  , TextColor(FLinearColor::White)
-	  , Visibility(ESlateVisibility::Collapsed)
-	  , TargetVisibility(ESlateVisibility::Collapsed)
-	  , VisibilityText(GetVisibilityTextFromEnum(Visibility))
+	, Title("Friends List")
+	, TextColor(FLinearColor::White)
+	, Visibility(ESlateVisibility::Collapsed)
+	, TargetVisibility(ESlateVisibility::Collapsed)
+	, VisibilityText(GetVisibilityTextFromEnum(Visibility))
 {
 }
 
@@ -58,7 +58,7 @@ void UFriendListViewModel::SetVisibility(const ESlateVisibility& InVisibility)
 
 const ESlateVisibility& UFriendListViewModel::GetVisibility() const
 {
-	static constexpr ESlateVisibility Visible{ESlateVisibility::Visible};
+	static constexpr ESlateVisibility Visible { ESlateVisibility::Visible };
 
 	if (IsChangingVisibility())
 	{
@@ -144,15 +144,15 @@ void UFriendListViewModel::BroadcastFriends()
 
 const FString& UFriendListViewModel::GetVisibilityTextFromEnum(const ESlateVisibility& InVisibility)
 {
-	static const FString Collapsed{"+"};
-	static const FString Visible{"-"};
+	static const FString Collapsed { "+" };
+	static const FString Visible { "-" };
 
 	switch (InVisibility)
 	{
-	case ESlateVisibility::Collapsed:
-		return Collapsed;
-	default:
-		return Visible;
+		case ESlateVisibility::Collapsed:
+			return Collapsed;
+		default:
+			return Visible;
 	}
 }
 
@@ -160,9 +160,9 @@ ESlateVisibility UFriendListViewModel::GetNextVisibility(const ESlateVisibility&
 {
 	switch (InVisibility)
 	{
-	case ESlateVisibility::Collapsed:
-		return ESlateVisibility::Visible;
-	default:
-		return ESlateVisibility::Collapsed;
+		case ESlateVisibility::Collapsed:
+			return ESlateVisibility::Visible;
+		default:
+			return ESlateVisibility::Collapsed;
 	}
 }

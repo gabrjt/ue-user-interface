@@ -20,7 +20,7 @@ protected:
 
 public:
 	FOnFriendAdded OnFriendAdded;
-	
+
 	UFriendListViewModelBase();
 
 	virtual ~UFriendListViewModelBase() override;
@@ -46,7 +46,7 @@ public:
 
 	FORCEINLINE int AddFriend(const FFriendData& InFriend)
 	{
-		const int Index{Friends.Add(UFriendViewModel::Create(this, InFriend))};
+		const int Index { Friends.Add(UFriendViewModel::Create(this, InFriend)) };
 
 		FriendAdded(Index);
 

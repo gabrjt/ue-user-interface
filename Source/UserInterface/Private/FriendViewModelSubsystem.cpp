@@ -13,12 +13,13 @@ UFriendViewModelSubsystem::UFriendViewModelSubsystem()
 
 void UFriendViewModelSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
-	ConnectedFriendsViewModel			   = NewObject<UFriendListViewModel>();
-	DisconnectedFriendsViewModel		   = NewObject<UFriendListViewModel>();
+	ConnectedFriendsViewModel              = NewObject<UFriendListViewModel>();
+	DisconnectedFriendsViewModel           = NewObject<UFriendListViewModel>();
 	ConnectedFriendsNotificationsViewModel = NewObject<UConnectedFriendListViewModel>();
 
-	ConnectedFriendsViewModel->OnFriendAdded = FOnFriendAdded::CreateUObject(ConnectedFriendsNotificationsViewModel, &UConnectedFriendListViewModel::OnFriendConnected);
-	
+	ConnectedFriendsViewModel->OnFriendAdded = FOnFriendAdded::CreateUObject(ConnectedFriendsNotificationsViewModel,
+		&UConnectedFriendListViewModel::OnFriendConnected);
+
 	IFriendService* FriendService { GetGameInstance()->GetSubsystem<UFriendServiceProviderSubsystem>()->GetFriendServiceInterface() };
 
 	FriendService->SubscribeOnFriendsLoaded(FOnFriendsLoaded::CreateUObject(this, &UFriendViewModelSubsystem::OnFriendsLoaded));

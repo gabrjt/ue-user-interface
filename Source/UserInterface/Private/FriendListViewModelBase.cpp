@@ -23,7 +23,7 @@ const TArray<UFriendViewModel*>& UFriendListViewModelBase::GetFriends() const
 
 void UFriendListViewModelBase::RemoveFriend(const FString& UserID)
 {
-	if (const int32 Index{
+	if (const int32 Index {
 		Friends.IndexOfByPredicate([&UserID](const UFriendViewModel* Friend)
 		{
 			return Friend && *Friend == UserID;
@@ -46,8 +46,8 @@ void UFriendListViewModelBase::ClearFriends()
 UFriendViewModel* UFriendListViewModelBase::UpdateFriend(const FFriendData& InFriend)
 {
 	UFriendViewModel* FriendViewModel;
-	
-	if (const int32 Index{
+
+	if (const int32 Index {
 		Friends.IndexOfByPredicate([&InFriend](const UFriendViewModel* Friend)
 		{
 			return Friend && *Friend == InFriend;
@@ -77,7 +77,6 @@ int UFriendListViewModelBase::GetFriendsCount() const
 {
 	return Friends.Num();
 }
-
 
 UFriendViewModel* UFriendListViewModelBase::GetLastAddedFriend() const
 {

@@ -31,7 +31,7 @@ public:
 	UFriendListViewModel();
 
 	void SetFriendsFromData(const TArray<FFriendData>& InFriends);
-	
+
 	void SetTitle(const FString& InTitle);
 
 	const FString& GetTitle() const;
@@ -72,12 +72,12 @@ public:
 
 	UFUNCTION(BlueprintPure, FieldNotify)
 	bool CanChangeVisibility() const;
-	
+
 	void Set(const UFriendListViewModelDataAsset* DataAsset);
 
 protected:
 	virtual void BroadcastFriends() override;
-	
+
 private:
 	static const FString& GetVisibilityTextFromEnum(const ESlateVisibility& InVisibility);
 
