@@ -36,7 +36,7 @@ public:
 	void ClearFriends();
 
 	UFUNCTION(BlueprintCallable)
-	UFriendViewModel* UpdateFriend(const FFriendData& InFriend);
+	void UpdateFriend(const FFriendData& InFriend);
 
 	UFUNCTION(BlueprintPure, FieldNotify)
 	int GetFriendsCount() const;
@@ -44,13 +44,11 @@ public:
 	UFUNCTION(BlueprintPure, FieldNotify)
 	UFriendViewModel* GetLastAddedFriend() const;
 
-	FORCEINLINE int AddFriend(const FFriendData& InFriend)
+	FORCEINLINE void AddFriend(const FFriendData& InFriend)
 	{
 		const int Index { Friends.Add(UFriendViewModel::Create(this, InFriend)) };
 
 		FriendAdded(Index);
-
-		return Index;
 	}
 
 protected:

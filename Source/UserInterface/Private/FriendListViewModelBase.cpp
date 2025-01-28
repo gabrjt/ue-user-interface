@@ -3,6 +3,7 @@
 
 UFriendListViewModelBase::UFriendListViewModelBase()
 	: Friends()
+	, OnFriendAdded()
 {
 }
 
@@ -43,10 +44,8 @@ void UFriendListViewModelBase::ClearFriends()
 	BroadcastFriends();
 }
 
-UFriendViewModel* UFriendListViewModelBase::UpdateFriend(const FFriendData& InFriend)
+void UFriendListViewModelBase::UpdateFriend(const FFriendData& InFriend)
 {
-	UFriendViewModel* FriendViewModel;
-
 	if (const int32 Index {
 		Friends.IndexOfByPredicate([&InFriend](const UFriendViewModel* Friend)
 		{
@@ -54,13 +53,11 @@ UFriendViewModel* UFriendListViewModelBase::UpdateFriend(const FFriendData& InFr
 		})
 	}; Index != INDEX_NONE)
 	{
-		FriendViewModel = Friends[Index];
-		FriendViewModel->Set(InFriend);
+		Friends[Index]->Set(InFriend);
 	}
 	else
 	{
-		FriendViewModel = Friends[AddFriend(InFriend)];
-
+		AddFriend(InFriend);
 		BroadcastFriends();
 		BroadcastGetLastAddedFriend();
 
@@ -69,8 +66,6 @@ UFriendViewModel* UFriendListViewModelBase::UpdateFriend(const FFriendData& InFr
 			OnFriendAdded.Execute(InFriend);
 		}
 	}
-
-	return FriendViewModel;
 }
 
 int UFriendListViewModelBase::GetFriendsCount() const
