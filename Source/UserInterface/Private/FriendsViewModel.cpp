@@ -12,8 +12,10 @@ UFriendsViewModel::UFriendsViewModel()
 	, OnFriendUpdatedHandle()
 	, OnFriendAdded() {}
 
-UFriendsViewModel::~UFriendsViewModel()
+void UFriendsViewModel::BeginDestroy()
 {
+	Super::BeginDestroy();
+
 	ClearFriends();
 
 	if (const UGameInstance* GameInstance { UGameplayStatics::GetGameInstance(this) })

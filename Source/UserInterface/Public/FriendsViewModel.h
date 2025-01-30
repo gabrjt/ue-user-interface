@@ -30,7 +30,7 @@ public:
 
 	UFriendsViewModel();
 
-	virtual ~UFriendsViewModel() override;
+	virtual void BeginDestroy() override;
 
 	void SetFriendsFromData(const TArray<FFriendData>& InFriends);
 

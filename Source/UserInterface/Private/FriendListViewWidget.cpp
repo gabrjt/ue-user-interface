@@ -11,11 +11,10 @@ UFriendsViewModel* UFriendListViewWidget::GetViewModel() const
 
 UFriendsViewModel* UFriendListViewWidget::GetViewModel(const FName& InViewModelName) const
 {
-	return Cast<UFriendsViewModel>(
-		GetGameInstance()->GetSubsystem<UMVVMGameSubsystem>()->GetViewModelCollection()->FindViewModelInstance({
-			UFriendsViewModel::StaticClass(),
-			InViewModelName
-		}));
+	return Cast<UFriendsViewModel>(GetViewModelCollection()->FindViewModelInstance({
+		UFriendsViewModel::StaticClass(),
+		InViewModelName
+	}));
 }
 
 void UFriendListViewWidget::NativeOnInitialized()
@@ -24,11 +23,11 @@ void UFriendListViewWidget::NativeOnInitialized()
 
 	UFriendsViewModel* ViewModel { NewObject<UFriendsViewModel>(this) };
 
-	GetGameInstance()->GetSubsystem<UMVVMGameSubsystem>()->GetViewModelCollection()->AddViewModelInstance({
-			UFriendsViewModel::StaticClass(),
-			ViewModelName
-		},
-		ViewModel);
-
+	GetViewModelCollection()->AddViewModelInstance({ UFriendsViewModel::StaticClass(), ViewModelName }, ViewModel);
 	SetViewModel(ViewModel);
+}
+
+UMVVMViewModelCollectionObject* UFriendListViewWidget::GetViewModelCollection() const
+{
+	return GetGameInstance()->GetSubsystem<UMVVMGameSubsystem>()->GetViewModelCollection();
 }

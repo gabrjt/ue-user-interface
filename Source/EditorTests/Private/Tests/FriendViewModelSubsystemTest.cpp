@@ -10,8 +10,6 @@ bool FFriendViewModelSubsystemInitializeTest::RunTest(const FString& Parameters)
 	GameInstance->Init();
 	UFriendsViewModel* ViewModel { NewObject<UFriendsViewModel>() };
 
-
-
 	TestTrue("View Model is Added to Collection",
 		GameInstance->GetSubsystem<UMVVMGameSubsystem>()->GetViewModelCollection()->AddViewModelInstance({
 				UFriendsViewModel::StaticClass(),

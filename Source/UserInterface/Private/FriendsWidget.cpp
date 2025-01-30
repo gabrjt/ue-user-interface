@@ -12,10 +12,7 @@ void UFriendsWidget::NativeOnInitialized()
 
 	UFriendsWidgetViewModel* WidgetViewModel { NewObject<UFriendsWidgetViewModel>(this) };
 
-	GetGameInstance()->GetSubsystem<UMVVMGameSubsystem>()->GetViewModelCollection()->AddViewModelInstance({
-			UFriendsWidgetViewModel::StaticClass(),
-			WidgetViewModelName
-		},
+	GetViewModelCollection()->AddViewModelInstance({ UFriendsWidgetViewModel::StaticClass(), WidgetViewModelName },
 		WidgetViewModel);
 
 	SetWidgetViewModel(WidgetViewModel);

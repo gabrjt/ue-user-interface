@@ -4,6 +4,7 @@
 #include "Blueprint/UserWidget.h"
 #include "FriendListViewWidget.generated.h"
 
+class UMVVMViewModelCollectionObject;
 class UListView;
 class UFriendsViewModel;
 
@@ -31,4 +32,6 @@ public:
 
 protected:
 	virtual void NativeOnInitialized() override;
+
+	UMVVMViewModelCollectionObject* GetViewModelCollection() const;
 };

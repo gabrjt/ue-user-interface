@@ -11,7 +11,7 @@ UFriendViewModel::UFriendViewModel()
 
 UFriendViewModel* UFriendViewModel::Create(UObject* InOuter, const FFriendData& InFriend)
 {
-	UFriendViewModel* FriendViewModel = NewObject<UFriendViewModel>(InOuter);
+	UFriendViewModel* FriendViewModel { NewObject<UFriendViewModel>(InOuter) };
 	FriendViewModel->Set(InFriend);
 
 	return FriendViewModel;

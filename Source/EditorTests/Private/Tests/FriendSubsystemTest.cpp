@@ -79,7 +79,7 @@ bool FFriendSubsystemNotificationTest::RunTest(const FString& Parameters)
 		bNotificationReceived = true;
 	});
 
-	FDelegateHandle DelegateHandle { Helper.Subsystem->SubscribeOnFriendUpdated(OnFriendUpdatedDelegate) };
+	const FDelegateHandle DelegateHandle { Helper.Subsystem->SubscribeOnFriendUpdated(OnFriendUpdatedDelegate) };
 
 	FFriendData Friend { Helper.CreateTestFriend("TestUser1", "Original Name") };
 	Helper.Subsystem->UpdateFriend_Implementation(Friend);
