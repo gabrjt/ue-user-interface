@@ -2,10 +2,10 @@
 
 #include "CoreMinimal.h"
 #include "MVVMViewModelBase.h"
-#include "FriendsNotificationsWidgetViewModel.generated.h"
+#include "FriendsNotificationsWidgetEntryViewModel.generated.h"
 
 UCLASS(BlueprintType)
-class USERINTERFACE_API UFriendsNotificationsWidgetViewModel : public UMVVMViewModelBase
+class USERINTERFACE_API UFriendsNotificationsWidgetEntryViewModel : public UMVVMViewModelBase
 {
 	GENERATED_BODY()
 
@@ -13,7 +13,7 @@ class USERINTERFACE_API UFriendsNotificationsWidgetViewModel : public UMVVMViewM
 	float RenderOpacity;
 
 public:
-	UFriendsNotificationsWidgetViewModel();
+	UFriendsNotificationsWidgetEntryViewModel();
 
 	void SetRenderOpacity(const float InRenderOpacity);
 
