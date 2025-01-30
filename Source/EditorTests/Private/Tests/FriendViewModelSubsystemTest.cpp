@@ -72,17 +72,17 @@ bool FFriendViewModelSubsystemUpdateViewModelsTest::RunTest(const FString& Param
 	FriendSubsystem->SetFriendLevel_Implementation("TestUser1", 2);
 	FriendSubsystem->SetFriendLevel_Implementation("TestUser2", 3);
 
-	const TArray<UFriendViewModel*>& ConnectedFriendsViewModels { Helper.Subsystem->GetConnectedFriendsViewModel()->GetFriends() };
+	const TArray<UFriendViewModel*>& ConnectedFriendsViewModel { Helper.Subsystem->GetConnectedFriendsViewModel()->GetFriends() };
 
 	const int32 TestUser1Index {
-		ConnectedFriendsViewModels.IndexOfByPredicate([](const UFriendViewModel* Friend)
+		ConnectedFriendsViewModel.IndexOfByPredicate([](const UFriendViewModel* Friend)
 		{
 			return Friend && *Friend == "TestUser1";
 		})
 	};
 
 	const int32 TestUser2Index {
-		ConnectedFriendsViewModels.IndexOfByPredicate([](const UFriendViewModel* Friend)
+		ConnectedFriendsViewModel.IndexOfByPredicate([](const UFriendViewModel* Friend)
 		{
 			return Friend && *Friend == "TestUser2";
 		})
@@ -91,8 +91,8 @@ bool FFriendViewModelSubsystemUpdateViewModelsTest::RunTest(const FString& Param
 	TestNotEqual("TestUser1 Index is valid", TestUser1Index, static_cast<int32>(INDEX_NONE));
 	TestNotEqual("TestUser2 Index is valid", TestUser2Index, static_cast<int32>(INDEX_NONE));
 	TestNotEqual("Indexes are different", TestUser1Index, TestUser2Index);
-	TestEqual("TestUser1 Level updated", ConnectedFriendsViewModels[TestUser1Index]->GetLevel(), 2);
-	TestEqual("TestUser2 Level updated", ConnectedFriendsViewModels[TestUser2Index]->GetLevel(), 3);
+	TestEqual("TestUser1 Level updated", ConnectedFriendsViewModel[TestUser1Index]->GetLevel(), 2);
+	TestEqual("TestUser2 Level updated", ConnectedFriendsViewModel[TestUser2Index]->GetLevel(), 3);
 
 	return true;
 }
@@ -110,14 +110,14 @@ bool FFriendViewModelSubsystemViewModelsDataTest::RunTest(const FString& Paramet
 	const UFriendSubsystem* FriendSubsystem { Helper.GameInstance->GetSubsystem<UFriendSubsystem>() };
 
 	const TArray<FFriendData>        ConnectedFriends = FriendSubsystem->GetConnectedFriends_Implementation();
-	const TArray<UFriendViewModel*>& ConnectedFriendsViewModels { Helper.Subsystem->GetConnectedFriendsViewModel()->GetFriends() };
+	const TArray<UFriendViewModel*>& ConnectedFriendsViewModel { Helper.Subsystem->GetConnectedFriendsViewModel()->GetFriends() };
 
-	TestEqual("Connected Friends count matches", ConnectedFriends.Num(), ConnectedFriendsViewModels.Num());
+	TestEqual("Connected Friends count matches", ConnectedFriends.Num(), ConnectedFriendsViewModel.Num());
 
 	for (int32 Index = 0; Index < ConnectedFriends.Num(); Index++)
 	{
 		const FFriendData&      Friend { ConnectedFriends[Index] };
-		const UFriendViewModel* ViewModel { ConnectedFriendsViewModels[Index] };
+		const UFriendViewModel* ViewModel { ConnectedFriendsViewModel[Index] };
 
 		TestEqual("UserID matches", ViewModel->GetUserID(), Friend.UserID);
 		TestEqual("Nickname matches", ViewModel->GetNickname(), Friend.Nickname);
@@ -125,14 +125,14 @@ bool FFriendViewModelSubsystemViewModelsDataTest::RunTest(const FString& Paramet
 	}
 
 	const TArray<FFriendData>        DisconnectedFriends = FriendSubsystem->GetDisconnectedFriends_Implementation();
-	const TArray<UFriendViewModel*>& DisconnectedFriendsViewModels { Helper.Subsystem->GetDisconnectedFriendsViewModel()->GetFriends() };
+	const TArray<UFriendViewModel*>& DisconnectedFriendsViewModel { Helper.Subsystem->GetDisconnectedFriendsViewModel()->GetFriends() };
 
-	TestEqual("Disconnected Friends count matches", DisconnectedFriends.Num(), DisconnectedFriendsViewModels.Num());
+	TestEqual("Disconnected Friends count matches", DisconnectedFriends.Num(), DisconnectedFriendsViewModel.Num());
 
 	for (int32 Index = 0; Index < DisconnectedFriends.Num(); Index++)
 	{
 		const FFriendData&      Friend { DisconnectedFriends[Index] };
-		const UFriendViewModel* ViewModel { DisconnectedFriendsViewModels[Index] };
+		const UFriendViewModel* ViewModel { DisconnectedFriendsViewModel[Index] };
 
 		TestEqual("UserID matches", ViewModel->GetUserID(), Friend.UserID);
 		TestEqual("Nickname matches", ViewModel->GetNickname(), Friend.Nickname);
@@ -160,10 +160,10 @@ bool FFriendViewModelSubsystemViewModelDataIsUpdatedTest::RunTest(const FString&
 	FriendSubsystem->UpdateFriend_Implementation(Friend);
 
 	const TArray<FFriendData>        ConnectedFriends = FriendSubsystem->GetConnectedFriends_Implementation();
-	const TArray<UFriendViewModel*>& ConnectedFriendsViewModels { Helper.Subsystem->GetConnectedFriendsViewModel()->GetFriends() };
+	const TArray<UFriendViewModel*>& ConnectedFriendsViewModel { Helper.Subsystem->GetConnectedFriendsViewModel()->GetFriends() };
 
 	Friend = ConnectedFriends[0];
-	const UFriendViewModel* ViewModel { ConnectedFriendsViewModels[0] };
+	const UFriendViewModel* ViewModel { ConnectedFriendsViewModel[0] };
 
 	TestEqual("UserID matches", ViewModel->GetUserID(), Friend.UserID);
 	TestEqual("Nickname matches", ViewModel->GetNickname(), Friend.Nickname);

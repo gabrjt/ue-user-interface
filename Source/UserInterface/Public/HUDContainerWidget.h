@@ -5,9 +5,8 @@
 #include "HUDContainerWidget.generated.h"
 
 class UFriendsWidget;
-class UFriendsNotificationsWidget;
-class UFriendListViewModel;
 class UFriendsWidgetViewModelDataAsset;
+class UFriendsNotificationsWidget;
 
 UCLASS()
 class USERINTERFACE_API UHUDContainerWidget : public UCommonUserWidget

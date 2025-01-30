@@ -4,7 +4,6 @@
 #include "FriendsViewModelSubsystem.generated.h"
 
 class UFriendsViewModel;
-class UConnectedFriendListViewModel;
 struct FFriendData;
 
 UCLASS(BlueprintType)
@@ -19,7 +18,7 @@ class USERINTERFACE_API UFriendsViewModelSubsystem : public UGameInstanceSubsyst
 	UFriendsViewModel* DisconnectedFriendsViewModel;
 
 	UPROPERTY(Transient, BlueprintReadOnly, meta=(AllowPrivateAccess))
-	UConnectedFriendListViewModel* FriendsNotificationsViewModel;
+	UFriendsViewModel* FriendsNotificationsViewModel;
 
 public:
 	UFriendsViewModelSubsystem();
@@ -34,7 +33,7 @@ public:
 
 	UFriendsViewModel* GetDisconnectedFriendsViewModel() const;
 
-	UConnectedFriendListViewModel* GetFriendsNotificationsViewModel() const;
+	UFriendsViewModel* GetFriendsNotificationsViewModel() const;
 
 private:
 	void OnFriendsLoaded() const;

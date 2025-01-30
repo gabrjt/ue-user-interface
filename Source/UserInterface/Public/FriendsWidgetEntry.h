@@ -5,6 +5,7 @@
 #include "FriendsWidgetEntry.generated.h"
 
 class UTextBlock;
+class UWidgetAnimation;
 
 UCLASS()
 class USERINTERFACE_API UFriendsWidgetEntry : public UUserWidget, public IUserObjectListEntry

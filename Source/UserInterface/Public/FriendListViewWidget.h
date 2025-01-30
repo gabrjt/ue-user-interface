@@ -7,7 +7,7 @@
 class UListView;
 class UFriendsViewModel;
 
-UCLASS()
+UCLASS(Abstract)
 class USERINTERFACE_API UFriendListViewWidget : public UUserWidget
 {
 	GENERATED_BODY()
@@ -18,5 +18,5 @@ protected:
 
 public:
 	UFUNCTION(BlueprintImplementableEvent)
-	void SetViewModel(UFriendsViewModel* InFriendListViewModel);
+	void SetViewModel(UFriendsViewModel* InFriendsViewModel);
 };

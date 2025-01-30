@@ -1,5 +1,4 @@
 ﻿#include "FriendsWidgetViewModel.h"
-#include "FriendsViewModel.h"
 #include "FriendsWidgetViewModelDataAsset.h"
 #include "Components/SlateWrapperTypes.h"
 

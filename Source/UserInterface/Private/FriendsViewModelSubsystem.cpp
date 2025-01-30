@@ -1,5 +1,4 @@
 ﻿#include "FriendsViewModelSubsystem.h"
-#include "ConnectedFriendListViewModel.h"
 #include "FriendsViewModel.h"
 #include "FriendService.h"
 #include "FriendServiceProviderSubsystem.h"
@@ -15,10 +14,12 @@ void UFriendsViewModelSubsystem::Initialize(FSubsystemCollectionBase& Collection
 {
 	ConnectedFriendsViewModel     = NewObject<UFriendsViewModel>();
 	DisconnectedFriendsViewModel  = NewObject<UFriendsViewModel>();
-	FriendsNotificationsViewModel = NewObject<UConnectedFriendListViewModel>();
+	FriendsNotificationsViewModel = NewObject<UFriendsViewModel>();
 
-	ConnectedFriendsViewModel->OnFriendAdded = FOnFriendAdded::CreateUObject(FriendsNotificationsViewModel,
-		&UConnectedFriendListViewModel::OnFriendConnected);
+	ConnectedFriendsViewModel->OnFriendAdded = FOnFriendAdded::CreateLambda([this](const FFriendData& FriendData)
+	{
+		FriendsNotificationsViewModel->AddFriend(FriendData);
+	});
 
 	IFriendService* FriendService { GetGameInstance()->GetSubsystem<UFriendServiceProviderSubsystem>()->GetFriendServiceInterface() };
 
@@ -49,7 +50,7 @@ UFriendsViewModel* UFriendsViewModelSubsystem::GetDisconnectedFriendsViewModel()
 	return DisconnectedFriendsViewModel;
 }
 
-UConnectedFriendListViewModel* UFriendsViewModelSubsystem::GetFriendsNotificationsViewModel() const
+UFriendsViewModel* UFriendsViewModelSubsystem::GetFriendsNotificationsViewModel() const
 {
 	return FriendsNotificationsViewModel;
 }

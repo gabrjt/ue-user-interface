@@ -1,10 +1,8 @@
 #include "HUDContainerWidget.h"
-#include "ConnectedFriendListViewModel.h"
-#include "FriendsNotificationsWidget.h"
-#include "FriendsViewModel.h"
-#include "FriendsWidgetViewModelDataAsset.h"
-#include "FriendsWidget.h"
 #include "FriendsViewModelSubsystem.h"
+#include "FriendsWidget.h"
+#include "FriendsWidgetViewModelDataAsset.h"
+#include "FriendsNotificationsWidget.h"
 #include "Engine/AssetManager.h"
 #include "Engine/StreamableManager.h"
 
@@ -29,7 +27,6 @@ void UHUDContainerWidget::OnDataAssetsLoaded() const
 {
 	ConnectedFriends->SetVisibility(ESlateVisibility::Visible);
 	DisconnectedFriends->SetVisibility(ESlateVisibility::Visible);
-
-	ConnectedFriends->ViewModelDataLoaded(ConnectedFriendsDataAsset.Get());
-	DisconnectedFriends->ViewModelDataLoaded(DisconnectedFriendsDataAsset.Get());
+	ConnectedFriends->WidgetViewModelDataLoaded(ConnectedFriendsDataAsset.Get());
+	DisconnectedFriends->WidgetViewModelDataLoaded(DisconnectedFriendsDataAsset.Get());
 }

@@ -4,8 +4,9 @@
 #include "Blueprint/UserWidget.h"
 #include "FriendsNotificationsWidgetEntry.generated.h"
 
-class UTextBlock;
 class UBorder;
+class UTextBlock;
+class UWidgetAnimation;
 
 UCLASS()
 class USERINTERFACE_API UFriendsNotificationsWidgetEntry : public UUserWidget, public IUserObjectListEntry

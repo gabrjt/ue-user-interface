@@ -1,11 +1,8 @@
 ﻿#include "FriendsViewModel.h"
 #include "FriendData.h"
 
-UFriendsViewModel::UFriendsViewModel()
-	: Friends()
-	, OnFriendAdded()
-{
-}
+UFriendsViewModel::UFriendsViewModel() :
+	Friends(), OnFriendAdded() {}
 
 UFriendsViewModel::~UFriendsViewModel()
 {
@@ -18,7 +15,7 @@ void UFriendsViewModel::SetFriendsFromData(const TArray<FFriendData>& InFriends)
 
 	for (auto& Friend : InFriends)
 	{
-		AddFriend(Friend);
+		AddFriend_Internal(Friend);
 	}
 
 	BroadcastFriends();
@@ -36,12 +33,10 @@ const TArray<UFriendViewModel*>& UFriendsViewModel::GetFriends() const
 
 void UFriendsViewModel::RemoveFriend(const FString& UserID)
 {
-	if (const int32 Index {
-		Friends.IndexOfByPredicate([&UserID](const UFriendViewModel* Friend)
-		{
-			return Friend && *Friend == UserID;
-		})
-	}; Index != INDEX_NONE)
+	if (const int32 Index { Friends.IndexOfByPredicate([&UserID](const UFriendViewModel* Friend)
+	{
+		return Friend && *Friend == UserID;
+	}) }; Index != INDEX_NONE)
 	{
 		Friends.RemoveAt(Index);
 
@@ -58,25 +53,16 @@ void UFriendsViewModel::ClearFriends()
 
 void UFriendsViewModel::UpdateFriend(const FFriendData& InFriend)
 {
-	if (const int32 Index {
-		Friends.IndexOfByPredicate([&InFriend](const UFriendViewModel* Friend)
-		{
-			return Friend && *Friend == InFriend;
-		})
-	}; Index != INDEX_NONE)
+	if (const int32 Index { Friends.IndexOfByPredicate([&InFriend](const UFriendViewModel* Friend)
+	{
+		return Friend && *Friend == InFriend;
+	}) }; Index != INDEX_NONE)
 	{
 		Friends[Index]->Set(InFriend);
 	}
 	else
 	{
 		AddFriend(InFriend);
-		BroadcastFriends();
-		BroadcastGetLastAddedFriend();
-
-		if (OnFriendAdded.IsBound())
-		{
-			OnFriendAdded.Execute(InFriend);
-		}
 	}
 }
 
@@ -95,12 +81,14 @@ UFriendViewModel* UFriendsViewModel::GetLastAddedFriend() const
 	return Friends[Friends.Num() - 1];
 }
 
-void UFriendsViewModel::FriendAdded(int Index)
+void UFriendsViewModel::AddFriend(const FFriendData& InFriend)
 {
-}
+	AddFriend_Internal(InFriend);
+	BroadcastFriends();
+	BroadcastGetLastAddedFriend();
 
-void UFriendsViewModel::BroadcastFriends()
-{
-	UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(Friends);
-	UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(GetFriendsCount);
+	if (OnFriendAdded.IsBound())
+	{
+		OnFriendAdded.Execute(InFriend);
+	}
 }

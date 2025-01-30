@@ -14,7 +14,6 @@ class USERINTERFACE_API UFriendsViewModel : public UMVVMViewModelBase
 {
 	GENERATED_BODY()
 
-protected:
 	UPROPERTY(BlueprintReadWrite, FieldNotify, Setter, Getter, meta=(AllowPrivateAccess))
 	TArray<UFriendViewModel*> Friends;
 
@@ -46,17 +45,19 @@ public:
 	UFUNCTION(BlueprintPure, FieldNotify)
 	UFriendViewModel* GetLastAddedFriend() const;
 
-	FORCEINLINE void AddFriend(const FFriendData& InFriend)
-	{
-		const int Index { Friends.Add(UFriendViewModel::Create(this, InFriend)) };
+	void AddFriend(const FFriendData& InFriend);
 
-		FriendAdded(Index);
+private:
+	FORCEINLINE void AddFriend_Internal(const FFriendData& InFriend)
+	{
+		Friends.Add(UFriendViewModel::Create(this, InFriend));
 	}
 
-protected:
-	virtual void FriendAdded(const int Index);
-
-	virtual void BroadcastFriends();
+	FORCEINLINE void BroadcastFriends()
+	{
+		UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(Friends);
+		UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(GetFriendsCount);
+	}
 
 	FORCEINLINE void BroadcastGetLastAddedFriend()
 	{
