@@ -4,10 +4,10 @@
 #include "Engine/DataAsset.h"
 #include "Styling/SlateColor.h"
 #include "Types/SlateEnums.h"
-#include "FriendListViewModelDataAsset.generated.h"
+#include "FriendsWidgetViewModelDataAsset.generated.h"
 
 UCLASS()
-class USERINTERFACE_API UFriendListViewModelDataAsset : public UDataAsset
+class USERINTERFACE_API UFriendsWidgetViewModelDataAsset : public UDataAsset
 {
 	GENERATED_BODY()
 

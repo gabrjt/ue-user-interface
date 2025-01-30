@@ -3,14 +3,14 @@
 #include "CoreMinimal.h"
 #include "FriendViewModel.h"
 #include "MVVMViewModelBase.h"
-#include "FriendListViewModelBase.generated.h"
+#include "FriendsViewModel.generated.h"
 
 struct FFriendData;
 
 DECLARE_DELEGATE_OneParam(FOnFriendAdded, const FFriendData&);
 
 UCLASS(BlueprintType)
-class USERINTERFACE_API UFriendListViewModelBase : public UMVVMViewModelBase
+class USERINTERFACE_API UFriendsViewModel : public UMVVMViewModelBase
 {
 	GENERATED_BODY()
 
@@ -21,9 +21,9 @@ protected:
 public:
 	FOnFriendAdded OnFriendAdded;
 
-	UFriendListViewModelBase();
+	UFriendsViewModel();
 
-	virtual ~UFriendListViewModelBase() override;
+	virtual ~UFriendsViewModel() override;
 
 	void SetFriendsFromData(const TArray<FFriendData>& InFriends);
 

@@ -1,11 +1,11 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
-#include "FriendListViewModelBase.h"
+#include "FriendsViewModel.h"
 #include "ConnectedFriendListViewModel.generated.h"
 
 UCLASS(BlueprintType)
-class USERINTERFACE_API UConnectedFriendListViewModel : public UFriendListViewModelBase
+class USERINTERFACE_API UConnectedFriendListViewModel : public UFriendsViewModel
 {
 	GENERATED_BODY()
 

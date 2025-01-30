@@ -1,7 +1,7 @@
 ﻿#include "ConnectedFriendListViewModel.h"
 
 UConnectedFriendListViewModel::UConnectedFriendListViewModel()
-	: UFriendListViewModelBase()
+	: UFriendsViewModel()
 {
 }
 

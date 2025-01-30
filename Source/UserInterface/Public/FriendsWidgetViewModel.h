@@ -2,12 +2,12 @@
 
 #include "CoreMinimal.h"
 #include "MVVMViewModelBase.h"
-#include "FriendListWidgetViewModel.generated.h"
+#include "FriendsWidgetViewModel.generated.h"
 
-class UFriendListViewModelDataAsset;
+class UFriendsWidgetViewModelDataAsset;
 
 UCLASS(BlueprintType)
-class USERINTERFACE_API UFriendListWidgetViewModel : public UMVVMViewModelBase
+class USERINTERFACE_API UFriendsWidgetViewModel : public UMVVMViewModelBase
 {
 	GENERATED_BODY()
 
@@ -33,7 +33,7 @@ class USERINTERFACE_API UFriendListWidgetViewModel : public UMVVMViewModelBase
 	bool bIsChangingVisibility;
 
 public:
-	UFriendListWidgetViewModel();
+	UFriendsWidgetViewModel();
 
 	void SetFriendsCount(const int32& InFriendsCount);
 
@@ -79,7 +79,7 @@ public:
 	bool CanChangeVisibility() const;
 
 	UFUNCTION(BlueprintCallable)
-	void Set(const UFriendListViewModelDataAsset* DataAsset);
+	void Set(const UFriendsWidgetViewModelDataAsset* DataAsset);
 
 private:
 	static const FString& GetVisibilityTextFromEnum(const ESlateVisibility& InVisibility);

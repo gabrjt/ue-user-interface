@@ -2,12 +2,12 @@
 
 #include "Blueprint/IUserObjectListEntry.h"
 #include "Blueprint/UserWidget.h"
-#include "FriendListViewEntryWidget.generated.h"
+#include "FriendsWidgetEntry.generated.h"
 
 class UTextBlock;
 
 UCLASS()
-class USERINTERFACE_API UFriendListViewEntryWidget : public UUserWidget, public IUserObjectListEntry
+class USERINTERFACE_API UFriendsWidgetEntry : public UUserWidget, public IUserObjectListEntry
 {
 	GENERATED_BODY()
 

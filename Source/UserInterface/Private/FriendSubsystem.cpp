@@ -1,7 +1,7 @@
 #include "FriendSubsystem.h"
 #include "FriendData.h"
 #include "FriendServiceProviderSubsystem.h"
-#include "FriendViewModelSubsystem.h"
+#include "FriendsViewModelSubsystem.h"
 #include "Engine/AssetManager.h"
 #include "Engine/DataTable.h"
 #include "Engine/StreamableManager.h"
@@ -18,7 +18,7 @@ UFriendSubsystem::UFriendSubsystem()
 void UFriendSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Collection.InitializeDependency(UFriendServiceProviderSubsystem::StaticClass());
-	Collection.InitializeDependency(UFriendViewModelSubsystem::StaticClass());
+	Collection.InitializeDependency(UFriendsViewModelSubsystem::StaticClass());
 }
 
 void UFriendSubsystem::Deinitialize()

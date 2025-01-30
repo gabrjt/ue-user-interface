@@ -2,13 +2,13 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "FriendListWidgetBase.generated.h"
+#include "FriendListViewWidget.generated.h"
 
 class UListView;
-class UFriendListViewModelBase;
+class UFriendsViewModel;
 
 UCLASS()
-class USERINTERFACE_API UFriendListWidgetBase : public UUserWidget
+class USERINTERFACE_API UFriendListViewWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
@@ -18,5 +18,5 @@ protected:
 
 public:
 	UFUNCTION(BlueprintImplementableEvent)
-	void SetViewModel(UFriendListViewModelBase* InFriendListViewModel);
+	void SetViewModel(UFriendsViewModel* InFriendListViewModel);
 };

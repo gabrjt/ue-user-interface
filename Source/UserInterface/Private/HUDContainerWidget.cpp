@@ -1,10 +1,10 @@
 #include "HUDContainerWidget.h"
 #include "ConnectedFriendListViewModel.h"
-#include "ConnectedFriendListWidget.h"
-#include "FriendListViewModelBase.h"
-#include "FriendListViewModelDataAsset.h"
-#include "FriendListWidget.h"
-#include "FriendViewModelSubsystem.h"
+#include "FriendsNotificationsWidget.h"
+#include "FriendsViewModel.h"
+#include "FriendsWidgetViewModelDataAsset.h"
+#include "FriendsWidget.h"
+#include "FriendsViewModelSubsystem.h"
 #include "Engine/AssetManager.h"
 #include "Engine/StreamableManager.h"
 
@@ -12,7 +12,7 @@ void UHUDContainerWidget::NativeOnInitialized()
 {
 	Super::NativeOnInitialized();
 
-	const UFriendViewModelSubsystem* FriendViewModelSubsystem { GetGameInstance()->GetSubsystem<UFriendViewModelSubsystem>() };
+	const UFriendsViewModelSubsystem* FriendViewModelSubsystem { GetGameInstance()->GetSubsystem<UFriendsViewModelSubsystem>() };
 
 	ConnectedFriends->SetVisibility(ESlateVisibility::Hidden);
 	DisconnectedFriends->SetVisibility(ESlateVisibility::Hidden);

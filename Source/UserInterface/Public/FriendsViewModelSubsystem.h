@@ -1,28 +1,28 @@
 ﻿#pragma once
 
 #include "Subsystems/GameInstanceSubsystem.h"
-#include "FriendViewModelSubsystem.generated.h"
+#include "FriendsViewModelSubsystem.generated.h"
 
-class UFriendListViewModelBase;
+class UFriendsViewModel;
 class UConnectedFriendListViewModel;
 struct FFriendData;
 
 UCLASS(BlueprintType)
-class USERINTERFACE_API UFriendViewModelSubsystem : public UGameInstanceSubsystem
+class USERINTERFACE_API UFriendsViewModelSubsystem : public UGameInstanceSubsystem
 {
 	GENERATED_BODY()
 
 	UPROPERTY(Transient, BlueprintReadOnly, meta=(AllowPrivateAccess))
-	UFriendListViewModelBase* ConnectedFriendsViewModel;
+	UFriendsViewModel* ConnectedFriendsViewModel;
 
 	UPROPERTY(Transient, BlueprintReadOnly, meta=(AllowPrivateAccess))
-	UFriendListViewModelBase* DisconnectedFriendsViewModel;
+	UFriendsViewModel* DisconnectedFriendsViewModel;
 
 	UPROPERTY(Transient, BlueprintReadOnly, meta=(AllowPrivateAccess))
 	UConnectedFriendListViewModel* FriendsNotificationsViewModel;
 
 public:
-	UFriendViewModelSubsystem();
+	UFriendsViewModelSubsystem();
 
 	// UGameInstanceSubsystem interface
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
@@ -30,9 +30,9 @@ public:
 	virtual void Deinitialize() override;
 
 	// Public API
-	UFriendListViewModelBase* GetConnectedFriendsViewModel() const;
+	UFriendsViewModel* GetConnectedFriendsViewModel() const;
 
-	UFriendListViewModelBase* GetDisconnectedFriendsViewModel() const;
+	UFriendsViewModel* GetDisconnectedFriendsViewModel() const;
 
 	UConnectedFriendListViewModel* GetFriendsNotificationsViewModel() const;
 

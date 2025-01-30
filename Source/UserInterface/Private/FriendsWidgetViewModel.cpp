@@ -1,54 +1,55 @@
-﻿#include "FriendListWidgetViewModel.h"
-#include "FriendListViewModelDataAsset.h"
+﻿#include "FriendsWidgetViewModel.h"
+#include "FriendsViewModel.h"
+#include "FriendsWidgetViewModelDataAsset.h"
 #include "Components/SlateWrapperTypes.h"
 
-UFriendListWidgetViewModel::UFriendListWidgetViewModel() :
+UFriendsWidgetViewModel::UFriendsWidgetViewModel() :
 	FriendsCount(0), Title("Friends List"), TextColor(FLinearColor::White), Visibility(ESlateVisibility::Collapsed),
 	TargetVisibility(ESlateVisibility::Collapsed), VisibilityText(GetVisibilityTextFromEnum(Visibility)), bIsChangingVisibility(false) {}
 
-void UFriendListWidgetViewModel::SetFriendsCount(const int32& InFriendsCount)
+void UFriendsWidgetViewModel::SetFriendsCount(const int32& InFriendsCount)
 {
 	UE_MVVM_SET_PROPERTY_VALUE(FriendsCount, InFriendsCount);
 	BroadcastCanChangeVisibility();
 }
 
-int32 UFriendListWidgetViewModel::GetFriendsCount() const
+int32 UFriendsWidgetViewModel::GetFriendsCount() const
 {
 	return FriendsCount;
 }
 
-void UFriendListWidgetViewModel::SetTitle(const FString& InTitle)
+void UFriendsWidgetViewModel::SetTitle(const FString& InTitle)
 {
 	UE_MVVM_SET_PROPERTY_VALUE(Title, InTitle);
 }
 
-const FString& UFriendListWidgetViewModel::GetTitle() const
+const FString& UFriendsWidgetViewModel::GetTitle() const
 {
 	return Title;
 }
 
-void UFriendListWidgetViewModel::SetTextColor(const FSlateColor& InTextColor)
+void UFriendsWidgetViewModel::SetTextColor(const FSlateColor& InTextColor)
 {
 	UE_MVVM_SET_PROPERTY_VALUE(TextColor, InTextColor);
 }
 
-const FSlateColor& UFriendListWidgetViewModel::GetTextColor() const
+const FSlateColor& UFriendsWidgetViewModel::GetTextColor() const
 {
 	return TextColor;
 }
 
-void UFriendListWidgetViewModel::SetVisibilityAndText(const ESlateVisibility& InVisibility)
+void UFriendsWidgetViewModel::SetVisibilityAndText(const ESlateVisibility& InVisibility)
 {
 	SetVisibility(InVisibility);
 	SetVisibilityTextFromEnum(InVisibility);
 }
 
-void UFriendListWidgetViewModel::SetVisibility(const ESlateVisibility& InVisibility)
+void UFriendsWidgetViewModel::SetVisibility(const ESlateVisibility& InVisibility)
 {
 	UE_MVVM_SET_PROPERTY_VALUE(Visibility, InVisibility);
 }
 
-const ESlateVisibility& UFriendListWidgetViewModel::GetVisibility() const
+const ESlateVisibility& UFriendsWidgetViewModel::GetVisibility() const
 {
 	static constexpr ESlateVisibility Visible { ESlateVisibility::Visible };
 
@@ -60,43 +61,43 @@ const ESlateVisibility& UFriendListWidgetViewModel::GetVisibility() const
 	return Visibility;
 }
 
-void UFriendListWidgetViewModel::SetTargetVisibility(const ESlateVisibility& InTargetVisibility)
+void UFriendsWidgetViewModel::SetTargetVisibility(const ESlateVisibility& InTargetVisibility)
 {
 	UE_MVVM_SET_PROPERTY_VALUE(TargetVisibility, InTargetVisibility);
 }
 
-const ESlateVisibility& UFriendListWidgetViewModel::GetTargetVisibility() const
+const ESlateVisibility& UFriendsWidgetViewModel::GetTargetVisibility() const
 {
 	return TargetVisibility;
 }
 
-void UFriendListWidgetViewModel::SetVisibilityTextFromEnum(const ESlateVisibility& InVisibility)
+void UFriendsWidgetViewModel::SetVisibilityTextFromEnum(const ESlateVisibility& InVisibility)
 {
 	SetVisibilityText(GetVisibilityTextFromEnum(InVisibility));
 }
 
-void UFriendListWidgetViewModel::SetVisibilityText(const FString& InVisibilityText)
+void UFriendsWidgetViewModel::SetVisibilityText(const FString& InVisibilityText)
 {
 	UE_MVVM_SET_PROPERTY_VALUE(VisibilityText, InVisibilityText);
 }
 
-const FString& UFriendListWidgetViewModel::GetVisibilityText() const
+const FString& UFriendsWidgetViewModel::GetVisibilityText() const
 {
 	return VisibilityText;
 }
 
-void UFriendListWidgetViewModel::SetIsChangingVisibility(const bool& bInIsChangingVisibility)
+void UFriendsWidgetViewModel::SetIsChangingVisibility(const bool& bInIsChangingVisibility)
 {
 	UE_MVVM_SET_PROPERTY_VALUE(bIsChangingVisibility, bInIsChangingVisibility);
 	BroadcastCanChangeVisibility();
 }
 
-bool UFriendListWidgetViewModel::GetIsChangingVisibility() const
+bool UFriendsWidgetViewModel::GetIsChangingVisibility() const
 {
 	return bIsChangingVisibility;
 }
 
-ESlateVisibility UFriendListWidgetViewModel::ToggleTargetVisibility()
+ESlateVisibility UFriendsWidgetViewModel::ToggleTargetVisibility()
 {
 	SetTargetVisibility(GetNextVisibility(TargetVisibility));
 	SetVisibilityTextFromEnum(TargetVisibility);
@@ -106,18 +107,18 @@ ESlateVisibility UFriendListWidgetViewModel::ToggleTargetVisibility()
 	return TargetVisibility;
 }
 
-void UFriendListWidgetViewModel::ApplyTargetVisibility()
+void UFriendsWidgetViewModel::ApplyTargetVisibility()
 {
 	SetVisibilityAndText(TargetVisibility);
 	SetIsChangingVisibility(false);
 }
 
-bool UFriendListWidgetViewModel::CanChangeVisibility() const
+bool UFriendsWidgetViewModel::CanChangeVisibility() const
 {
 	return FriendsCount != 0 && !GetIsChangingVisibility();
 }
 
-void UFriendListWidgetViewModel::Set(const UFriendListViewModelDataAsset* DataAsset)
+void UFriendsWidgetViewModel::Set(const UFriendsWidgetViewModelDataAsset* DataAsset)
 {
 	if (ensure(DataAsset))
 	{
@@ -128,7 +129,7 @@ void UFriendListWidgetViewModel::Set(const UFriendListViewModelDataAsset* DataAs
 	}
 }
 
-const FString& UFriendListWidgetViewModel::GetVisibilityTextFromEnum(const ESlateVisibility& InVisibility)
+const FString& UFriendsWidgetViewModel::GetVisibilityTextFromEnum(const ESlateVisibility& InVisibility)
 {
 	static const FString Collapsed { "+" };
 	static const FString Visible { "-" };
@@ -142,7 +143,7 @@ const FString& UFriendListWidgetViewModel::GetVisibilityTextFromEnum(const ESlat
 	}
 }
 
-ESlateVisibility UFriendListWidgetViewModel::GetNextVisibility(const ESlateVisibility& InVisibility)
+ESlateVisibility UFriendsWidgetViewModel::GetNextVisibility(const ESlateVisibility& InVisibility)
 {
 	switch (InVisibility)
 	{

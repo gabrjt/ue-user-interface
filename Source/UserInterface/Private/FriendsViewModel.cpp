@@ -1,18 +1,18 @@
-﻿#include "FriendListViewModelBase.h"
+﻿#include "FriendsViewModel.h"
 #include "FriendData.h"
 
-UFriendListViewModelBase::UFriendListViewModelBase()
+UFriendsViewModel::UFriendsViewModel()
 	: Friends()
 	, OnFriendAdded()
 {
 }
 
-UFriendListViewModelBase::~UFriendListViewModelBase()
+UFriendsViewModel::~UFriendsViewModel()
 {
 	OnFriendAdded.Unbind();
 }
 
-void UFriendListViewModelBase::SetFriendsFromData(const TArray<FFriendData>& InFriends)
+void UFriendsViewModel::SetFriendsFromData(const TArray<FFriendData>& InFriends)
 {
 	Friends.Reset(InFriends.Num());
 
@@ -24,17 +24,17 @@ void UFriendListViewModelBase::SetFriendsFromData(const TArray<FFriendData>& InF
 	BroadcastFriends();
 }
 
-void UFriendListViewModelBase::SetFriends(const TArray<UFriendViewModel*>& InFriends)
+void UFriendsViewModel::SetFriends(const TArray<UFriendViewModel*>& InFriends)
 {
 	Friends = InFriends;
 }
 
-const TArray<UFriendViewModel*>& UFriendListViewModelBase::GetFriends() const
+const TArray<UFriendViewModel*>& UFriendsViewModel::GetFriends() const
 {
 	return Friends;
 }
 
-void UFriendListViewModelBase::RemoveFriend(const FString& UserID)
+void UFriendsViewModel::RemoveFriend(const FString& UserID)
 {
 	if (const int32 Index {
 		Friends.IndexOfByPredicate([&UserID](const UFriendViewModel* Friend)
@@ -49,14 +49,14 @@ void UFriendListViewModelBase::RemoveFriend(const FString& UserID)
 	}
 }
 
-void UFriendListViewModelBase::ClearFriends()
+void UFriendsViewModel::ClearFriends()
 {
 	Friends.Empty();
 
 	BroadcastFriends();
 }
 
-void UFriendListViewModelBase::UpdateFriend(const FFriendData& InFriend)
+void UFriendsViewModel::UpdateFriend(const FFriendData& InFriend)
 {
 	if (const int32 Index {
 		Friends.IndexOfByPredicate([&InFriend](const UFriendViewModel* Friend)
@@ -80,12 +80,12 @@ void UFriendListViewModelBase::UpdateFriend(const FFriendData& InFriend)
 	}
 }
 
-int UFriendListViewModelBase::GetFriendsCount() const
+int UFriendsViewModel::GetFriendsCount() const
 {
 	return Friends.Num();
 }
 
-UFriendViewModel* UFriendListViewModelBase::GetLastAddedFriend() const
+UFriendViewModel* UFriendsViewModel::GetLastAddedFriend() const
 {
 	if (Friends.IsEmpty())
 	{
@@ -95,11 +95,11 @@ UFriendViewModel* UFriendListViewModelBase::GetLastAddedFriend() const
 	return Friends[Friends.Num() - 1];
 }
 
-void UFriendListViewModelBase::FriendAdded(int Index)
+void UFriendsViewModel::FriendAdded(int Index)
 {
 }
 
-void UFriendListViewModelBase::BroadcastFriends()
+void UFriendsViewModel::BroadcastFriends()
 {
 	UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(Friends);
 	UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(GetFriendsCount);

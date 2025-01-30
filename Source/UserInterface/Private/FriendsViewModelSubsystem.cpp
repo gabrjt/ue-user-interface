@@ -1,20 +1,20 @@
-﻿#include "FriendViewModelSubsystem.h"
+﻿#include "FriendsViewModelSubsystem.h"
 #include "ConnectedFriendListViewModel.h"
-#include "FriendListViewModelBase.h"
+#include "FriendsViewModel.h"
 #include "FriendService.h"
 #include "FriendServiceProviderSubsystem.h"
 
-UFriendViewModelSubsystem::UFriendViewModelSubsystem()
+UFriendsViewModelSubsystem::UFriendsViewModelSubsystem()
 	: ConnectedFriendsViewModel()
 	, DisconnectedFriendsViewModel()
 	, FriendsNotificationsViewModel()
 {
 }
 
-void UFriendViewModelSubsystem::Initialize(FSubsystemCollectionBase& Collection)
+void UFriendsViewModelSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
-	ConnectedFriendsViewModel     = NewObject<UFriendListViewModelBase>();
-	DisconnectedFriendsViewModel  = NewObject<UFriendListViewModelBase>();
+	ConnectedFriendsViewModel     = NewObject<UFriendsViewModel>();
+	DisconnectedFriendsViewModel  = NewObject<UFriendsViewModel>();
 	FriendsNotificationsViewModel = NewObject<UConnectedFriendListViewModel>();
 
 	ConnectedFriendsViewModel->OnFriendAdded = FOnFriendAdded::CreateUObject(FriendsNotificationsViewModel,
@@ -22,11 +22,11 @@ void UFriendViewModelSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 
 	IFriendService* FriendService { GetGameInstance()->GetSubsystem<UFriendServiceProviderSubsystem>()->GetFriendServiceInterface() };
 
-	FriendService->SubscribeOnFriendsLoaded(FOnFriendsLoaded::CreateUObject(this, &UFriendViewModelSubsystem::OnFriendsLoaded));
-	FriendService->SubscribeOnFriendUpdated(FOnFriendUpdated::CreateUObject(this, &UFriendViewModelSubsystem::OnFriendUpdated));
+	FriendService->SubscribeOnFriendsLoaded(FOnFriendsLoaded::CreateUObject(this, &UFriendsViewModelSubsystem::OnFriendsLoaded));
+	FriendService->SubscribeOnFriendUpdated(FOnFriendUpdated::CreateUObject(this, &UFriendsViewModelSubsystem::OnFriendUpdated));
 }
 
-void UFriendViewModelSubsystem::Deinitialize()
+void UFriendsViewModelSubsystem::Deinitialize()
 {
 	ConnectedFriendsViewModel->ClearFriends();
 	DisconnectedFriendsViewModel->ClearFriends();
@@ -39,22 +39,22 @@ void UFriendViewModelSubsystem::Deinitialize()
 	}
 }
 
-UFriendListViewModelBase* UFriendViewModelSubsystem::GetConnectedFriendsViewModel() const
+UFriendsViewModel* UFriendsViewModelSubsystem::GetConnectedFriendsViewModel() const
 {
 	return ConnectedFriendsViewModel;
 }
 
-UFriendListViewModelBase* UFriendViewModelSubsystem::GetDisconnectedFriendsViewModel() const
+UFriendsViewModel* UFriendsViewModelSubsystem::GetDisconnectedFriendsViewModel() const
 {
 	return DisconnectedFriendsViewModel;
 }
 
-UConnectedFriendListViewModel* UFriendViewModelSubsystem::GetFriendsNotificationsViewModel() const
+UConnectedFriendListViewModel* UFriendsViewModelSubsystem::GetFriendsNotificationsViewModel() const
 {
 	return FriendsNotificationsViewModel;
 }
 
-void UFriendViewModelSubsystem::OnFriendsLoaded() const
+void UFriendsViewModelSubsystem::OnFriendsLoaded() const
 {
 	const IFriendService* FriendService { GetGameInstance()->GetSubsystem<UFriendServiceProviderSubsystem>()->GetFriendServiceInterface() };
 
@@ -62,7 +62,7 @@ void UFriendViewModelSubsystem::OnFriendsLoaded() const
 	DisconnectedFriendsViewModel->SetFriendsFromData(FriendService->GetDisconnectedFriends_Implementation());
 }
 
-void UFriendViewModelSubsystem::OnFriendUpdated(const FFriendData& FriendData) const
+void UFriendsViewModelSubsystem::OnFriendUpdated(const FFriendData& FriendData) const
 {
 	if (FriendData.bIsConnected)
 	{

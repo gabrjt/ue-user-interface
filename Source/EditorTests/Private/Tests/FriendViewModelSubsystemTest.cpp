@@ -1,11 +1,11 @@
-﻿#include "FriendListViewModelBase.h"
+﻿#include "FriendsViewModel.h"
 #include "FriendService.h"
 #include "FriendSubsystem.h"
 #include "FriendViewModel.h"
-#include "FriendViewModelSubsystem.h"
+#include "FriendsViewModelSubsystem.h"
 #include "SubsystemTestHelper.h"
 
-class FFriendViewModelSubsystemTestHelper : public TSubsystemTestHelper<UFriendViewModelSubsystem>
+class FFriendViewModelSubsystemTestHelper : public TSubsystemTestHelper<UFriendsViewModelSubsystem>
 {
 public:
 	void LoadFriends() const

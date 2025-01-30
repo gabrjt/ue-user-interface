@@ -2,13 +2,13 @@
 
 #include "Blueprint/IUserObjectListEntry.h"
 #include "Blueprint/UserWidget.h"
-#include "ConnectedFriendListViewEntryWidget.generated.h"
+#include "FriendsNotificationsWidgetEntry.generated.h"
 
 class UTextBlock;
 class UBorder;
 
 UCLASS()
-class USERINTERFACE_API UConnectedFriendListViewEntryWidget : public UUserWidget, public IUserObjectListEntry
+class USERINTERFACE_API UFriendsNotificationsWidgetEntry : public UUserWidget, public IUserObjectListEntry
 {
 	GENERATED_BODY()
 

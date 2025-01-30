@@ -1,17 +1,17 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
-#include "FriendListWidgetBase.h"
-#include "FriendListWidget.generated.h"
+#include "FriendListViewWidget.h"
+#include "FriendsWidget.generated.h"
 
 class UTextBlock;
 class UButton;
 class UVerticalBox;
 class UWidgetAnimation;
-class UFriendListViewModelDataAsset;
+class UFriendsWidgetViewModelDataAsset;
 
 UCLASS()
-class USERINTERFACE_API UFriendListWidget : public UFriendListWidgetBase
+class USERINTERFACE_API UFriendsWidget : public UFriendListViewWidget
 {
 	GENERATED_BODY()
 
@@ -38,5 +38,5 @@ class USERINTERFACE_API UFriendListWidget : public UFriendListWidgetBase
 
 public:
 	UFUNCTION(BlueprintImplementableEvent)
-	void ViewModelDataLoaded(const UFriendListViewModelDataAsset* DataAsset);
+	void ViewModelDataLoaded(const UFriendsWidgetViewModelDataAsset* DataAsset);
 };

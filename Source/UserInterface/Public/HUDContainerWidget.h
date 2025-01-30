@@ -4,10 +4,10 @@
 #include "CommonUserWidget.h"
 #include "HUDContainerWidget.generated.h"
 
-class UFriendListWidget;
-class UConnectedFriendListWidget;
+class UFriendsWidget;
+class UFriendsNotificationsWidget;
 class UFriendListViewModel;
-class UFriendListViewModelDataAsset;
+class UFriendsWidgetViewModelDataAsset;
 
 UCLASS()
 class USERINTERFACE_API UHUDContainerWidget : public UCommonUserWidget
@@ -15,19 +15,19 @@ class USERINTERFACE_API UHUDContainerWidget : public UCommonUserWidget
 	GENERATED_BODY()
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess))
-	UFriendListWidget* ConnectedFriends;
+	UFriendsWidget* ConnectedFriends;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess))
-	UFriendListWidget* DisconnectedFriends;
+	UFriendsWidget* DisconnectedFriends;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess))
-	UConnectedFriendListWidget* ConnectedFriendsNotifications;
+	UFriendsNotificationsWidget* ConnectedFriendsNotifications;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Settings")
-	TSoftObjectPtr<UFriendListViewModelDataAsset> ConnectedFriendsDataAsset;
+	TSoftObjectPtr<UFriendsWidgetViewModelDataAsset> ConnectedFriendsDataAsset;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Settings")
-	TSoftObjectPtr<UFriendListViewModelDataAsset> DisconnectedFriendsDataAsset;
+	TSoftObjectPtr<UFriendsWidgetViewModelDataAsset> DisconnectedFriendsDataAsset;
 
 protected:
 	virtual void NativeOnInitialized() override;
