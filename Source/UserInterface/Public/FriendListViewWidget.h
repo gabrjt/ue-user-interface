@@ -13,10 +13,18 @@ class USERINTERFACE_API UFriendListViewWidget : public UUserWidget
 	GENERATED_BODY()
 
 protected:
+	UPROPERTY(BlueprintReadOnly, EditInstanceOnly, Category = "Settings", meta = (AllowPrivateAccess))
+	FName ViewModelName;
+
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess))
 	UListView* FriendListView;
 
 public:
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION(BlueprintNativeEvent)
 	void SetViewModel(UFriendsViewModel* InFriendsViewModel);
+
+	virtual void SetViewModel_Implementation(UFriendsViewModel* InFriendsViewModel);
+
+protected:
+	virtual void NativeOnInitialized() override;
 };

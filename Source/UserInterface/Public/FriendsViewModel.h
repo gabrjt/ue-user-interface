@@ -5,6 +5,7 @@
 #include "MVVMViewModelBase.h"
 #include "FriendsViewModel.generated.h"
 
+enum class EFriendsViewModelType : uint8;
 struct FFriendData;
 
 DECLARE_DELEGATE_OneParam(FOnFriendAdded, const FFriendData&);
@@ -13,6 +14,9 @@ UCLASS(BlueprintType)
 class USERINTERFACE_API UFriendsViewModel : public UMVVMViewModelBase
 {
 	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadOnly, meta=(AllowPrivateAccess))
+	EFriendsViewModelType Type;
 
 	UPROPERTY(BlueprintReadWrite, FieldNotify, Setter, Getter, meta=(AllowPrivateAccess))
 	TArray<UFriendViewModel*> Friends;
@@ -47,7 +51,13 @@ public:
 
 	void AddFriend(const FFriendData& InFriend);
 
+	void SubscribeOnFriendsLoaded(const EFriendsViewModelType InType);
+
 private:
+	void OnFriendsLoaded();
+
+	TArray<FFriendData> GetFriendsData() const;
+
 	FORCEINLINE void AddFriend_Internal(const FFriendData& InFriend)
 	{
 		Friends.Add(UFriendViewModel::Create(this, InFriend));

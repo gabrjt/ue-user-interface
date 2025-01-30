@@ -23,7 +23,8 @@
 				"ModelViewViewModel",
 				"UMG",
 				"Engine",
-				"FunctionalTestingEditor"
+				"FunctionalTestingEditor",
+        "UserInterface"
 			]
 		}
 	],

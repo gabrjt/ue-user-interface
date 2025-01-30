@@ -1,8 +1,13 @@
 ﻿#include "FriendsViewModel.h"
 #include "FriendData.h"
+#include "FriendService.h"
+#include "FriendServiceProviderSubsystem.h"
+#include "FriendsViewModelType.h"
+#include "Kismet/GameplayStatics.h"
 
 UFriendsViewModel::UFriendsViewModel()
-	: Friends()
+	: Type(EFriendsViewModelType::None)
+	, Friends()
 	, OnFriendAdded() {}
 
 UFriendsViewModel::~UFriendsViewModel()
@@ -95,5 +100,43 @@ void UFriendsViewModel::AddFriend(const FFriendData& InFriend)
 	if (OnFriendAdded.IsBound())
 	{
 		OnFriendAdded.Execute(InFriend);
+	}
+}
+
+void UFriendsViewModel::SubscribeOnFriendsLoaded(const EFriendsViewModelType InType)
+{
+	Type = InType;
+
+	const UGameInstance* GameInstance { UGameplayStatics::GetGameInstance(this) };
+	IFriendService*      FriendService {
+		GameInstance->GetSubsystem<UFriendServiceProviderSubsystem>()->GetFriendServiceInterface()
+	};
+
+	FriendService->SubscribeOnFriendsLoaded(FOnFriendsLoaded::CreateUObject(this, &UFriendsViewModel::OnFriendsLoaded));
+}
+
+void UFriendsViewModel::OnFriendsLoaded()
+{
+	SetFriendsFromData(GetFriendsData());
+}
+
+TArray<FFriendData> UFriendsViewModel::GetFriendsData() const
+{
+	const UGameInstance*  GameInstance { UGameplayStatics::GetGameInstance(this) };
+	const IFriendService* FriendService {
+		GameInstance->GetSubsystem<UFriendServiceProviderSubsystem>()->GetFriendServiceInterface()
+	};
+
+	switch (Type)
+	{
+		case EFriendsViewModelType::All:
+			return FriendService->GetFriendsRef();
+		case EFriendsViewModelType::Connected:
+			return FriendService->GetConnectedFriends_Implementation();
+		case EFriendsViewModelType::Disconnected:
+			return FriendService->GetDisconnectedFriends_Implementation();
+
+		default:
+			return TArray<FFriendData>();
 	}
 }

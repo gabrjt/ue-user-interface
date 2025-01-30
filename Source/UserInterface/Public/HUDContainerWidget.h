@@ -21,16 +21,4 @@ class USERINTERFACE_API UHUDContainerWidget : public UCommonUserWidget
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess))
 	UFriendsNotificationsWidget* ConnectedFriendsNotifications;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Settings")
-	TSoftObjectPtr<UFriendsWidgetViewModelDataAsset> ConnectedFriendsDataAsset;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Settings")
-	TSoftObjectPtr<UFriendsWidgetViewModelDataAsset> DisconnectedFriendsDataAsset;
-
-protected:
-	virtual void NativeOnInitialized() override;
-
-private:
-	void OnDataAssetsLoaded() const;
 };
