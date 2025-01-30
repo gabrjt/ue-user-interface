@@ -6,7 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 
 UFriendsViewModel::UFriendsViewModel()
-	: Type(EFriendsViewModelType::None)
+	: Type()
 	, Friends()
 	, OnFriendsLoadedHandle()
 	, OnFriendUpdatedHandle()
@@ -144,20 +144,22 @@ TArray<FFriendData> UFriendsViewModel::GetFriendsData() const
 		                                         GetFriendServiceInterface()
 	};
 
-	switch (Type)
+	if (EnumHasAllFlags(Type, EFriendsViewModelType::Connected | EFriendsViewModelType::Disconnected))
 	{
-		case EFriendsViewModelType::All:
-			return FriendService->GetFriendsRef();
-
-		case EFriendsViewModelType::Connected:
-			return FriendService->GetConnectedFriends_Implementation();
-
-		case EFriendsViewModelType::Disconnected:
-			return FriendService->GetDisconnectedFriends_Implementation();
-
-		default:
-			return TArray<FFriendData>();
+		return FriendService->GetFriendsRef();
 	}
+
+	if (EnumHasAnyFlags(Type, EFriendsViewModelType::Connected))
+	{
+		return FriendService->GetConnectedFriends_Implementation();
+	}
+
+	if (EnumHasAnyFlags(Type, EFriendsViewModelType::Disconnected))
+	{
+		return FriendService->GetDisconnectedFriends_Implementation();
+	}
+
+	return TArray<FFriendData>();
 }
 
 void UFriendsViewModel::OnFriendsLoaded()
@@ -167,35 +169,30 @@ void UFriendsViewModel::OnFriendsLoaded()
 
 void UFriendsViewModel::OnFriendUpdated(const FFriendData& FriendData)
 {
-	switch (Type)
+	if (EnumHasAllFlags(Type, EFriendsViewModelType::Connected | EFriendsViewModelType::Disconnected))
 	{
-		case EFriendsViewModelType::None:
-			break;
-
-		case EFriendsViewModelType::All:
+		UpdateFriend(FriendData);
+	}
+	else if (EnumHasAnyFlags(Type, EFriendsViewModelType::Connected))
+	{
+		if (FriendData.bIsConnected)
+		{
 			UpdateFriend(FriendData);
-			break;
-
-		case EFriendsViewModelType::Connected:
-			if (FriendData.bIsConnected)
-			{
-				UpdateFriend(FriendData);
-			}
-			else
-			{
-				RemoveFriend(FriendData.UserID);
-			}
-			break;
-
-		case EFriendsViewModelType::Disconnected:
-			if (!FriendData.bIsConnected)
-			{
-				UpdateFriend(FriendData);
-			}
-			else
-			{
-				RemoveFriend(FriendData.UserID);
-			}
-			break;
+		}
+		else
+		{
+			RemoveFriend(FriendData.UserID);
+		}
+	}
+	else if (EnumHasAnyFlags(Type, EFriendsViewModelType::Disconnected))
+	{
+		if (!FriendData.bIsConnected)
+		{
+			UpdateFriend(FriendData);
+		}
+		else
+		{
+			RemoveFriend(FriendData.UserID);
+		}
 	}
 }

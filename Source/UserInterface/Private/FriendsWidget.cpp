@@ -24,9 +24,19 @@ void UFriendsWidget::NativeOnInitialized()
 	SetVisibility(ESlateVisibility::Hidden);
 }
 
+void UFriendsWidget::NativeDestruct()
+{
+	Super::NativeDestruct();
+
+	if (UMVVMViewModelCollectionObject* ViewModelCollection { GetViewModelCollection() })
+	{
+		ViewModelCollection->RemoveViewModel({ UFriendsViewModel::StaticClass(), WidgetViewModelName });
+	}
+}
+
 void UFriendsWidget::SetViewModel_Implementation(UFriendsViewModel* InFriendsViewModel)
 {
-	InFriendsViewModel->SubscribeFriendsService(ViewModelType);
+	InFriendsViewModel->SubscribeFriendsService(static_cast<EFriendsViewModelType>(ViewModelType));
 }
 
 void UFriendsWidget::OnDataAssetsLoaded()

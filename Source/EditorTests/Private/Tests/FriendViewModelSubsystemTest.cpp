@@ -1,17 +1,21 @@
 ﻿#include "FriendsViewModel.h"
 #include "MVVMGameSubsystem.h"
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FFriendViewModelSubsystemInitializeTest,
-	"UserProject.Editor.FriendViewModelSubsystem.InitializeViewModels",
+#include "SubsystemTestHelper.h"
+
+class FMVVMGameSubsystemTestHelper : public TSubsystemTestHelper<UMVVMGameSubsystem> {};
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FFriendsViewModelAddToCollectionTest,
+	"UserProject.Editor.FriendsViewModel.AddToCollection",
 	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 
-bool FFriendViewModelSubsystemInitializeTest::RunTest(const FString& Parameters)
+bool FFriendsViewModelAddToCollectionTest::RunTest(const FString& Parameters)
 {
-	UGameInstance* GameInstance { NewObject<UGameInstance>() };
-	GameInstance->Init();
+	const FMVVMGameSubsystemTestHelper Helper;
+
 	UFriendsViewModel* ViewModel { NewObject<UFriendsViewModel>() };
 
 	TestTrue("View Model is Added to Collection",
-		GameInstance->GetSubsystem<UMVVMGameSubsystem>()->GetViewModelCollection()->AddViewModelInstance({
+		Helper.Subsystem->GetViewModelCollection()->AddViewModelInstance({
 				UFriendsViewModel::StaticClass(),
 				"ConnectedFriendsViewModel"
 			},
@@ -19,8 +23,8 @@ bool FFriendViewModelSubsystemInitializeTest::RunTest(const FString& Parameters)
 
 	TestEqual("View Model is Found in Collection",
 		Cast<UFriendsViewModel>(
-			GameInstance->GetSubsystem<UMVVMGameSubsystem>()->GetViewModelCollection()->
-			              FindFirstViewModelInstanceOfType(UFriendsViewModel::StaticClass())),
+			Helper.Subsystem->GetViewModelCollection()->FindFirstViewModelInstanceOfType(
+				UFriendsViewModel::StaticClass())),
 		ViewModel);
 
 	return true;

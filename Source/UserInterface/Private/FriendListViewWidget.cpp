@@ -11,23 +11,44 @@ UFriendsViewModel* UFriendListViewWidget::GetViewModel() const
 
 UFriendsViewModel* UFriendListViewWidget::GetViewModel(const FName& InViewModelName) const
 {
-	return Cast<UFriendsViewModel>(GetViewModelCollection()->FindViewModelInstance({
-		UFriendsViewModel::StaticClass(),
-		InViewModelName
-	}));
+	if (const UMVVMViewModelCollectionObject* ViewModelCollection { GetViewModelCollection() })
+	{
+		return Cast<UFriendsViewModel>(ViewModelCollection->FindViewModelInstance({
+			UFriendsViewModel::StaticClass(),
+			InViewModelName
+		}));
+	}
+
+	return nullptr;
 }
 
 void UFriendListViewWidget::NativeOnInitialized()
 {
 	Super::NativeOnInitialized();
 
-	UFriendsViewModel* ViewModel { NewObject<UFriendsViewModel>(this) };
+	if (UFriendsViewModel* ViewModel { NewObject<UFriendsViewModel>(this) }; GetViewModelCollection()->
+		AddViewModelInstance({ UFriendsViewModel::StaticClass(), ViewModelName }, ViewModel))
+	{
+		SetViewModel(ViewModel);
+	}
+}
 
-	GetViewModelCollection()->AddViewModelInstance({ UFriendsViewModel::StaticClass(), ViewModelName }, ViewModel);
-	SetViewModel(ViewModel);
+void UFriendListViewWidget::NativeDestruct()
+{
+	Super::NativeDestruct();
+
+	if (UMVVMViewModelCollectionObject* ViewModelCollection { GetViewModelCollection() })
+	{
+		ViewModelCollection->RemoveViewModel({ UFriendsViewModel::StaticClass(), ViewModelName });
+	}
 }
 
 UMVVMViewModelCollectionObject* UFriendListViewWidget::GetViewModelCollection() const
 {
-	return GetGameInstance()->GetSubsystem<UMVVMGameSubsystem>()->GetViewModelCollection();
+	if (const UGameInstance* GameInstance { GetGameInstance() })
+	{
+		return GameInstance->GetSubsystem<UMVVMGameSubsystem>()->GetViewModelCollection();
+	}
+
+	return nullptr;
 }

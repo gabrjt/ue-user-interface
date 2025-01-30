@@ -9,8 +9,17 @@ class USERINTERFACE_API UFriendsNotificationsWidget : public UFriendListViewWidg
 {
 	GENERATED_BODY()
 
+	UPROPERTY(BlueprintReadOnly,
+		EditInstanceOnly,
+		Category = "Settings",
+		meta = (Bitmask, BitmaskEnum = "/Script/UserInterface.EFriendsViewModelType", AllowPrivateAccess))
+	int32 ViewModelType;
+
 	UPROPERTY(BlueprintReadOnly, EditInstanceOnly, Category = "Settings", meta = (AllowPrivateAccess))
 	FName ConnectedFriendsViewModelName;
+
+	UPROPERTY(BlueprintReadOnly, EditInstanceOnly, Category = "Settings", meta = (AllowPrivateAccess))
+	FName DisconnectedFriendsViewModelName;
 
 protected:
 	virtual void NativePreConstruct() override;

@@ -4,7 +4,6 @@
 #include "FriendListViewWidget.h"
 #include "FriendsWidget.generated.h"
 
-enum class EFriendsViewModelType : uint8;
 class UTextBlock;
 class UButton;
 class UVerticalBox;
@@ -17,8 +16,11 @@ class USERINTERFACE_API UFriendsWidget : public UFriendListViewWidget
 {
 	GENERATED_BODY()
 
-	UPROPERTY(BlueprintReadOnly, EditInstanceOnly, Category = "Settings", meta = (AllowPrivateAccess))
-	EFriendsViewModelType ViewModelType;
+	UPROPERTY(BlueprintReadOnly,
+		EditInstanceOnly,
+		Category = "Settings",
+		meta = (Bitmask, BitmaskEnum = "/Script/UserInterface.EFriendsViewModelType", AllowPrivateAccess))
+	int32 ViewModelType;
 
 	UPROPERTY(BlueprintReadOnly, EditInstanceOnly, Category = "Settings", meta = (AllowPrivateAccess))
 	FName WidgetViewModelName;
@@ -56,6 +58,8 @@ public:
 
 protected:
 	virtual void NativeOnInitialized() override;
+
+	virtual void NativeDestruct() override;
 
 	virtual void SetViewModel_Implementation(UFriendsViewModel* InFriendsViewModel) override;
 

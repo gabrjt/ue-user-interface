@@ -15,7 +15,6 @@ class USERINTERFACE_API UFriendsViewModel : public UMVVMViewModelBase
 {
 	GENERATED_BODY()
 
-	UPROPERTY(BlueprintReadOnly, meta=(AllowPrivateAccess))
 	EFriendsViewModelType Type;
 
 	UPROPERTY(BlueprintReadWrite, FieldNotify, Setter, Getter, meta=(AllowPrivateAccess))
