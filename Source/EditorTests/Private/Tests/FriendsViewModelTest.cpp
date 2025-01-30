@@ -1,8 +1,23 @@
-﻿#include "FriendsViewModel.h"
+﻿#include "FriendData.h"
+#include "FriendSubsystem.h"
+#include "FriendsViewModel.h"
+#include "FriendsViewModelType.h"
 #include "MVVMGameSubsystem.h"
 #include "SubsystemTestHelper.h"
 
-class FMVVMGameSubsystemTestHelper : public TSubsystemTestHelper<UMVVMGameSubsystem> {};
+class FMVVMGameSubsystemTestHelper : public TSubsystemTestHelper<UMVVMGameSubsystem>
+{
+public:
+	void LoadFriends() const
+	{
+		UDataTable* FriendsTable { NewObject<UDataTable>() };
+		FriendsTable->RowStruct = FFriendData::StaticStruct();
+		FriendsTable->AddRow(FName("Row1"), FFriendData { "TestUser1", "User One", false });
+		FriendsTable->AddRow(FName("Row2"), FFriendData { "TestUser2", "User Two", true });
+
+		GameInstance->GetSubsystem<UFriendSubsystem>()->LoadFriends(FriendsTable);
+	}
+};
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FFriendsViewModelAddToCollectionTest,
 	"UserProject.Editor.FriendsViewModel.AddToCollection",
@@ -26,6 +41,43 @@ bool FFriendsViewModelAddToCollectionTest::RunTest(const FString& Parameters)
 			Helper.Subsystem->GetViewModelCollection()->FindFirstViewModelInstanceOfType(
 				UFriendsViewModel::StaticClass())),
 		ViewModel);
+
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FFriendsViewModelSubscribeToFriendService,
+	"UserProject.Editor.FriendsViewModel.SubscribeToFriendService",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
+
+bool FFriendsViewModelSubscribeToFriendService::RunTest(const FString& Parameters)
+{
+	const FMVVMGameSubsystemTestHelper Helper;
+
+	UFriendsViewModel* ConnectedFriendsViewModel { NewObject<UFriendsViewModel>(Helper.World) };
+	ConnectedFriendsViewModel->SubscribeFriendsService(EFriendsViewModelType::Connected);
+
+	UFriendsViewModel* DisconnectedFriendsViewModel { NewObject<UFriendsViewModel>(Helper.World) };
+	DisconnectedFriendsViewModel->SubscribeFriendsService(EFriendsViewModelType::Disconnected);
+
+	UFriendsViewModel* FriendsViewModel { NewObject<UFriendsViewModel>(Helper.World) };
+	FriendsViewModel->SubscribeFriendsService(EFriendsViewModelType::Connected | EFriendsViewModelType::Disconnected);
+
+	Helper.LoadFriends();
+
+	TestEqual("Connected Friend is Added", ConnectedFriendsViewModel->GetFriendsCount(), 1);
+	TestEqual("Connected Friend is Added",
+		ConnectedFriendsViewModel->GetFriendsCount(),
+		Helper.GameInstance->GetSubsystem<UFriendSubsystem>()->GetConnectedFriends_Implementation().Num());
+
+	TestEqual("Disconnected Friend is Added", DisconnectedFriendsViewModel->GetFriendsCount(), 1);
+	TestEqual("Disconnected Friend is Added",
+		DisconnectedFriendsViewModel->GetFriendsCount(),
+		Helper.GameInstance->GetSubsystem<UFriendSubsystem>()->GetDisconnectedFriends_Implementation().Num());
+
+	TestEqual("All Friends are Added", FriendsViewModel->GetFriendsCount(), 2);
+	TestEqual("All Friends are Added",
+		FriendsViewModel->GetFriendsCount(),
+		Helper.GameInstance->GetSubsystem<UFriendSubsystem>()->GetFriendsRef().Num());
 
 	return true;
 }
