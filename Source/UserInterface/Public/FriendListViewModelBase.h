@@ -25,6 +25,8 @@ public:
 
 	virtual ~UFriendListViewModelBase() override;
 
+	void SetFriendsFromData(const TArray<FFriendData>& InFriends);
+
 	void SetFriends(const TArray<UFriendViewModel*>& InFriends);
 
 	const TArray<UFriendViewModel*>& GetFriends() const;

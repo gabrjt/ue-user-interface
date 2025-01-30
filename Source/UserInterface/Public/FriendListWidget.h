@@ -8,7 +8,7 @@ class UTextBlock;
 class UButton;
 class UVerticalBox;
 class UWidgetAnimation;
-class UFriendListViewModel;
+class UFriendListViewModelDataAsset;
 
 UCLASS()
 class USERINTERFACE_API UFriendListWidget : public UFriendListWidgetBase
@@ -38,5 +38,5 @@ class USERINTERFACE_API UFriendListWidget : public UFriendListWidgetBase
 
 public:
 	UFUNCTION(BlueprintImplementableEvent)
-	void ViewModelDataLoaded(UFriendListWidgetViewModel* InFriendListWidgetViewModel);
+	void ViewModelDataLoaded(const UFriendListViewModelDataAsset* DataAsset);
 };

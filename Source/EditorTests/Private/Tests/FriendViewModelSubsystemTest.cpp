@@ -1,4 +1,4 @@
-﻿#include "FriendListViewModel.h"
+﻿#include "FriendListViewModelBase.h"
 #include "FriendService.h"
 #include "FriendSubsystem.h"
 #include "FriendViewModel.h"

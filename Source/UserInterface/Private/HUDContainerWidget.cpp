@@ -1,7 +1,7 @@
 #include "HUDContainerWidget.h"
 #include "ConnectedFriendListViewModel.h"
 #include "ConnectedFriendListWidget.h"
-#include "FriendListViewModel.h"
+#include "FriendListViewModelBase.h"
 #include "FriendListViewModelDataAsset.h"
 #include "FriendListWidget.h"
 #include "FriendViewModelSubsystem.h"
@@ -18,7 +18,7 @@ void UHUDContainerWidget::NativeOnInitialized()
 	DisconnectedFriends->SetVisibility(ESlateVisibility::Hidden);
 	ConnectedFriends->SetViewModel(FriendViewModelSubsystem->GetConnectedFriendsViewModel());
 	DisconnectedFriends->SetViewModel(FriendViewModelSubsystem->GetDisconnectedFriendsViewModel());
-	ConnectedFriendsNotifications->SetViewModel(FriendViewModelSubsystem->GetConnectedFriendsNotificationsViewModel());
+	ConnectedFriendsNotifications->SetViewModel(FriendViewModelSubsystem->GetFriendsNotificationsViewModel());
 
 	TArray              AssetsToLoad { ConnectedFriendsDataAsset.ToSoftObjectPath(), DisconnectedFriendsDataAsset.ToSoftObjectPath() };
 	FStreamableManager& StreamableManager = UAssetManager::GetStreamableManager();
@@ -27,16 +27,9 @@ void UHUDContainerWidget::NativeOnInitialized()
 
 void UHUDContainerWidget::OnDataAssetsLoaded() const
 {
-	const UFriendViewModelSubsystem* FriendViewModelSubsystem { GetGameInstance()->GetSubsystem<UFriendViewModelSubsystem>() };
-	UFriendListViewModel*            ConnectedFriendsViewModel { FriendViewModelSubsystem->GetConnectedFriendsViewModel() };
-	UFriendListViewModel*            DisconnectedFriendsViewModel { FriendViewModelSubsystem->GetDisconnectedFriendsViewModel() };
-
-	ConnectedFriendsViewModel->Set(ConnectedFriendsDataAsset.Get());
-	DisconnectedFriendsViewModel->Set(DisconnectedFriendsDataAsset.Get());
-
 	ConnectedFriends->SetVisibility(ESlateVisibility::Visible);
 	DisconnectedFriends->SetVisibility(ESlateVisibility::Visible);
 
-	//ConnectedFriends->ViewModelDataLoaded(ConnectedFriendsViewModel);
-	//DisconnectedFriends->ViewModelDataLoaded(DisconnectedFriendsViewModel);
+	ConnectedFriends->ViewModelDataLoaded(ConnectedFriendsDataAsset.Get());
+	DisconnectedFriends->ViewModelDataLoaded(DisconnectedFriendsDataAsset.Get());
 }

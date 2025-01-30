@@ -12,6 +12,18 @@ UFriendListViewModelBase::~UFriendListViewModelBase()
 	OnFriendAdded.Unbind();
 }
 
+void UFriendListViewModelBase::SetFriendsFromData(const TArray<FFriendData>& InFriends)
+{
+	Friends.Reset(InFriends.Num());
+
+	for (auto& Friend : InFriends)
+	{
+		AddFriend(Friend);
+	}
+
+	BroadcastFriends();
+}
+
 void UFriendListViewModelBase::SetFriends(const TArray<UFriendViewModel*>& InFriends)
 {
 	Friends = InFriends;

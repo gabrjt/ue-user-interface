@@ -3,7 +3,7 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "FriendViewModelSubsystem.generated.h"
 
-class UFriendListViewModel;
+class UFriendListViewModelBase;
 class UConnectedFriendListViewModel;
 struct FFriendData;
 
@@ -13,13 +13,13 @@ class USERINTERFACE_API UFriendViewModelSubsystem : public UGameInstanceSubsyste
 	GENERATED_BODY()
 
 	UPROPERTY(Transient, BlueprintReadOnly, meta=(AllowPrivateAccess))
-	UFriendListViewModel* ConnectedFriendsViewModel;
+	UFriendListViewModelBase* ConnectedFriendsViewModel;
 
 	UPROPERTY(Transient, BlueprintReadOnly, meta=(AllowPrivateAccess))
-	UFriendListViewModel* DisconnectedFriendsViewModel;
+	UFriendListViewModelBase* DisconnectedFriendsViewModel;
 
 	UPROPERTY(Transient, BlueprintReadOnly, meta=(AllowPrivateAccess))
-	UConnectedFriendListViewModel* ConnectedFriendsNotificationsViewModel;
+	UConnectedFriendListViewModel* FriendsNotificationsViewModel;
 
 public:
 	UFriendViewModelSubsystem();
@@ -30,11 +30,11 @@ public:
 	virtual void Deinitialize() override;
 
 	// Public API
-	UFriendListViewModel* GetConnectedFriendsViewModel() const;
+	UFriendListViewModelBase* GetConnectedFriendsViewModel() const;
 
-	UFriendListViewModel* GetDisconnectedFriendsViewModel() const;
+	UFriendListViewModelBase* GetDisconnectedFriendsViewModel() const;
 
-	UConnectedFriendListViewModel* GetConnectedFriendsNotificationsViewModel() const;
+	UConnectedFriendListViewModel* GetFriendsNotificationsViewModel() const;
 
 private:
 	void OnFriendsLoaded() const;
