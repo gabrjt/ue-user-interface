@@ -37,6 +37,6 @@ void UHUDContainerWidget::OnDataAssetsLoaded() const
 	ConnectedFriends->SetVisibility(ESlateVisibility::Visible);
 	DisconnectedFriends->SetVisibility(ESlateVisibility::Visible);
 
-	ConnectedFriends->ViewModelDataLoaded(ConnectedFriendsViewModel);
-	DisconnectedFriends->ViewModelDataLoaded(DisconnectedFriendsViewModel);
+	//ConnectedFriends->ViewModelDataLoaded(ConnectedFriendsViewModel);
+	//DisconnectedFriends->ViewModelDataLoaded(DisconnectedFriendsViewModel);
 }

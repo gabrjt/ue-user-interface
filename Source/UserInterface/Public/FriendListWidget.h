@@ -38,5 +38,5 @@ class USERINTERFACE_API UFriendListWidget : public UFriendListWidgetBase
 
 public:
 	UFUNCTION(BlueprintImplementableEvent)
-	void ViewModelDataLoaded(UFriendListViewModel* InFriendListViewModel);
+	void ViewModelDataLoaded(UFriendListWidgetViewModel* InFriendListWidgetViewModel);
 };
