@@ -6,9 +6,7 @@ FFriendData::FFriendData()
 	, Level(-1)
 	, bIsConnected(false)
 	, LastSeen()
-	, StatusMessage()
-{
-}
+	, StatusMessage() {}
 
 FFriendData::FFriendData(const FString& UserID, const FString& Nickname, const bool bIsConnected)
 	: UserID(UserID)
@@ -16,9 +14,7 @@ FFriendData::FFriendData(const FString& UserID, const FString& Nickname, const b
 	, Level(1)
 	, bIsConnected(bIsConnected)
 	, LastSeen(GetLastSeen(bIsConnected))
-	, StatusMessage("Away")
-{
-}
+	, StatusMessage("Away") {}
 
 FString FFriendData::GetLastSeen(const bool bIsConnected)
 {

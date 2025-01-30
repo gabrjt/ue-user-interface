@@ -1,8 +1,6 @@
 #include "FriendService.h"
 
-void IFriendService::LoadFriends_Implementation()
-{
-}
+void IFriendService::LoadFriends_Implementation() {}
 
 bool IFriendService::GetFriend_Implementation(const FString& UserID, FFriendData& OutFriend) const
 {
@@ -24,18 +22,10 @@ TArray<FFriendData> IFriendService::GetDisconnectedFriends_Implementation() cons
 	return TArray<FFriendData>();
 }
 
-void IFriendService::UpdateFriend_Implementation(const FFriendData& InFriend)
-{
-}
+void IFriendService::UpdateFriend_Implementation(const FFriendData& InFriend) {}
 
-void IFriendService::SetFriendIsConnected_Implementation(const FString& UserID, const bool bIsConnected)
-{
-}
+void IFriendService::SetFriendIsConnected_Implementation(const FString& UserID, const bool bIsConnected) {}
 
-void IFriendService::SetFriendLevel_Implementation(const FString& UserID, const int Level)
-{
-}
+void IFriendService::SetFriendLevel_Implementation(const FString& UserID, const int Level) {}
 
-void IFriendService::RemoveFriend_Implementation(const FString& UserID)
-{
-}
+void IFriendService::RemoveFriend_Implementation(const FString& UserID) {}

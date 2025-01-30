@@ -1,8 +1,9 @@
 ﻿#include "FriendsViewModel.h"
 #include "FriendData.h"
 
-UFriendsViewModel::UFriendsViewModel() :
-	Friends(), OnFriendAdded() {}
+UFriendsViewModel::UFriendsViewModel()
+	: Friends()
+	, OnFriendAdded() {}
 
 UFriendsViewModel::~UFriendsViewModel()
 {
@@ -33,10 +34,12 @@ const TArray<UFriendViewModel*>& UFriendsViewModel::GetFriends() const
 
 void UFriendsViewModel::RemoveFriend(const FString& UserID)
 {
-	if (const int32 Index { Friends.IndexOfByPredicate([&UserID](const UFriendViewModel* Friend)
-	{
-		return Friend && *Friend == UserID;
-	}) }; Index != INDEX_NONE)
+	if (const int32 Index {
+		Friends.IndexOfByPredicate([&UserID](const UFriendViewModel* Friend)
+		{
+			return Friend && *Friend == UserID;
+		})
+	}; Index != INDEX_NONE)
 	{
 		Friends.RemoveAt(Index);
 
@@ -53,10 +56,12 @@ void UFriendsViewModel::ClearFriends()
 
 void UFriendsViewModel::UpdateFriend(const FFriendData& InFriend)
 {
-	if (const int32 Index { Friends.IndexOfByPredicate([&InFriend](const UFriendViewModel* Friend)
-	{
-		return Friend && *Friend == InFriend;
-	}) }; Index != INDEX_NONE)
+	if (const int32 Index {
+		Friends.IndexOfByPredicate([&InFriend](const UFriendViewModel* Friend)
+		{
+			return Friend && *Friend == InFriend;
+		})
+	}; Index != INDEX_NONE)
 	{
 		Friends[Index]->Set(InFriend);
 	}

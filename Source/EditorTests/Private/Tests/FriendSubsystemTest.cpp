@@ -7,7 +7,9 @@
 class FFriendSubsystemTestHelper : public TSubsystemTestHelper<UFriendSubsystem>
 {
 public:
-	static FFriendData CreateTestFriend(const FString& UserId, const FString& Nickname = TEXT("Test User"), const bool bIsConnected = false)
+	static FFriendData CreateTestFriend(const FString& UserId,
+	                                    const FString& Nickname     = TEXT("Test User"),
+	                                    const bool     bIsConnected = false)
 	{
 		return FFriendData { UserId, Nickname, bIsConnected };
 	}
@@ -46,14 +48,18 @@ bool FFriendSubsystemConnectionTest::RunTest(const FString& Parameters)
 	TestTrue("Found Friend", Helper.Subsystem->GetFriend_Implementation("TestUser1", Friend));
 	TestEqual("Friend is online now", Friend.LastSeen, "Now");
 	TestEqual("Connected friends count is correct", Helper.Subsystem->GetConnectedFriends_Implementation().Num(), 1);
-	TestEqual("Disconnected friends count is correct", Helper.Subsystem->GetDisconnectedFriends_Implementation().Num(), 0);
+	TestEqual("Disconnected friends count is correct",
+		Helper.Subsystem->GetDisconnectedFriends_Implementation().Num(),
+		0);
 
 	Helper.Subsystem->SetFriendIsConnected_Implementation("TestUser1", false);
 
 	TestTrue("Found Friend", Helper.Subsystem->GetFriend_Implementation("TestUser1", Friend));
 	TestEqual("Friend last seen now", Friend.LastSeen, FDateTime::Now().ToString());
 	TestEqual("Connected friends count is correct", Helper.Subsystem->GetConnectedFriends_Implementation().Num(), 0);
-	TestEqual("Disconnected friends count is correct", Helper.Subsystem->GetDisconnectedFriends_Implementation().Num(), 1);
+	TestEqual("Disconnected friends count is correct",
+		Helper.Subsystem->GetDisconnectedFriends_Implementation().Num(),
+		1);
 
 	return true;
 }
@@ -65,7 +71,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FFriendSubsystemNotificationTest,
 bool FFriendSubsystemNotificationTest::RunTest(const FString& Parameters)
 {
 	const FFriendSubsystemTestHelper Helper;
-	bool                             bNotificationReceived = false;
+	bool                             bNotificationReceived { false };
 	FOnFriendUpdated                 OnFriendUpdatedDelegate;
 
 	OnFriendUpdatedDelegate.BindLambda([&bNotificationReceived](const FFriendData& UpdatedFriend)
@@ -114,8 +120,8 @@ bool FFriendSubsystemRemovalTest::RunTest(const FString& Parameters)
 	Helper.Subsystem->RemoveFriend_Implementation("TestUser1");
 
 	TestEqual("All friends list is empty after removal",
-		Helper.Subsystem->GetFriendsRef().Num() + Helper.Subsystem->GetConnectedFriends_Implementation().Num() + Helper.Subsystem->
-		GetDisconnectedFriends_Implementation().Num(),
+		Helper.Subsystem->GetFriendsRef().Num() + Helper.Subsystem->GetConnectedFriends_Implementation().Num() + Helper.
+		Subsystem->GetDisconnectedFriends_Implementation().Num(),
 		0);
 
 	return true;
@@ -252,11 +258,12 @@ bool FFriendSubsystemLoadAsyncTest::RunTest(const FString& Parameters)
 	const FFriendSubsystemTestHelper Helper;
 	TSharedPtr<FStreamableHandle>    LoadFriendsHandle = Helper.Subsystem->LoadFriendsAsync();
 
-	ADD_LATENT_AUTOMATION_COMMAND(FFunctionLatentCommand([LoadFriendsHandle] { return LoadFriendsHandle->HasLoadCompletedOrStalled(); }));
+	ADD_LATENT_AUTOMATION_COMMAND(
+		FFunctionLatentCommand([LoadFriendsHandle] { return LoadFriendsHandle-> HasLoadCompletedOrStalled(); }));
 
 	ADD_LATENT_AUTOMATION_COMMAND(
-		FFunctionLatentCommand([this, Helper] { TestNotEqual("Loaded Friends count not equal to 0", Helper.Subsystem->GetFriendsRef().Num(), 0); return true; }
-		));
+		FFunctionLatentCommand([this, Helper] { TestNotEqual( "Loaded Friends count not equal to 0", Helper.Subsystem->
+			GetFriendsRef().Num(), 0); return true; }));
 
 	return true;
 }

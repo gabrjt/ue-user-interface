@@ -20,7 +20,11 @@ class USERINTERFACE_API UFriendViewModel : public UMVVMViewModelBase
 	UPROPERTY(BlueprintReadWrite, FieldNotify, Setter, Getter, meta=(AllowPrivateAccess))
 	int32 Level;
 
-	UPROPERTY(BlueprintReadWrite, FieldNotify, Setter="SetIsConnected", Getter="GetIsConnected", meta=(AllowPrivateAccess))
+	UPROPERTY(BlueprintReadWrite,
+		FieldNotify,
+		Setter="SetIsConnected",
+		Getter="GetIsConnected",
+		meta=(AllowPrivateAccess))
 	bool bIsConnected;
 
 	UPROPERTY(BlueprintReadWrite, FieldNotify, Setter, Getter, meta=(AllowPrivateAccess))

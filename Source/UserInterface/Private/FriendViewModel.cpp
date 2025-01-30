@@ -7,9 +7,7 @@ UFriendViewModel::UFriendViewModel()
 	, Level(-1)
 	, bIsConnected(false)
 	, LastSeen()
-	, StatusMessage()
-{
-}
+	, StatusMessage() {}
 
 UFriendViewModel* UFriendViewModel::Create(UObject* InOuter, const FFriendData& InFriend)
 {

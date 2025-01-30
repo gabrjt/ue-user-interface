@@ -2,9 +2,14 @@
 #include "FriendsWidgetViewModelDataAsset.h"
 #include "Components/SlateWrapperTypes.h"
 
-UFriendsWidgetViewModel::UFriendsWidgetViewModel() :
-	FriendsCount(0), Title("Friends List"), TextColor(FLinearColor::White), Visibility(ESlateVisibility::Collapsed),
-	TargetVisibility(ESlateVisibility::Collapsed), VisibilityText(GetVisibilityTextFromEnum(Visibility)), bIsChangingVisibility(false) {}
+UFriendsWidgetViewModel::UFriendsWidgetViewModel()
+	: FriendsCount(0)
+	, Title("Friends List")
+	, TextColor(FLinearColor::White)
+	, Visibility(ESlateVisibility::Collapsed)
+	, TargetVisibility(ESlateVisibility::Collapsed)
+	, VisibilityText(GetVisibilityTextFromEnum(Visibility))
+	, bIsChangingVisibility(false) {}
 
 void UFriendsWidgetViewModel::SetFriendsCount(const int32& InFriendsCount)
 {

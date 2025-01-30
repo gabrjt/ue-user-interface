@@ -1,14 +1,12 @@
 ﻿#include "FriendsViewModelSubsystem.h"
-#include "FriendsViewModel.h"
 #include "FriendService.h"
 #include "FriendServiceProviderSubsystem.h"
+#include "FriendsViewModel.h"
 
 UFriendsViewModelSubsystem::UFriendsViewModelSubsystem()
 	: ConnectedFriendsViewModel()
 	, DisconnectedFriendsViewModel()
-	, FriendsNotificationsViewModel()
-{
-}
+	, FriendsNotificationsViewModel() {}
 
 void UFriendsViewModelSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
@@ -21,10 +19,14 @@ void UFriendsViewModelSubsystem::Initialize(FSubsystemCollectionBase& Collection
 		FriendsNotificationsViewModel->AddFriend(FriendData);
 	});
 
-	IFriendService* FriendService { GetGameInstance()->GetSubsystem<UFriendServiceProviderSubsystem>()->GetFriendServiceInterface() };
+	IFriendService* FriendService {
+		GetGameInstance()->GetSubsystem<UFriendServiceProviderSubsystem>()->GetFriendServiceInterface()
+	};
 
-	FriendService->SubscribeOnFriendsLoaded(FOnFriendsLoaded::CreateUObject(this, &UFriendsViewModelSubsystem::OnFriendsLoaded));
-	FriendService->SubscribeOnFriendUpdated(FOnFriendUpdated::CreateUObject(this, &UFriendsViewModelSubsystem::OnFriendUpdated));
+	FriendService->SubscribeOnFriendsLoaded(FOnFriendsLoaded::CreateUObject(this,
+		&UFriendsViewModelSubsystem::OnFriendsLoaded));
+	FriendService->SubscribeOnFriendUpdated(FOnFriendUpdated::CreateUObject(this,
+		&UFriendsViewModelSubsystem::OnFriendUpdated));
 }
 
 void UFriendsViewModelSubsystem::Deinitialize()
@@ -33,7 +35,9 @@ void UFriendsViewModelSubsystem::Deinitialize()
 	DisconnectedFriendsViewModel->ClearFriends();
 	FriendsNotificationsViewModel->ClearFriends();
 
-	if (IFriendService* FriendService { GetGameInstance()->GetSubsystem<UFriendServiceProviderSubsystem>()->GetFriendServiceInterface() }; FriendService)
+	if (IFriendService* FriendService {
+		GetGameInstance()->GetSubsystem<UFriendServiceProviderSubsystem>()->GetFriendServiceInterface()
+	}; FriendService)
 	{
 		FriendService->UnsubscribeOnFriendsLoaded();
 		FriendService->UnsubscribeOnFriendUpdated();
@@ -57,7 +61,9 @@ UFriendsViewModel* UFriendsViewModelSubsystem::GetFriendsNotificationsViewModel(
 
 void UFriendsViewModelSubsystem::OnFriendsLoaded() const
 {
-	const IFriendService* FriendService { GetGameInstance()->GetSubsystem<UFriendServiceProviderSubsystem>()->GetFriendServiceInterface() };
+	const IFriendService* FriendService {
+		GetGameInstance()->GetSubsystem<UFriendServiceProviderSubsystem>()->GetFriendServiceInterface()
+	};
 
 	ConnectedFriendsViewModel->SetFriendsFromData(FriendService->GetConnectedFriends_Implementation());
 	DisconnectedFriendsViewModel->SetFriendsFromData(FriendService->GetDisconnectedFriends_Implementation());

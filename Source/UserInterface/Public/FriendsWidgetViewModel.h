@@ -29,7 +29,11 @@ class USERINTERFACE_API UFriendsWidgetViewModel : public UMVVMViewModelBase
 	UPROPERTY(BlueprintReadWrite, FieldNotify, Getter, meta=(AllowPrivateAccess))
 	FString VisibilityText;
 
-	UPROPERTY(BlueprintReadWrite, FieldNotify, Setter="SetIsChangingVisibility", Getter="GetIsChangingVisibility", meta=(AllowPrivateAccess))
+	UPROPERTY(BlueprintReadWrite,
+		FieldNotify,
+		Setter="SetIsChangingVisibility",
+		Getter="GetIsChangingVisibility",
+		meta=(AllowPrivateAccess))
 	bool bIsChangingVisibility;
 
 public:

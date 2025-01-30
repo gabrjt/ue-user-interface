@@ -11,9 +11,7 @@ UFriendSubsystem::UFriendSubsystem()
 	, Friends()
 	, OnFriendsLoaded()
 	, OnFriendUpdated()
-	, OnFriendUpdatedBP()
-{
-}
+	, OnFriendUpdatedBP() {}
 
 void UFriendSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
@@ -155,7 +153,8 @@ TSharedPtr<FStreamableHandle> UFriendSubsystem::LoadFriendsAsync()
 	}
 
 	FStreamableManager& StreamableManager { UAssetManager::GetStreamableManager() };
-	return StreamableManager.RequestAsyncLoad(FriendsDataTablePath, FStreamableDelegate::CreateUObject(this, &UFriendSubsystem::OnFriendsDataTableLoaded));
+	return StreamableManager.RequestAsyncLoad(FriendsDataTablePath,
+		FStreamableDelegate::CreateUObject(this, &UFriendSubsystem::OnFriendsDataTableLoaded));
 }
 
 void UFriendSubsystem::LoadFriends(const UDataTable* DataTable)

@@ -2,13 +2,9 @@
 
 #define LOCTEXT_NAMESPACE "FEditorTestsModule"
 
-void FEditorTestsModule::StartupModule()
-{
-}
+void FEditorTestsModule::StartupModule() {}
 
-void FEditorTestsModule::ShutdownModule()
-{
-}
+void FEditorTestsModule::ShutdownModule() {}
 
 #undef LOCTEXT_NAMESPACE
 

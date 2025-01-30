@@ -1,9 +1,7 @@
 ﻿#include "FriendsNotificationsWidgetEntryViewModel.h"
 
-UFriendsNotificationsWidgetEntryViewModel::UFriendsNotificationsWidgetEntryViewModel():
-	RenderOpacity(0)
-{
-}
+UFriendsNotificationsWidgetEntryViewModel::UFriendsNotificationsWidgetEntryViewModel()
+	: RenderOpacity(0) {}
 
 void UFriendsNotificationsWidgetEntryViewModel::SetRenderOpacity(const float InRenderOpacity)
 {

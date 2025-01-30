@@ -1,8 +1,8 @@
 #include "HUDContainerWidget.h"
+#include "FriendsNotificationsWidget.h"
 #include "FriendsViewModelSubsystem.h"
 #include "FriendsWidget.h"
 #include "FriendsWidgetViewModelDataAsset.h"
-#include "FriendsNotificationsWidget.h"
 #include "Engine/AssetManager.h"
 #include "Engine/StreamableManager.h"
 
@@ -10,7 +10,9 @@ void UHUDContainerWidget::NativeOnInitialized()
 {
 	Super::NativeOnInitialized();
 
-	const UFriendsViewModelSubsystem* FriendViewModelSubsystem { GetGameInstance()->GetSubsystem<UFriendsViewModelSubsystem>() };
+	const UFriendsViewModelSubsystem* FriendViewModelSubsystem {
+		GetGameInstance()->GetSubsystem<UFriendsViewModelSubsystem>()
+	};
 
 	ConnectedFriends->SetVisibility(ESlateVisibility::Hidden);
 	DisconnectedFriends->SetVisibility(ESlateVisibility::Hidden);
@@ -18,9 +20,13 @@ void UHUDContainerWidget::NativeOnInitialized()
 	DisconnectedFriends->SetViewModel(FriendViewModelSubsystem->GetDisconnectedFriendsViewModel());
 	ConnectedFriendsNotifications->SetViewModel(FriendViewModelSubsystem->GetFriendsNotificationsViewModel());
 
-	TArray              AssetsToLoad { ConnectedFriendsDataAsset.ToSoftObjectPath(), DisconnectedFriendsDataAsset.ToSoftObjectPath() };
+	TArray AssetsToLoad {
+		ConnectedFriendsDataAsset.ToSoftObjectPath(),
+		DisconnectedFriendsDataAsset.ToSoftObjectPath()
+	};
 	FStreamableManager& StreamableManager = UAssetManager::GetStreamableManager();
-	StreamableManager.RequestAsyncLoad(AssetsToLoad, FStreamableDelegate::CreateUObject(this, &UHUDContainerWidget::OnDataAssetsLoaded));
+	StreamableManager.RequestAsyncLoad(AssetsToLoad,
+		FStreamableDelegate::CreateUObject(this, &UHUDContainerWidget::OnDataAssetsLoaded));
 }
 
 void UHUDContainerWidget::OnDataAssetsLoaded() const

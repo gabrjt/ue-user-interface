@@ -2,18 +2,14 @@
 #include "FriendSubsystem.h"
 
 UFriendServiceProviderSubsystem::UFriendServiceProviderSubsystem()
-	: FriendServiceClass()
-{
-}
+	: FriendServiceClass() {}
 
 void UFriendServiceProviderSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	SetFriendServiceImplementation(FriendServiceClass);
 }
 
-void UFriendServiceProviderSubsystem::Deinitialize()
-{
-}
+void UFriendServiceProviderSubsystem::Deinitialize() {}
 
 TScriptInterface<IFriendService> UFriendServiceProviderSubsystem::GetFriendService() const
 {
