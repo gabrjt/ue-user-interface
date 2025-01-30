@@ -10,18 +10,18 @@ void UFriendsWidget::NativeOnInitialized()
 {
 	Super::NativeOnInitialized();
 
-	UFriendsWidgetViewModel* ViewModel { NewObject<UFriendsWidgetViewModel>() };
+	UFriendsWidgetViewModel* WidgetViewModel { NewObject<UFriendsWidgetViewModel>(this) };
 
 	GetGameInstance()->GetSubsystem<UMVVMGameSubsystem>()->GetViewModelCollection()->AddViewModelInstance({
-			TSubclassOf<UFriendsWidgetViewModel>(),
+			UFriendsWidgetViewModel::StaticClass(),
 			WidgetViewModelName
 		},
-		ViewModel);
+		WidgetViewModel);
 
-	SetWidgetViewModel(ViewModel);
+	SetWidgetViewModel(WidgetViewModel);
 
 	FStreamableManager& StreamableManager = UAssetManager::GetStreamableManager();
-	StreamableManager.RequestAsyncLoad(FriendsWidgetViewModelDataAsset,
+	StreamableManager.RequestAsyncLoad(FriendsWidgetViewModelDataAsset.ToSoftObjectPath(),
 		FStreamableDelegate::CreateUObject(this, &UFriendsWidget::OnDataAssetsLoaded));
 
 	SetVisibility(ESlateVisibility::Hidden);
@@ -29,9 +29,7 @@ void UFriendsWidget::NativeOnInitialized()
 
 void UFriendsWidget::SetViewModel_Implementation(UFriendsViewModel* InFriendsViewModel)
 {
-	Super::SetViewModel_Implementation(InFriendsViewModel);
-
-	InFriendsViewModel->SubscribeOnFriendsLoaded(ViewModelType);
+	InFriendsViewModel->SubscribeFriendsService(ViewModelType);
 }
 
 void UFriendsWidget::OnDataAssetsLoaded()

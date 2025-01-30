@@ -8,10 +8,26 @@
 UFriendsViewModel::UFriendsViewModel()
 	: Type(EFriendsViewModelType::None)
 	, Friends()
+	, OnFriendsLoadedHandle()
+	, OnFriendUpdatedHandle()
 	, OnFriendAdded() {}
 
 UFriendsViewModel::~UFriendsViewModel()
 {
+	ClearFriends();
+
+	if (const UGameInstance* GameInstance { UGameplayStatics::GetGameInstance(this) })
+	{
+		IFriendService* FriendService {
+			GameInstance->GetSubsystem<UFriendServiceProviderSubsystem>()->GetFriendServiceInterface()
+		};
+
+		FriendService->UnsubscribeOnFriendsLoaded(OnFriendsLoadedHandle);
+		FriendService->UnsubscribeOnFriendUpdated(OnFriendUpdatedHandle);
+	}
+
+	OnFriendsLoadedHandle.Reset();
+	OnFriendUpdatedHandle.Reset();
 	OnFriendAdded.Unbind();
 }
 
@@ -103,16 +119,43 @@ void UFriendsViewModel::AddFriend(const FFriendData& InFriend)
 	}
 }
 
-void UFriendsViewModel::SubscribeOnFriendsLoaded(const EFriendsViewModelType InType)
+void UFriendsViewModel::SubscribeFriendsService(const EFriendsViewModelType InType)
 {
 	Type = InType;
 
-	const UGameInstance* GameInstance { UGameplayStatics::GetGameInstance(this) };
-	IFriendService*      FriendService {
-		GameInstance->GetSubsystem<UFriendServiceProviderSubsystem>()->GetFriendServiceInterface()
+	IFriendService* FriendService {
+		UGameplayStatics::GetGameInstance(this)->GetSubsystem<UFriendServiceProviderSubsystem>()->
+		                                         GetFriendServiceInterface()
 	};
 
-	FriendService->SubscribeOnFriendsLoaded(FOnFriendsLoaded::CreateUObject(this, &UFriendsViewModel::OnFriendsLoaded));
+	OnFriendsLoadedHandle = FriendService->SubscribeOnFriendsLoaded(
+		FOnFriendsLoadedDelegate::CreateUObject(this, &UFriendsViewModel::OnFriendsLoaded));
+
+	OnFriendUpdatedHandle = FriendService->SubscribeOnFriendUpdated(
+		FOnFriendUpdatedDelegate::CreateUObject(this, &UFriendsViewModel::OnFriendUpdated));
+}
+
+TArray<FFriendData> UFriendsViewModel::GetFriendsData() const
+{
+	const IFriendService* FriendService {
+		UGameplayStatics::GetGameInstance(this)->GetSubsystem<UFriendServiceProviderSubsystem>()->
+		                                         GetFriendServiceInterface()
+	};
+
+	switch (Type)
+	{
+		case EFriendsViewModelType::All:
+			return FriendService->GetFriendsRef();
+
+		case EFriendsViewModelType::Connected:
+			return FriendService->GetConnectedFriends_Implementation();
+
+		case EFriendsViewModelType::Disconnected:
+			return FriendService->GetDisconnectedFriends_Implementation();
+
+		default:
+			return TArray<FFriendData>();
+	}
 }
 
 void UFriendsViewModel::OnFriendsLoaded()
@@ -120,23 +163,37 @@ void UFriendsViewModel::OnFriendsLoaded()
 	SetFriendsFromData(GetFriendsData());
 }
 
-TArray<FFriendData> UFriendsViewModel::GetFriendsData() const
+void UFriendsViewModel::OnFriendUpdated(const FFriendData& FriendData)
 {
-	const UGameInstance*  GameInstance { UGameplayStatics::GetGameInstance(this) };
-	const IFriendService* FriendService {
-		GameInstance->GetSubsystem<UFriendServiceProviderSubsystem>()->GetFriendServiceInterface()
-	};
-
 	switch (Type)
 	{
-		case EFriendsViewModelType::All:
-			return FriendService->GetFriendsRef();
-		case EFriendsViewModelType::Connected:
-			return FriendService->GetConnectedFriends_Implementation();
-		case EFriendsViewModelType::Disconnected:
-			return FriendService->GetDisconnectedFriends_Implementation();
+		case EFriendsViewModelType::None:
+			break;
 
-		default:
-			return TArray<FFriendData>();
+		case EFriendsViewModelType::All:
+			UpdateFriend(FriendData);
+			break;
+
+		case EFriendsViewModelType::Connected:
+			if (FriendData.bIsConnected)
+			{
+				UpdateFriend(FriendData);
+			}
+			else
+			{
+				RemoveFriend(FriendData.UserID);
+			}
+			break;
+
+		case EFriendsViewModelType::Disconnected:
+			if (!FriendData.bIsConnected)
+			{
+				UpdateFriend(FriendData);
+			}
+			else
+			{
+				RemoveFriend(FriendData.UserID);
+			}
+			break;
 	}
 }

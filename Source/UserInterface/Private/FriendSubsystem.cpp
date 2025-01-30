@@ -1,7 +1,6 @@
 #include "FriendSubsystem.h"
 #include "FriendData.h"
 #include "FriendServiceProviderSubsystem.h"
-#include "FriendsViewModelSubsystem.h"
 #include "Engine/AssetManager.h"
 #include "Engine/DataTable.h"
 #include "Engine/StreamableManager.h"
@@ -16,35 +15,34 @@ UFriendSubsystem::UFriendSubsystem()
 void UFriendSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Collection.InitializeDependency(UFriendServiceProviderSubsystem::StaticClass());
-	Collection.InitializeDependency(UFriendsViewModelSubsystem::StaticClass());
 }
 
 void UFriendSubsystem::Deinitialize()
 {
 	Friends.Empty();
-	OnFriendsLoaded.Unbind();
-	OnFriendUpdated.Unbind();
+	OnFriendsLoaded.Clear();
+	OnFriendUpdated.Clear();
 	OnFriendUpdatedBP.Clear();
 }
 
-void UFriendSubsystem::SubscribeOnFriendsLoaded(const FOnFriendsLoaded& Callback)
+FDelegateHandle UFriendSubsystem::SubscribeOnFriendsLoaded(const FOnFriendsLoadedDelegate& Callback)
 {
-	OnFriendsLoaded = Callback;
+	return OnFriendsLoaded.Add(Callback);
 }
 
-void UFriendSubsystem::UnsubscribeOnFriendsLoaded()
+void UFriendSubsystem::UnsubscribeOnFriendsLoaded(const FDelegateHandle& Handle)
 {
-	OnFriendsLoaded.Unbind();
+	OnFriendsLoaded.Remove(Handle);
 }
 
-void UFriendSubsystem::SubscribeOnFriendUpdated(const FOnFriendUpdated& Callback)
+FDelegateHandle UFriendSubsystem::SubscribeOnFriendUpdated(const FOnFriendUpdatedDelegate& Callback)
 {
-	OnFriendUpdated = Callback;
+	return OnFriendUpdated.Add(Callback);
 }
 
-void UFriendSubsystem::UnsubscribeOnFriendUpdated()
+void UFriendSubsystem::UnsubscribeOnFriendUpdated(const FDelegateHandle& Handle)
 {
-	OnFriendUpdated.Unbind();
+	OnFriendUpdated.Remove(Handle);
 }
 
 void UFriendSubsystem::LoadFriends_Implementation()
@@ -178,7 +176,7 @@ void UFriendSubsystem::LoadFriends(const UDataTable* DataTable)
 
 	if (OnFriendsLoaded.IsBound())
 	{
-		OnFriendsLoaded.Execute();
+		OnFriendsLoaded.Broadcast();
 	}
 }
 
@@ -202,7 +200,7 @@ void UFriendSubsystem::UpdateFriend(const int32 Index, const TFunction<void(FFri
 
 	if (OnFriendUpdated.IsBound())
 	{
-		OnFriendUpdated.Execute(Friend);
+		OnFriendUpdated.Broadcast(Friend);
 	}
 
 	OnFriendUpdatedBP.Broadcast(Friend);

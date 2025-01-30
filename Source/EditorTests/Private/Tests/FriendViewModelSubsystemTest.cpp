@@ -1,4 +1,35 @@
-﻿#include "FriendService.h"
+﻿#include "FriendsViewModel.h"
+#include "MVVMGameSubsystem.h"
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FFriendViewModelSubsystemInitializeTest,
+	"UserProject.Editor.FriendViewModelSubsystem.InitializeViewModels",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
+
+bool FFriendViewModelSubsystemInitializeTest::RunTest(const FString& Parameters)
+{
+	UGameInstance* GameInstance { NewObject<UGameInstance>() };
+	GameInstance->Init();
+	UFriendsViewModel* ViewModel { NewObject<UFriendsViewModel>() };
+
+
+
+	TestTrue("View Model is Added to Collection",
+		GameInstance->GetSubsystem<UMVVMGameSubsystem>()->GetViewModelCollection()->AddViewModelInstance({
+				UFriendsViewModel::StaticClass(),
+				"ConnectedFriendsViewModel"
+			},
+			ViewModel));
+
+	TestEqual("View Model is Found in Collection",
+		Cast<UFriendsViewModel>(
+			GameInstance->GetSubsystem<UMVVMGameSubsystem>()->GetViewModelCollection()->
+			              FindFirstViewModelInstanceOfType(UFriendsViewModel::StaticClass())),
+		ViewModel);
+
+	return true;
+}
+
+/*
+#include "FriendService.h"
 #include "FriendSubsystem.h"
 #include "FriendsViewModel.h"
 #include "FriendsViewModelSubsystem.h"
@@ -189,3 +220,4 @@ bool FFriendViewModelSubsystemViewModelDataIsUpdatedTest::RunTest(const FString&
 
 	return true;
 }
+*/

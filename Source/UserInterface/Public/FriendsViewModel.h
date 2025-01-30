@@ -21,6 +21,10 @@ class USERINTERFACE_API UFriendsViewModel : public UMVVMViewModelBase
 	UPROPERTY(BlueprintReadWrite, FieldNotify, Setter, Getter, meta=(AllowPrivateAccess))
 	TArray<UFriendViewModel*> Friends;
 
+	FDelegateHandle OnFriendsLoadedHandle;
+
+	FDelegateHandle OnFriendUpdatedHandle;
+
 public:
 	FOnFriendAdded OnFriendAdded;
 
@@ -51,12 +55,14 @@ public:
 
 	void AddFriend(const FFriendData& InFriend);
 
-	void SubscribeOnFriendsLoaded(const EFriendsViewModelType InType);
+	void SubscribeFriendsService(const EFriendsViewModelType InType);
 
 private:
+	TArray<FFriendData> GetFriendsData() const;
+
 	void OnFriendsLoaded();
 
-	TArray<FFriendData> GetFriendsData() const;
+	void OnFriendUpdated(const FFriendData& FriendData);
 
 	FORCEINLINE void AddFriend_Internal(const FFriendData& InFriend)
 	{

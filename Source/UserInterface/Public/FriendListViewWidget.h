@@ -25,6 +25,10 @@ public:
 
 	virtual void SetViewModel_Implementation(UFriendsViewModel* InFriendsViewModel);
 
+	UFriendsViewModel* GetViewModel() const;
+
+	UFriendsViewModel* GetViewModel(const FName& InViewModelName) const;
+
 protected:
 	virtual void NativeOnInitialized() override;
 };

@@ -36,13 +36,13 @@ public:
 	virtual void Deinitialize() override;
 
 	// IFriendConnectionService interface
-	virtual void SubscribeOnFriendsLoaded(const FOnFriendsLoaded& Callback) override;
+	virtual FDelegateHandle SubscribeOnFriendsLoaded(const FOnFriendsLoadedDelegate& Callback) override;
 
-	virtual void UnsubscribeOnFriendsLoaded() override;
+	virtual void UnsubscribeOnFriendsLoaded(const FDelegateHandle& Handle) override;
 
-	virtual void SubscribeOnFriendUpdated(const FOnFriendUpdated& Callback) override;
+	virtual FDelegateHandle SubscribeOnFriendUpdated(const FOnFriendUpdatedDelegate& Callback) override;
 
-	virtual void UnsubscribeOnFriendUpdated() override;
+	virtual void UnsubscribeOnFriendUpdated(const FDelegateHandle& Handle) override;
 
 	virtual void LoadFriends_Implementation() override;
 

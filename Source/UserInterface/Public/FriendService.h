@@ -2,12 +2,15 @@
 
 #include "CoreMinimal.h"
 #include "FriendData.h"
+#include "FriendsViewModel.h"
 #include "UObject/Interface.h"
 #include "FriendService.generated.h"
 
-DECLARE_DELEGATE(FOnFriendsLoaded);
+DECLARE_MULTICAST_DELEGATE(FOnFriendsLoaded);
+using FOnFriendsLoadedDelegate = FOnFriendsLoaded::FDelegate;
 
-DECLARE_DELEGATE_OneParam(FOnFriendUpdated, const FFriendData&);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnFriendUpdated, const FFriendData&);
+using FOnFriendUpdatedDelegate = FOnFriendUpdated::FDelegate;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnFriendUpdatedDelegateDynamic, FFriendData, FriendData);
 
@@ -22,13 +25,13 @@ class USERINTERFACE_API IFriendService
 	GENERATED_BODY()
 
 public:
-	virtual void SubscribeOnFriendsLoaded(const FOnFriendsLoaded& Callback) = 0;
+	virtual FDelegateHandle SubscribeOnFriendsLoaded(const FOnFriendsLoadedDelegate& Callback) = 0;
 
-	virtual void UnsubscribeOnFriendsLoaded() = 0;
+	virtual void UnsubscribeOnFriendsLoaded(const FDelegateHandle& Handle) = 0;
 
-	virtual void SubscribeOnFriendUpdated(const FOnFriendUpdated& Callback) = 0;
+	virtual FDelegateHandle SubscribeOnFriendUpdated(const FOnFriendUpdatedDelegate& Callback) = 0;
 
-	virtual void UnsubscribeOnFriendUpdated() = 0;
+	virtual void UnsubscribeOnFriendUpdated(const FDelegateHandle& Handle) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Friends")
 	void LoadFriends();
