@@ -2,7 +2,6 @@
 
 #include "CoreMinimal.h"
 #include "FriendData.h"
-#include "FriendsViewModel.h"
 #include "UObject/Interface.h"
 #include "FriendService.generated.h"
 
