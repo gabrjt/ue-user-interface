@@ -7,6 +7,7 @@
 class UBorder;
 class UTextBlock;
 class UWidgetAnimation;
+class UFriendsNotificationsWidgetEntryViewModelDataAsset;
 
 UCLASS()
 class USERINTERFACE_API UFriendsNotificationsWidgetEntry : public UUserWidget, public IUserObjectListEntry
@@ -24,4 +25,11 @@ class USERINTERFACE_API UFriendsNotificationsWidgetEntry : public UUserWidget, p
 
 	UPROPERTY(Transient, BlueprintReadWrite, meta=(BindWidgetAnim, AllowPrivateAccess))
 	TObjectPtr<UWidgetAnimation> ToastAnimation;
+
+public:
+	UFUNCTION(BlueprintPure, BlueprintImplementableEvent)
+	bool GetIsConnected() const;
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void WidgetViewModelDataLoaded(const UFriendsNotificationsWidgetEntryViewModelDataAsset* DataAsset);
 };

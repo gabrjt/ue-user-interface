@@ -1,6 +1,18 @@
 ﻿#include "FriendsNotificationsWidget.h"
+#include "FriendsNotificationsWidgetEntry.h"
+#include "FriendsNotificationsWidgetEntryViewModelDataAsset.h"
 #include "FriendsViewModel.h"
 #include "FriendsViewModelType.h"
+#include "Components/ListView.h"
+#include "Engine/AssetManager.h"
+
+void UFriendsNotificationsWidget::NativeOnInitialized()
+{
+	Super::NativeOnInitialized();
+
+	OnEntryWidgetGeneratedHandle = FriendListView->OnEntryWidgetGenerated().AddUObject(this,
+		&UFriendsNotificationsWidget::OnEntryWidgetGenerated);
+}
 
 void UFriendsNotificationsWidget::NativePreConstruct()
 {
@@ -23,7 +35,33 @@ void UFriendsNotificationsWidget::NativePreConstruct()
 	}
 }
 
+void UFriendsNotificationsWidget::NativeDestruct()
+{
+	Super::NativeDestruct();
+
+	if (FriendListView && OnEntryWidgetGeneratedHandle.IsValid())
+	{
+		FriendListView->OnEntryWidgetGenerated().Remove(OnEntryWidgetGeneratedHandle);
+		OnEntryWidgetGeneratedHandle.Reset();
+	}
+}
+
 void UFriendsNotificationsWidget::OnFriendAdded(const FFriendData& FriendData) const
 {
 	GetViewModel()->AddFriend(FriendData);
+}
+
+void UFriendsNotificationsWidget::OnEntryWidgetGenerated(UUserWidget& UserWidget) const
+{
+	UFriendsNotificationsWidgetEntry* WidgetEntry { Cast<UFriendsNotificationsWidgetEntry>(&UserWidget) };
+	const TSoftObjectPtr<UFriendsNotificationsWidgetEntryViewModelDataAsset> DataAsset {
+		WidgetEntry->GetIsConnected() ? ConnectedNotificationDataAsset : DisconnectedNotificationDataAsset
+	};
+
+	FStreamableManager& StreamableManager { UAssetManager::GetStreamableManager() };
+	StreamableManager.RequestAsyncLoad(DataAsset.ToSoftObjectPath(),
+		FStreamableDelegate::CreateLambda([=]
+		{
+			WidgetEntry->WidgetViewModelDataLoaded(DataAsset.Get());
+		}));
 }

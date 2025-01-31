@@ -30,9 +30,17 @@ class USERINTERFACE_API UFriendsNotificationsWidget : public UFriendListViewWidg
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Settings", meta = (AllowPrivateAccess))
 	TSoftObjectPtr<UFriendsNotificationsWidgetEntryViewModelDataAsset> DisconnectedNotificationDataAsset;
 
+	FDelegateHandle OnEntryWidgetGeneratedHandle;
+
 protected:
+	virtual void NativeOnInitialized() override;
+
 	virtual void NativePreConstruct() override;
+
+	virtual void NativeDestruct() override;
 
 private:
 	void OnFriendAdded(const FFriendData& FriendData) const;
+
+	void OnEntryWidgetGenerated(UUserWidget& UserWidget) const;
 };

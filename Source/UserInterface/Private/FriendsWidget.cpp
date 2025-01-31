@@ -17,7 +17,7 @@ void UFriendsWidget::NativeOnInitialized()
 
 	SetWidgetViewModel(WidgetViewModel);
 
-	FStreamableManager& StreamableManager = UAssetManager::GetStreamableManager();
+	FStreamableManager& StreamableManager { UAssetManager::GetStreamableManager() };
 	StreamableManager.RequestAsyncLoad(FriendsWidgetViewModelDataAsset.ToSoftObjectPath(),
 		FStreamableDelegate::CreateUObject(this, &UFriendsWidget::OnDataAssetsLoaded));
 
