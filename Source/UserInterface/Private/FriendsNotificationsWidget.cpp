@@ -11,18 +11,19 @@ void UFriendsNotificationsWidget::NativePreConstruct()
 	if (UFriendsViewModel* ConnectedFriendsViewModel { GetViewModel(ConnectedFriendsViewModelName) };
 		ConnectedFriendsViewModel && EnumHasAnyFlags(ViewModelFlags, EFriendsViewModelType::Connected))
 	{
-		ConnectedFriendsViewModel->OnFriendAdded = FOnFriendAdded::CreateLambda([this](const FFriendData& FriendData)
-		{
-			GetViewModel()->AddFriend(FriendData);
-		});
+		ConnectedFriendsViewModel->OnFriendAdded = FOnFriendAdded::CreateUObject(this,
+			&UFriendsNotificationsWidget::OnFriendAdded);
 	}
 
 	if (UFriendsViewModel* DisconnectedFriendsViewModel { GetViewModel(DisconnectedFriendsViewModelName) };
 		DisconnectedFriendsViewModel && EnumHasAnyFlags(ViewModelFlags, EFriendsViewModelType::Disconnected))
 	{
-		DisconnectedFriendsViewModel->OnFriendAdded = FOnFriendAdded::CreateLambda([this](const FFriendData& FriendData)
-		{
-			GetViewModel()->AddFriend(FriendData);
-		});
+		DisconnectedFriendsViewModel->OnFriendAdded = FOnFriendAdded::CreateUObject(this,
+			&UFriendsNotificationsWidget::OnFriendAdded);
 	}
+}
+
+void UFriendsNotificationsWidget::OnFriendAdded(const FFriendData& FriendData) const
+{
+	GetViewModel()->AddFriend(FriendData);
 }

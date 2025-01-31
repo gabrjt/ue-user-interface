@@ -19,6 +19,9 @@ class USERINTERFACE_API UFriendsNotificationsWidgetEntry : public UUserWidget, p
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess))
 	UTextBlock* NicknameText;
 
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess))
+	UTextBlock* NotificationText;
+
 	UPROPERTY(Transient, BlueprintReadWrite, meta=(BindWidgetAnim, AllowPrivateAccess))
 	TObjectPtr<UWidgetAnimation> ToastAnimation;
 };
